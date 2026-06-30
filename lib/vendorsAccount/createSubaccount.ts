@@ -1,19 +1,20 @@
-import { VendorRow } from "@/types/vendor";
+import { VendorInsert } from "@/types/vendor";
 import { getSupabaseClient } from "../supabase/client";
 
-type SubaccountDetails = {
-  bankCode: string;
-  subaccountCode: string;
+type SubaccountInput = {
+  businessName: string;
+  settlementBank: string;
+  accountNumber: string;
+  percentageCharge: number;
 };
 
-type VerificationType =
-  | { success: true; data: SubaccountDetails }
+type SubaccountResult =
+  | { success: true; subaccountCode: string }
   | { success: false; error: string };
+
 export const createSubaccount = async (
-  vendorData: VendorRow,
-  bankCode: string,
-  accountName: string,
-): Promise<VerificationType> => {
+  input: SubaccountInput,
+): Promise<SubaccountResult> => {
   try {
     const supabase = getSupabaseClient();
 
@@ -21,26 +22,23 @@ export const createSubaccount = async (
       "create-subaccount",
       {
         body: {
-          vendorData,
-          bankCode,
-          accountName,
+          business_name: input.businessName,
+          settlement_bank: input.settlementBank,
+          account_number: input.accountNumber,
+          percentage_charge: input.percentageCharge,
         },
       },
     );
 
-    if (error) return { success: false, error: error.message };
+    if (!data?.subaccountCode) {
+      return { success: false, error: "Subaccount code not returned" };
+    }
 
-    return {
-      success: true,
-      data: {
-        subaccountCode: data.subaccountCode,
-        bankCode: data.bankCode,
-      },
-    };
+    return { success: true, subaccountCode: data.subaccountCode };
   } catch (error) {
     console.error("Exception:", error);
     const message =
-      error instanceof Error ? error.message : "Verification failed";
+      error instanceof Error ? error.message : "Failed to create subaccount";
     return { success: false, error: message };
   }
 };
