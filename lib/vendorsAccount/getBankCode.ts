@@ -1,10 +1,12 @@
 import { getSupabaseClient } from "../supabase/client";
 
-type BankCode =
-  | { satus: true; data: string }
-  | { status: false; error: string };
+type BankCodeResult =
+  | { success: true; bankCode: string }
+  | { success: false; error: string };
 
-export const getBankCode = async (bankName: string): Promise<string | null> => {
+export const getBankCode = async (
+  bankName: string,
+): Promise<BankCodeResult> => {
   try {
     const supabase = getSupabaseClient();
 
@@ -14,12 +16,17 @@ export const getBankCode = async (bankName: string): Promise<string | null> => {
 
     if (error) {
       console.error("Error getting bank code:", error);
-      return null;
+      return { success: false, error: error.message };
     }
 
-    return data.bankCode;
+    if (!data?.bankCode) {
+      return { success: false, error: "Bank code not found" };
+    }
+
+    return { success: true, bankCode: data.bankCode };
   } catch (error) {
-    console.error("Exception:", error);
-    return null;
+    const message =
+      error instanceof Error ? error.message : "Failed to get bank code";
+    return { success: false, error: message };
   }
 };
