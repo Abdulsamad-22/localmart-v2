@@ -5,7 +5,7 @@ import { getSupabaseClient } from "@/lib/supabase/client";
 import { createSubaccount } from "@/lib/vendorsAccount/createSubaccount";
 import { getBankCode } from "@/lib/vendorsAccount/getBankCode";
 import { verifyAccountNumber } from "@/lib/vendorsAccount/verifyAccountNumber";
-import { VendorInsert, VendorRow } from "@/types/vendor";
+import { VendorInsert } from "@/types/vendor";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useForm, useWatch } from "react-hook-form";
 import { InferType, object, string } from "yup";
@@ -34,7 +34,7 @@ const schema = object({
 type VendorFormType = InferType<typeof schema>;
 
 export default function VendorRegistration() {
-  const vendorData = useAuthStore((state) => state);
+  const user = useAuthStore((state) => state.user);
   const router = useRouter();
   const [loading, setIsLoading] = useState(false);
   const {
@@ -84,9 +84,8 @@ export default function VendorRegistration() {
         return;
       }
 
-      // vendor id needs to be added with user id from store
       const vendorData: VendorInsert = {
-        vendor_id: "128383",
+        vendor_id: user?.id,
         full_name: formData.fullName,
         email: formData.email,
         phone_number: formData.phoneNumber,
