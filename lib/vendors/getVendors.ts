@@ -4,6 +4,7 @@ import { getSupabaseClient } from "../supabase/client";
 type GetVendorsResult =
   | { success: true; data: VendorRow[] }
   | { success: false; error: string };
+
 export async function getVendors(): Promise<GetVendorsResult> {
   const supabase = getSupabaseClient();
 
