@@ -21,7 +21,7 @@ export type VendorRow = {
 };
 
 export type VendorInsert = {
-  vendor_id: string;
+  vendor_id: string | undefined;
   full_name: string;
   email: string;
   phone_number: string;
