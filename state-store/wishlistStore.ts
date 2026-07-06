@@ -9,8 +9,8 @@ type WishlistItem = {
 type WishlistStore = {
   wishlistItems: WishlistItem[];
   toggleWishlist: (product: WishlistProducts) => void;
-  removeFromWishlist: (productId: number) => void;
-  isInWishlist: (productId: number) => boolean;
+  removeFromWishlist: (productId: string) => void;
+  isInWishlist: (productId: string) => boolean;
   clearWishlist: () => void;
 };
 
@@ -48,7 +48,7 @@ const useWishlistStore = create<WishlistStore>()(
         });
       },
 
-      isInWishlist: (productId: number) => {
+      isInWishlist: (productId: string) => {
         const { wishlistItems } = get();
 
         return wishlistItems.some((item) => item.product.id === productId);
@@ -64,3 +64,5 @@ const useWishlistStore = create<WishlistStore>()(
     },
   ),
 );
+
+export default useWishlistStore;
