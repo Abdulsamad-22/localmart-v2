@@ -25,7 +25,7 @@ export function ProductCard({ product }: Props) {
           <img
             className="w-full h-full rounded-t-[4px] md:rounded-t-[10px]"
             src={product.image_url}
-            alt={product.name}
+            alt={product.item_name}
           />
         </Link>
 
@@ -38,7 +38,7 @@ export function ProductCard({ product }: Props) {
 
       <div className="px-3 py-3 space-y-[6px] md:space-y-3 rounded-b-[8px] md:rounded-b-[10px]">
         <h2 className="md:font-semibold text-[0.875rem] md:text-[1rem] text-gray-900 line-clamp-1">
-          {product.name}
+          {product.item_name}
         </h2>
 
         <div className="space-y-2 md:space-y-4">
@@ -71,7 +71,7 @@ export function ProductCard({ product }: Props) {
 
         <div className="hidden md:block">
           <button
-            onClick={() => addToCart(product)}
+            onClick={() => addToCart(product, 1)}
             className="flex items-center justify-center gap-2 w-full text-[0.875rem] md:text-[1rem] px-4 py-2 bg-gradient-to-r from-[#009688] to-[#00695C] hover:from-[#00897B] hover:to-[#005B4F] transition-all duration-200 text-white rounded-[8px] mt-2 md:mt-4"
           >
             <ShoppingCart size={24} color="#fff" />
