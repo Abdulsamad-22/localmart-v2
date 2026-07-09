@@ -1,40 +1,48 @@
-type Color = { code: string; name: string };
+export type Color = { code: string; name: string };
 
 export type ProductRow = {
-  id: number;
+  id: string;
   image_url: string;
   item_name: string;
-  name: string;
-  description: string;
+  item_description: string;
   item_price: number;
-  price: number;
-  category: string;
+  item_category: string;
   vendorId: number;
-  sizes?: string[];
-  colors?: Color[];
+  item_sizes?: string[] | null;
+  item_colors?: Color[] | null;
   item_units: number;
-  // quantity: number
+  quantity: number;
   in_stock: number;
 };
 
 export interface DraftProduct {
-  id: number;
+  id: string;
   name: string;
   price: number;
   image?: string;
   category: string;
   description: string;
   units: number;
-  sizes?: string[];
+  sizes?: string[] | null;
   colors?: Color[];
 }
 
 export type WishlistProducts = {
-  id: number;
-  name: string;
-  price: number;
-  category: string;
-  description: string;
-  sizes?: string[];
-  colors?: Color[];
+  id: string;
+  item_name: string;
+  item_price: number;
+  item_category: string;
+  item_description: string;
+  item_sizes?: string[] | null;
+  item_colors?: Color[] | null;
+};
+
+export type ProductsWithVendor = ProductRow & {
+  vendor: {
+    id: string;
+    business_name: string;
+    business_address: string;
+    latitude: number | null;
+    longitude: number | null;
+  };
 };
