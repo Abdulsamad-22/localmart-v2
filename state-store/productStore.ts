@@ -28,7 +28,7 @@ const useProductStore = create<ProductStore>((set, get) => ({
     return products.filter(
       (product) =>
         product.item_name?.toLowerCase().includes(query) ||
-        product.category?.toLowerCase().includes(query),
+        product.item_category?.toLowerCase().includes(query),
     );
   },
 }));
