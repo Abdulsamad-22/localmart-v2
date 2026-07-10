@@ -27,15 +27,7 @@ export interface DraftProduct {
   colors?: Color[];
 }
 
-export type WishlistProducts = {
-  id: string;
-  item_name: string;
-  item_price: number;
-  item_category: string;
-  item_description: string;
-  item_sizes?: string[] | null;
-  item_colors?: Color[] | null;
-};
+export type WishlistProducts = ProductRow;
 
 export type ProductsWithVendor = ProductRow & {
   vendor: {
