@@ -19,7 +19,7 @@ export function ProductCard({ product }: Props) {
   const isWishlisted = isInWishlist(product.id);
 
   return (
-    <div className="bg-white border rounded-[4px] md:rounded-[10px]">
+    <div className="bg-white border border-[#c4c4c4] rounded-[4px] md:rounded-[10px]">
       <div className="w-full h-[8.5rem] md:h-[218px] relative cursor-pointer">
         <Link href={`/products/${product.id}`}>
           <img
@@ -52,7 +52,7 @@ export function ProductCard({ product }: Props) {
           </div>
 
           <div className="hidden md:flex items-center gap-1">
-            <img src="/images/Star.svg" alt="Rating" className="w-4 h-4" />
+            <img src="/Star.svg" alt="Rating" className="w-4 h-4" />
             <span className="font-medium">4.5</span>
             <span className="text-xs font-normal">(120 reviews)</span>
           </div>
