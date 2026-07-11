@@ -7,7 +7,7 @@ export type ProductRow = {
   item_description: string;
   item_price: number;
   item_category: string;
-  vendorId: number;
+  vendor_id: string;
   item_sizes?: string[] | null;
   item_colors?: Color[] | null;
   item_units: number;

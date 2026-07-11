@@ -1,4 +1,5 @@
 export type VendorRow = {
+  id: string;
   fullName: string;
   email: string;
   phoneNumber: string;
@@ -9,13 +10,15 @@ export type VendorRow = {
   longitude: number | null;
   productCategory: string;
   socials: string | null;
-  vendorId: string;
+  vendor_id: string;
   bankName: string;
   bankCode: string;
   accountNumber: string;
   accountName: string;
   returnPolicy: string;
   deliveryDuration: string;
+  subaccount_code: string | null;
+  subaccount_pending: boolean;
   updatedAt: string;
   createdAt: string;
 };
