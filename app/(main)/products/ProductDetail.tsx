@@ -54,9 +54,42 @@ export default function ({ product }: Props) {
   const { isInWishlist, toggleWishlist } = useWishlistStore();
   const [selectedColor, setSelectedColor] = useState<Color | null>(null);
   const [selectedSize, setSelectedSize] = useState<string | null>(null);
+  const [activeTab, setActiveTab] = useState("decription");
   const [quantity, setQuantity] = useState(1);
   const router = useRouter();
   const pathname = usePathname();
+
+  const [reviews] = useState([
+    {
+      id: 1,
+      user: "John D.",
+      rating: 5,
+      date: "2 weeks ago",
+      verified: true,
+      comment:
+        "Amazing phone! The camera quality is exceptional and the S Pen is incredibly useful.",
+      helpful: 12,
+    },
+    {
+      id: 2,
+      user: "Sarah M.",
+      rating: 4,
+      date: "1 month ago",
+      verified: true,
+      comment:
+        "Great performance and battery life. Only minor issue is it's a bit heavy.",
+      helpful: 8,
+    },
+    {
+      id: 3,
+      user: "Mike R.",
+      rating: 5,
+      date: "3 weeks ago",
+      verified: true,
+      comment: "Best Android phone I've ever used. The display is stunning!",
+      helpful: 15,
+    },
+  ]);
 
   const isWishlisted = isInWishlist(product.id);
   const colors = product.item_colors ?? [];
@@ -64,10 +97,6 @@ export default function ({ product }: Props) {
   const updateQuantity = (value: number) => {
     if (value < 1 || value > product.item_units) return;
     setQuantity(value);
-  };
-
-  const handleAddToCart = () => {
-    addToCart(product, quantity, selectedColor, selectedSize);
   };
 
   const handleBuyNow = async () => {
@@ -86,29 +115,24 @@ export default function ({ product }: Props) {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 px-2 md:px-8">
-      <div className="max-w-7xl mx-auto px-0 md:px-3 sm:px-6 lg:px-8 py-6">
-        <div className="grid grid-cols-1 lg:grid-cols-[30em_1fr] gap-4 md:gap-20 mb-12">
+    <div className="min-h-screen bg-gray-50 px-2 md:px-8 md:py-12 md:mt-20">
+      <div className="px-4 md:px-6 sm:px-6 lg:px-12 py-6">
+        <div className="flex items-start gap-4 md:gap-20 mb-12">
           {/* Product Images */}
-          <div className="space-y-4">
+          <div className="flex flex-col md:flex-row items-start gap-20 space-y-4">
             {/* Main Image */}
-            <div className="relative bg-white rounded-lg overflow-hidden shadow-sm">
+            <div className="w-full md:w-1/2 relative bg-white rounded-lg overflow-hidden shadow-sm">
               <img
-                // src={product.images[selectedImage]}
                 src={product.image_url}
                 alt={product.item_name}
-                className="w-[30em] md:w-[30em] md:h-[450px] object-cover "
-                // className="w-full h-96 sm:h-[500px] object-cover"
+                className="w-full md:w-full md:h-[450px] object-cover "
               />
             </div>
 
             {/* Product Information */}
-            <div className="space-y-6">
+            <div className="w-full md:w-1/2 space-y-6">
               {/* Product Title & Rating */}
               <div>
-                {/* <div className="text-sm text-gray-600 mb-2">
-                <span className="font-medium text-blue-600 hover:underline cursor-pointer">{product.brand}</span>
-              </div> */}
                 <div className="text-sm text-gray-400 mb-1">
                   <span>{product.item_category}</span>
                 </div>
@@ -133,7 +157,6 @@ export default function ({ product }: Props) {
               </div>
 
               {/*Product description */}
-
               <div>
                 <h3 className="text-gray-900 font-semibold mb-1">
                   Description:
@@ -153,31 +176,31 @@ export default function ({ product }: Props) {
                     </h3>
                   )}
                 </div>
-                {/* {product.item_sizes && product.item_sizes.length > 0 && (
-                <select
-                  value={selectedSize}
-                  onChange={(e) => setSelectedSize(e.target.value)}
-                  className="w-[20%] px-3 py-2 rounded-lg border 
+                {product.item_sizes && product.item_sizes.length > 0 && (
+                  <select
+                    value={selectedSize ?? ""}
+                    onChange={(e) => setSelectedSize(e.target.value)}
+                    className="w-[20%] px-3 py-2 rounded-lg border 
           border-[#009688] text-gray-700 text-sm
           focus:outline-none
           hover:border-[#00796B] transition-all duration-200 mb-4"
-                >
-                  <option value="">Choose a size</option>
-                  {product.item_sizes.map((size, index) => (
-                    <option
-                      key={index}
-                      value={size}
-                      className="
+                  >
+                    <option value="">Choose a size</option>
+                    {product.item_sizes.map((size, index) => (
+                      <option
+                        key={index}
+                        value={size}
+                        className="
               hover:bg-[#009688]/10 
               active:bg-[#009688] active:text-white
               cursor-pointer
             "
-                    >
-                      {size}
-                    </option>
-                  ))}
-                </select>
-              )}  */}
+                      >
+                        {size}
+                      </option>
+                    ))}
+                  </select>
+                )}
 
                 {selectedSize && (
                   <p className="mt-2 text-sm text-gray-600">
@@ -298,7 +321,7 @@ export default function ({ product }: Props) {
                 {/* Secondary Actions */}
                 <div className="flex items-center justify-center gap-6">
                   <button
-                    onClick={() => isWishlisted}
+                    onClick={() => toggleWishlist(product)}
                     className={`flex items-center gap-2 text-sm font-medium transition-colors ${
                       isWishlisted
                         ? "text-blue-600"
@@ -360,9 +383,6 @@ export default function ({ product }: Props) {
                   <h3 className="font-semibold text-gray-900">Sold by</h3>
                   <div className="flex items-center gap-1">
                     {renderStars(tempRating)}
-                    <span className="text-sm font-medium ml-1">
-                      {/* {product.sellerRating} */}
-                    </span>
                   </div>
                 </div>
                 <div className="flex items-center justify-between">
@@ -382,141 +402,140 @@ export default function ({ product }: Props) {
               </div>
             </div>
           </div>
+        </div>
+      </div>
 
-          {/* Product Details Tabs */}
-          {/* <div className="bg-white rounded-lg shadow-sm">
-          <div className="border-b">
-            <nav className="flex space-x-8 px-6">
-              {["description", "specifications", "reviews"].map((tab) => (
-                <button
-                  key={tab}
-                  onClick={() => setActiveTab(tab)}
-                  className={`py-4 px-2 text-sm font-medium border-b-2 transition-colors ${
-                    activeTab === tab
-                      ? "border-[#009688] text-[#009688]"
-                      : "border-transparent text-gray-600 hover:text-gray-900"
-                  }`}
-                >
-                  {tab === "description" && "Description"}
-                  {tab === "specifications" && "Specifications"}
-                  {tab === "reviews" &&
-                    `Reviews (${reviewCount.toLocaleString()})`}
-                </button>
-              ))}
-            </nav>
-          </div>
+      {/* Product Details Tabs */}
+      <div className="bg-white rounded-lg shadow-sm mb-12">
+        <div className="border-b">
+          <nav className="flex space-x-8 px-6">
+            {["description", "specifications", "reviews"].map((tab) => (
+              <button
+                key={tab}
+                onClick={() => setActiveTab(tab)}
+                className={`py-4 px-2 text-sm font-medium border-b-2 transition-colors ${
+                  activeTab === tab
+                    ? "border-[#009688] text-[#009688]"
+                    : "border-transparent text-gray-600 hover:text-gray-900"
+                }`}
+              >
+                {tab === "description" && "Description"}
+                {tab === "specifications" && "Specifications"}
+                {tab === "reviews" &&
+                  `Reviews (${reviewCount.toLocaleString()})`}
+              </button>
+            ))}
+          </nav>
+        </div>
 
-          <div className="p-6">
-            {activeTab === "description" && (
-              <div className="space-y-6">
-                <div>
-                  <h3 className="text-lg font-semibold mb-3">
-                    Product Description
-                  </h3>
-                  <p className="text-gray-700 leading-relaxed mb-6">
-                    {product.description}
-                  </p>
-                </div>
-                <div>
-                  <h3 className="text-lg font-semibold mb-3">Key Features</h3>
-                  <ul className="grid grid-cols-1 md:grid-cols-2 gap-2">
-                    {product.features?.map((feature, index) => (
-                      <li key={index} className="flex items-center gap-2">
-                        <Check
-                          size={16}
-                          className="text-green-600 flex-shrink-0"
-                        />
-                        <span className="text-gray-700">{feature}</span>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              </div>
-            )}
-
-            {activeTab === "specifications" && (
+        <div className="p-6">
+          {activeTab === "description" && (
+            <div className="space-y-6">
               <div>
-                <h3 className="text-lg font-semibold mb-4">
-                  Technical Specifications
+                <h3 className="text-lg font-semibold mb-3">
+                  Product Description
                 </h3>
-                
+                <p className="text-gray-700 leading-relaxed mb-6">
+                  {product.item_description}
+                </p>
               </div>
-            )}
+              {/* <div>
+                <h3 className="text-lg font-semibold mb-3">Key Features</h3>
+                <ul className="grid grid-cols-1 md:grid-cols-2 gap-2">
+                  {product.features?.map((feature, index) => (
+                        <li key={index} className="flex items-center gap-2">
+                          <Check
+                            size={16}
+                            className="text-green-600 flex-shrink-0"
+                          />
+                          <span className="text-gray-700">{feature}</span>
+                        </li>
+                      ))}
+                </ul>
+              </div> */}
+            </div>
+          )}
 
-            {activeTab === "reviews" && (
-              <div className="space-y-6">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  <div>
-                    <h3 className="text-lg font-semibold mb-4">
-                      Customer Reviews
-                    </h3>
-                    <div className="flex items-center gap-4 mb-4">
-                      <span className="text-3xl font-bold">{tempRating}</span>
-                      <div>
-                        <div className="flex items-center mb-1">
-                          {renderStars(tempRating)}
-                        </div>
-                        <div className="text-sm text-gray-600">
-                          Based on {reviewCount.toLocaleString()} reviews
-                        </div>
+          {activeTab === "specifications" && (
+            <div>
+              <h3 className="text-lg font-semibold mb-4">
+                Technical Specifications
+              </h3>
+            </div>
+          )}
+
+          {activeTab === "reviews" && (
+            <div className="space-y-6">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                  <h3 className="text-lg font-semibold mb-4">
+                    Customer Reviews
+                  </h3>
+                  <div className="flex items-center gap-4 mb-4">
+                    <span className="text-3xl font-bold">{tempRating}</span>
+                    <div>
+                      <div className="flex items-center mb-1">
+                        {renderStars(tempRating)}
+                      </div>
+                      <div className="text-sm text-gray-600">
+                        Based on {reviewCount.toLocaleString()} reviews
                       </div>
                     </div>
                   </div>
-                  <div className="flex justify-end">
-                    <button
-                      className="bg-gradient-to-r from-[#009688] to-[#00695C] transition-all duration-200
+                </div>
+                <div className="flex justify-end">
+                  <button
+                    className="bg-gradient-to-r from-[#009688] to-[#00695C] transition-all duration-200
      text-[#fff] px-6 py-2 rounded-lg font-medium hover:from-[#00897B] hover:to-[#005B4F] transition-colors"
-                    >
-                      Write a Review
-                    </button>
-                  </div>
+                  >
+                    Write a Review
+                  </button>
                 </div>
+              </div>
 
-                <div className="space-y-4">
-                  {reviews.map((review) => (
-                    <div
-                      key={review.id}
-                      className="border-b border-gray-100 pb-4 last:border-0"
-                    >
-                      <div className="flex items-start gap-4">
-                        <div className="w-10 h-10 bg-[#009688]/20 rounded-full flex items-center justify-center font-semibold text-[#009688]">
-                          {review.user.charAt(0)}
-                        </div>
-                        <div className="flex-1">
-                          <div className="flex items-center gap-2 mb-2">
-                            <span className="font-medium">{review.user}</span>
-                            {review.verified && (
-                              <span className="bg-blue-100 text-blue-800 text-xs px-2 py-1 rounded-full">
-                                Verified Purchase
-                              </span>
-                            )}
-                            <span className="text-sm text-gray-500">
-                              {review.date}
+              <div className="space-y-4">
+                {reviews.map((review) => (
+                  <div
+                    key={review.id}
+                    className="border-b border-gray-100 pb-4 last:border-0"
+                  >
+                    <div className="flex items-start gap-4">
+                      <div className="w-10 h-10 bg-[#009688]/20 rounded-full flex items-center justify-center font-semibold text-[#009688]">
+                        {review.user.charAt(0)}
+                      </div>
+                      <div className="flex-1">
+                        <div className="flex items-center gap-2 mb-2">
+                          <span className="font-medium">{review.user}</span>
+                          {review.verified && (
+                            <span className="bg-blue-100 text-blue-800 text-xs px-2 py-1 rounded-full">
+                              Verified Purchase
                             </span>
-                          </div>
-                          <div className="flex items-center mb-2">
-                            {renderStars(review.rating)}
-                          </div>
-                          <p className="text-gray-700 mb-3">{review.comment}</p>
-                          <div className="flex items-center gap-4">
-                            <button className="flex items-center gap-1 text-sm text-gray-600 hover:text-gray-900">
-                              <ThumbsUp size={14} />
-                              Helpful ({review.helpful})
-                            </button>
-                            <button className="flex items-center gap-1 text-sm text-gray-600 hover:text-gray-900">
-                              <ChatCircleDots size={14} />
-                              Reply
-                            </button>
-                          </div>
+                          )}
+                          <span className="text-sm text-gray-500">
+                            {review.date}
+                          </span>
+                        </div>
+                        <div className="flex items-center mb-2">
+                          {renderStars(review.rating)}
+                        </div>
+                        <p className="text-gray-700 mb-3">{review.comment}</p>
+                        <div className="flex items-center gap-4">
+                          <button className="flex items-center gap-1 text-sm text-gray-600 hover:text-gray-900">
+                            <ThumbsUp size={14} />
+                            Helpful ({review.helpful})
+                          </button>
+                          <button className="flex items-center gap-1 text-sm text-gray-600 hover:text-gray-900">
+                            <ChatCircleDots size={14} />
+                            Reply
+                          </button>
                         </div>
                       </div>
                     </div>
-                  ))}
-                </div>
+                  </div>
+                ))}
               </div>
-            )}
-          </div>
-        </div> */}
+            </div>
+          )}
         </div>
       </div>
     </div>
