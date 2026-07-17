@@ -120,7 +120,6 @@ export default function VendorRegistration() {
           subaccount_code: subaccountResult.subaccountCode,
           subaccount_pending: false,
         });
-        // .eq("vendor_id", user.id);
       }
 
       const { error } = await supabase.from("vendors").insert([vendorData]);
