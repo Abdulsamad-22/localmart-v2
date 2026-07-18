@@ -115,7 +115,7 @@ export default function ({ product }: Props) {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 px-2 md:px-8 md:py-12 md:mt-20">
+    <div className="min-h-screen bg-gray-50 px-2 md:px-8 md:py-8 md:my-12">
       <div className="px-4 md:px-6 sm:px-6 lg:px-12 py-6">
         <div className="flex items-start gap-4 md:gap-20 mb-12">
           {/* Product Images */}
@@ -406,7 +406,7 @@ export default function ({ product }: Props) {
       </div>
 
       {/* Product Details Tabs */}
-      <div className="bg-white rounded-lg shadow-sm mb-12">
+      <div className="bg-white rounded-lg shadow-sm">
         <div className="border-b">
           <nav className="flex space-x-8 px-6">
             {["description", "specifications", "reviews"].map((tab) => (
