@@ -2,6 +2,8 @@
 
 import { useState } from "react";
 import type { Color } from "@/types/product";
+import { useFormContext } from "react-hook-form";
+import type { ProductFormData } from "./AddProductProvider";
 
 const commonColors: Color[] = [
   { name: "Red", code: "#FF0000" },
@@ -14,26 +16,24 @@ const commonColors: Color[] = [
   { name: "Pink", code: "#FFC0CB" },
 ];
 
-type Props = {
-  selectedColor: Color[];
-  onSelectColor: (colors: Color[]) => void;
-};
-
-export default function ProductColorOption({
-  selectedColor,
-  onSelectColor,
-}: Props) {
+export default function ProductColorOption() {
+  const { watch, setValue } = useFormContext<ProductFormData>();
   const [customColor, setCustomColor] = useState("");
   const [customColorName, setCustomColorName] = useState("");
 
+  const selectedColor = watch("item_colors") ?? [];
+
   const addColor = (color: Color) => {
     if (!selectedColor.some((c) => c.code === color.code)) {
-      onSelectColor([...selectedColor, color]);
+      setValue("item_colors", [...selectedColor, color]);
     }
   };
 
   const removeColor = (colorCode: string) => {
-    onSelectColor(selectedColor.filter((c) => c.code !== colorCode));
+    setValue(
+      "item_colors",
+      selectedColor.filter((c) => c.code !== colorCode),
+    );
   };
 
   const addCustomColor = () => {
