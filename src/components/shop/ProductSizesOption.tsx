@@ -1,6 +1,8 @@
 "use client";
 
 import { useState } from "react";
+import { useFormContext } from "react-hook-form";
+import { ProductFormData } from "./AddProductProvider";
 
 type SizeCategory = "shoes" | "clothing" | "unisex";
 
@@ -35,31 +37,29 @@ const sizeOptions: SizeOption[] = [
   { key: "unisex", label: "Universal", desc: "One size fits all" },
 ];
 
-type Props = {
-  selectedSize: string[];
-  onSelectSize: (size: string[]) => void;
-};
-
-export default function ProductSizesOption({
-  selectedSize,
-  onSelectSize,
-}: Props) {
+export default function ProductSizesOption() {
+  const { watch, setValue } = useFormContext<ProductFormData>();
   const [sizeType, setSizeType] = useState<SizeCategory>("clothing");
   const [customSize, setCustomSize] = useState("");
 
+  const selectedSizes = watch("item_sizes") ?? [];
+
   const addSize = (size: string) => {
-    if (!selectedSize.includes(size)) {
-      onSelectSize([...selectedSize, size]);
+    if (!selectedSizes.includes(size)) {
+      setValue("item_sizes", [...selectedSizes, size]);
     }
   };
 
   const removeSize = (size: string) => {
-    onSelectSize(selectedSize.filter((s) => s !== size));
+    setValue(
+      "item_sizes",
+      selectedSizes.filter((s) => s !== size),
+    );
   };
 
   const addCustomSize = () => {
-    if (customSize && !selectedSize.includes(customSize)) {
-      onSelectSize([...selectedSize, customSize]);
+    if (customSize && !selectedSizes.includes(customSize)) {
+      setValue("item_sizes", [...selectedSizes, customSize]);
       setCustomSize("");
     }
   };
@@ -128,10 +128,10 @@ export default function ProductSizesOption({
             key={size}
             type="button"
             onClick={() =>
-              selectedSize.includes(size) ? removeSize(size) : addSize(size)
+              selectedSizes.includes(size) ? removeSize(size) : addSize(size)
             }
             className={`px-3 py-1 text-[0.875rem] md:text-[1rem] rounded border ${
-              selectedSize.includes(size)
+              selectedSizes.includes(size)
                 ? "bg-[#009688] text-white border-[#009688]"
                 : "bg-white border-gray-300 hover:bg-gray-100"
             }`}
@@ -141,11 +141,11 @@ export default function ProductSizesOption({
         ))}
       </div>
 
-      {selectedSize.length > 0 && (
+      {selectedSizes.length > 0 && (
         <div className="mt-4">
           <h4 className="font-medium mb-2">Selected Sizes:</h4>
           <div className="flex flex-wrap gap-2">
-            {selectedSize.map((size) => (
+            {selectedSizes.map((size) => (
               <span
                 key={size}
                 className="text-[0.875rem] md:text-[1rem] px-3 py-1 bg-gray-100 rounded-full flex items-center"
