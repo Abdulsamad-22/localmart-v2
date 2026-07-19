@@ -1,22 +1,19 @@
 "use client";
 
 import Link from "next/link";
-import { Heart, ShoppingCart } from "@phosphor-icons/react";
+import { ShoppingCart } from "@phosphor-icons/react";
 import { CurrencyNgn } from "@phosphor-icons/react";
-import useWishlistStore from "@/state-store/wishlistStore";
 import useCartStore from "@/state-store/cartStore";
 import { VendorDistance } from "./vendors/VendorDistance";
 import type { ProductsWithVendor } from "@/types/product";
+import WishlistButton from "@/lib/wishlist/WishlistButton";
 
 type Props = {
   product: ProductsWithVendor;
 };
 
 export function ProductCard({ product }: Props) {
-  const { toggleWishlist, isInWishlist } = useWishlistStore();
   const { addToCart } = useCartStore();
-
-  const isWishlisted = isInWishlist(product.id);
 
   return (
     <div className="bg-white border border-[#c4c4c4] rounded-[4px] md:rounded-[10px]">
@@ -29,11 +26,7 @@ export function ProductCard({ product }: Props) {
           />
         </Link>
 
-        <Heart
-          onClick={() => toggleWishlist(product)}
-          weight={isWishlisted ? "fill" : "regular"}
-          className="absolute right-2 top-2 text-[#009688] text-[1.25rem] md:text-[1.5rem]"
-        />
+        <WishlistButton product={product} />
       </div>
 
       <div className="px-3 py-3 space-y-[6px] md:space-y-3 rounded-b-[8px] md:rounded-b-[10px]">
