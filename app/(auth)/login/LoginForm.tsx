@@ -6,6 +6,8 @@ import { useForm } from "react-hook-form";
 import { InferType } from "yup";
 import useAuthStore from "@/state-store/authStore";
 import Link from "next/link";
+import { toast } from "sonner";
+import { useRouter, useSearchParams } from "next/navigation";
 
 const schema = yup.object({
   email: yup.string().email("Invalid email").required("Email is required"),
@@ -20,16 +22,26 @@ export default function LoginForm() {
     handleSubmit,
   } = useForm({ resolver: yupResolver(schema) });
   const { loading, login, supabaseError } = useAuthStore();
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const redirectTo = searchParams.get("redirectTo") || "/";
 
   const handleLogin = async (formData: LoginFormType) => {
     try {
       const loginResult = await login(formData);
 
       if (!loginResult.success) {
-        console.error("Cannot proceed tp login");
+        toast.error(loginResult.error ?? "Login failed. Please try again.");
         return;
       }
-    } catch (error) {}
+
+      // redirect after successful login
+      router.replace(redirectTo || "/");
+    } catch (error) {
+      const message =
+        error instanceof Error ? error.message : "Something went wrong";
+      toast.error(message);
+    }
   };
   return (
     <div className="w-full mx-auto my-12 md:w-[40%] p-6 bg-white shadow rounded-lg text-center">
