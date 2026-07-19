@@ -5,6 +5,8 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { useForm } from "react-hook-form";
 import { InferType, string, object } from "yup";
 import Link from "next/link";
+import { toast } from "sonner";
+import { useRouter, useSearchParams } from "next/navigation";
 
 const schema = object({
   email: string().email("Invalid email").required("Email is required"),
@@ -20,11 +22,26 @@ export default function SignupForm() {
     formState: { errors },
   } = useForm({ resolver: yupResolver(schema) });
   const { supabaseError, signUp, loading, login } = useAuthStore();
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const redirectTo = searchParams.get("redirectTo") || "/";
 
   const handleSignup = async (formData: SignupFormType) => {
-    const signupResult = await signUp(formData);
+    try {
+      const signupResult = await signUp(formData);
 
-    if (!signupResult.success) return;
+      if (!signupResult.success) {
+        toast.error(signupResult.error ?? "Signup failed. Please try again.");
+        return;
+      }
+
+      toast.success("Account created successfully!");
+      router.replace(redirectTo || "/");
+    } catch (error) {
+      const message =
+        error instanceof Error ? error.message : "Something went wrong";
+      toast.error(message);
+    }
   };
   return (
     <div className="w-full mx-auto my-12 md:w-[40%] p-6 bg-white shadow rounded-lg text-center">
