@@ -12,18 +12,10 @@ type Props = {
 export default function ShopDisplay({ products, isOwner = false }: Props) {
   return (
     <div>
-      <div className="flex justify-between items-center mb-6">
+      <div className="flex justify-between items-center px-6 md:px-12 mb-6">
         <h2 className="text-[1rem] md:text-[1.5rem] font-semibold">
-          {isOwner ? "Your Products" : "Products"} ({products.length})
+          {isOwner ? "My Products" : "Products"} ({products.length})
         </h2>
-        {isOwner && (
-          <Link
-            href={"/add-product"}
-            className="bg-[#009688] text-white px-4 py-2 rounded"
-          >
-            Add Product
-          </Link>
-        )}
       </div>
 
       {products.length === 0 ? (
@@ -43,7 +35,7 @@ export default function ShopDisplay({ products, isOwner = false }: Props) {
           )}
         </div>
       ) : (
-        <div className="grid grid-cols-[49%_49%] sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-x-3 md:gap-x-4 gap-y-8 md:gap-y-12 ">
+        <div className="grid grid-cols-[49%_49%] sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-x-3 md:gap-x-4 gap-y-8 md:gap-y-12 px-6 md:px-12">
           {products.map((product) => (
             <ShopCard key={product.id} product={product} isOwner={isOwner} />
           ))}
