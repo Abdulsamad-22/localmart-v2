@@ -2,6 +2,7 @@ import { getSupabaseClient } from "@/lib/supabase/client";
 import { create } from "zustand";
 import type { User, Session } from "@supabase/supabase-js";
 import { VendorRow } from "@/types/vendor";
+import { toast } from "sonner";
 
 type SignupDetails = {
   email: string;
@@ -20,7 +21,7 @@ type AuthStore = {
   supabaseError: string | null;
   login: (formData: SignupDetails) => Promise<AuthResult>;
   signUp: (formData: SignupDetails) => Promise<AuthResult>;
-  logout: () => Promise<void>;
+  logout: () => Promise<{ success: boolean; error?: string }>;
   initializeAuth: () => Promise<void>;
 };
 
@@ -52,15 +53,13 @@ const useAuthStore = create<AuthStore>((set, get) => ({
       return;
     }
 
-    set({ user: session.user });
-
     const { data: vendorData } = await supabase
       .from("vendors")
       .select("*")
       .eq("vendor_id", session.user.id)
       .single();
 
-    set({ vendorData: vendorData ?? null });
+    set({ user: session.user, session, vendorData: vendorData ?? null });
   },
 
   signUp: async (formData: SignupDetails) => {
@@ -102,6 +101,9 @@ const useAuthStore = create<AuthStore>((set, get) => ({
   },
 
   login: async (formData: SignupDetails) => {
+    if (!process.env.NEXT_PUBLIC_SUPABASE_URL) {
+      return { success: false, error: "Supabase configuration missing" };
+    }
     try {
       set({ loading: true });
       const supabase = getSupabaseClient();
@@ -127,7 +129,19 @@ const useAuthStore = create<AuthStore>((set, get) => ({
         return { success: false, error: message };
       }
 
-      set({ user: data.user });
+      set({ user: data.user, session: data.session });
+
+      const { data: vendorData, error: vendorError } = await supabase
+        .from("vendors")
+        .select("*")
+        .eq("vendor_id", data.user.id)
+        .single();
+
+      if (vendorError && vendorError.code !== "PGRST116") {
+        toast.error(`Error fetching vendor data: ${vendorError.message}`);
+      }
+
+      set({ vendorData: vendorData ?? null });
       return {
         success: true,
         user: data.user,
@@ -146,16 +160,25 @@ const useAuthStore = create<AuthStore>((set, get) => ({
 
   logout: async () => {
     try {
-      set({ loading: true });
       const supabase = getSupabaseClient();
       const { error } = await supabase.auth.signOut();
 
-      if (error) throw error;
-      set({ user: null, vendorData: null });
-    } catch (err) {
-      set({ supabaseError: "Failed to log out" });
-    } finally {
-      set({ loading: false });
+      if (error) {
+        return { success: false, error: error.message };
+      }
+
+      // clear all auth state from store
+      set({
+        user: null,
+        session: null,
+        vendorData: null,
+        supabaseError: null,
+      });
+
+      return { success: true };
+    } catch (error) {
+      const message = error instanceof Error ? error.message : "Logout failed";
+      return { success: false, error: message };
     }
   },
 }));
