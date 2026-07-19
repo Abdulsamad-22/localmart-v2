@@ -29,11 +29,11 @@ export default function ShopCard({ product, isOwner = false }: Props) {
   return (
     <div
       key={product.id}
-      className="border rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-shadow"
+      className="border border-[#c4c4c4] rounded-lg overflow-hidden hover:shadow-md transition-shadow"
     >
       <div className="w-full md:w-full h-[8.5rem] md:h-[218px] relative cursor-pointer">
         {product.image_url && (
-          <Link href={`/products/${product.id.toString()}`}>
+          <Link href={`/products/${product.id}`}>
             <img
               src={product.image_url}
               alt={product.item_name}
