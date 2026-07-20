@@ -9,9 +9,11 @@ import {
   ShoppingCart,
   List,
   X,
+  SignOut,
 } from "@phosphor-icons/react";
 import Link from "next/link";
 import useCartStore from "@/state-store/cartStore";
+import { toast } from "sonner";
 
 type NavLinks = {
   icon: React.ReactNode;
@@ -22,7 +24,7 @@ type NavLinks = {
 };
 export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
-  const { loading, vendorData, session } = useAuthStore();
+  const { loading, vendorData, session, user, logout } = useAuthStore();
   const { cartItems } = useCartStore();
   const router = useRouter();
   const pathname = usePathname();
@@ -65,6 +67,14 @@ export default function Header() {
     }
 
     router.push("/my-shop");
+  };
+
+  const handleLogout = async () => {
+    const result = await logout();
+    if (result.success) {
+      router.replace("/");
+      toast.success("Signed out successfully.");
+    }
   };
 
   const navLinks: NavLinks[] = [
@@ -153,6 +163,14 @@ export default function Header() {
               </button>
             ),
           )}
+
+          <button
+            className="flex items-center gap-2 text-[#D41E1E]"
+            onClick={() => handleLogout}
+          >
+            <SignOut className="" size={20} />
+            Logout
+          </button>
         </nav>
 
         {/* mobile — cart + menu icon */}
