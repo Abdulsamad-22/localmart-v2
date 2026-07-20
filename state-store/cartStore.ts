@@ -1,53 +1,85 @@
-import { ProductRow } from "@/types/product";
+import { ProductRow, Color } from "@/types/product";
 import { create } from "zustand";
 import { persist, createJSONStorage } from "zustand/middleware";
+import { CartItem } from "@/types/cart";
 
-type CartItem = {
-  product: ProductRow;
-  quantity: number;
-};
+// type CartItem = {
+//   product: ProductRow;
+//   quantity: number;
+// };
 
 type CartStore = {
   cartItems: CartItem[];
-  checkOutItem: CartItem | null;
-  addToCart: (product: ProductRow) => void;
+  checkoutItem: CartItem | null;
+  removeFromCart: (productId: string) => void;
+  increaseCart: (productId: string) => void;
+  decreaseCart: (productId: string) => void;
+  setCheckoutItem: (item: CartItem | null) => void;
+  addToCart: (
+    product: ProductRow,
+    quantity: number,
+    selectedColor?: Color | null,
+    selectedSize?: string | null,
+  ) => void;
+  addMultipleToCart: (products: ProductRow[]) => void;
 };
 
 const useCartStore = create<CartStore>()(
   persist(
     (set, get) => ({
       cartItems: [],
-      checkOutItem: null,
+      checkoutItem: null,
 
-      addToCart: (product: ProductRow) => {
+      addToCart: (
+        product: ProductRow,
+        quantity?: number,
+        selectedColor?: Color | null,
+        selectedSize?: string | null,
+      ) => {
         const { cartItems } = get();
         const newCart = [...cartItems];
+
+        // normalise incoming values
+        const normalizedColor = selectedColor ?? null;
+        const normalizedSize = selectedSize ?? "";
+
         const existingIndex = newCart.findIndex(
-          (item) => item.product.id === product.id,
+          (item) =>
+            item.product.id === product.id &&
+            (item.selectedColor?.code ?? null) ===
+              (normalizedColor?.code ?? null) &&
+            (item.selectedSize ?? "") === normalizedSize,
         );
 
         if (existingIndex !== -1) {
           const existing = newCart[existingIndex];
           if (existing.quantity >= existing.product.item_units) {
-            console.warn(`Maximum quantity reached: ${product.name}`);
+            console.warn(`Maximum quantity reached: ${product.item_name}`);
             return;
           }
           newCart[existingIndex] = {
             ...existing,
-            quantity: existing.quantity + 1,
+            quantity: existing.quantity + (quantity ?? 1),
           };
         } else {
-          newCart.push({ product, quantity: 1 });
+          newCart.push({
+            product,
+            quantity: quantity ?? 1,
+            selectedColor: normalizedColor,
+            selectedSize: normalizedSize,
+          });
         }
 
         set({ cartItems: newCart });
       },
 
       addMultipleToCart: (products: ProductRow[]) => {
-        products.forEach((p) => get().addToCart(p));
+        products.forEach((p) => get().addToCart(p, 1));
       },
 
-      increaseCart: (productId: number) => {
+      setCheckoutItem: (item) => set({ checkoutItem: item }),
+
+      increaseCart: (productId: string) => {
         set((state) => ({
           cartItems: state.cartItems.map((item) =>
             item.product.id === productId
@@ -57,7 +89,7 @@ const useCartStore = create<CartStore>()(
         }));
       },
 
-      decreaseCart: (productId: number) => {
+      decreaseCart: (productId: string) => {
         set((state) => ({
           cartItems: state.cartItems.map((item) =>
             item.product.id === productId
@@ -67,7 +99,7 @@ const useCartStore = create<CartStore>()(
         }));
       },
 
-      removeFromCart: (productId: number) =>
+      removeFromCart: (productId: string) =>
         set({
           cartItems: get().cartItems.filter((i) => i.product.id !== productId),
         }),
@@ -76,7 +108,7 @@ const useCartStore = create<CartStore>()(
 
       total: () =>
         get().cartItems.reduce(
-          (sum, i) => sum + i.product.price * i.quantity,
+          (sum, i) => sum + i.product.item_price * i.quantity,
           0,
         ),
     }),
