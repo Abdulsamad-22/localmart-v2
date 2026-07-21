@@ -81,7 +81,7 @@ export default function CheckoutSummary() {
 
           {/* Tax */}
           <div className="flex justify-between items-center">
-            <span className="text-gray-600">VAT</span>
+            <span className="text-gray-600">VAT (8%)</span>
             <span className="flex items-center font-medium">
               <CurrencyNgn size={18} /> {tax.toLocaleString("en-NG")}
             </span>
