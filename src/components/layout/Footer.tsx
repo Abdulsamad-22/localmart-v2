@@ -39,15 +39,16 @@ const footerLinks = [
 ];
 export default function Footer() {
   return (
-    <footer className="w-full md:w-full bg-[#005349] py-10 md:py-12 px-4 md:px-12">
-      <div className="flex flex-col md:flex-row gap-8 md:gap-[7rem]  mb-8 text-[#fff]">
+    <footer className="w-full md:w-full bg-[#005349] py-10 md:py-12 px-4 md:px-12 overflow-hidden">
+      <div className="flex flex-col md:flex-row justify-between gap-8 md:gap-[7rem]  mb-8 text-[#fff]">
         <div className="flex flex-col items-start gap-2 mb-2">
           <div className="w-full relative mb-4">
             <h4 className="text-[1.5rem] mb-2 font-semibold">LocalMart</h4>
 
             <p className="w-full md:w-80 text-[0.875rem] text-gray-300 font-regular">
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Ullam
-              quasi dolorem facilis? Aspernatur, natus rerum possimus provident
+              LocalMart connects you with vendors in your neighbourhood, find
+              everyday essentials, and unique products from local sellers near
+              you. Supporting local businesses has never been easier.
             </p>
           </div>
 
@@ -72,7 +73,7 @@ export default function Footer() {
           </div>
         </div>
 
-        <div className="flex flex-col md:flex-row items-start gap-12 w-full md:w-full">
+        <div className="flex flex-col md:flex-row items-start justify-end gap-12 w-full md:w-full">
           {footerLinks.map((section, index) => (
             <div key={index} className="mb-0 md:mb-8 space-y-4">
               <h5 className="text-[1.125rem] font-semibold mb-2">
