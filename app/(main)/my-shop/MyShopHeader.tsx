@@ -62,7 +62,7 @@ export default function MyShopHeader({ vendor }: { vendor: VendorRow }) {
       </div>
 
       <Link
-        href={`/vendor/${vendor?.vendor_id}`}
+        href={`/vendor/${vendor?.id}`}
         className="text-cyan-600 underline"
         target="_blank"
         rel="noopener noreferrer"
@@ -73,7 +73,7 @@ export default function MyShopHeader({ vendor }: { vendor: VendorRow }) {
       {/* Dashboard Actions */}
       <div className="flex gap-2 md:gap-4 mt-3">
         <Link
-          href="/add-product"
+          href={"/add-product"}
           className="flex-1 md:flex-none text-center bg-[#009688] text-[#fff] text-[0.875rem] md:text-[1rem] px-1 md:px-4 py-2 rounded"
         >
           Add New Product
