@@ -11,7 +11,7 @@ export function calculateCheckout(items: CartItem[]) {
     0,
   );
   const deliveryCost = 15.99; // Free delivery over Ngn 50000
-  const tax = subtotal * 0.07; // 7% tax
+  const tax = subtotal * 0.08; // 8% tax
   const total = subtotal + (subtotal < 50000 ? deliveryCost : 0) + tax;
   return { subtotal, savings, tax, total, deliveryCost };
 }
