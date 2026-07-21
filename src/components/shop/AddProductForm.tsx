@@ -2,41 +2,41 @@
 import { useState } from "react";
 import { useFormContext } from "react-hook-form";
 import { ProductFormData } from "./AddProductProvider";
-import { CurrencyNgn } from "@phosphor-icons/react";
+import { CurrencyNgn, Plus } from "@phosphor-icons/react";
 
 export default function AddProductForm() {
   const [isFocused, setIsFocused] = useState(false);
   const {
     register,
-    formState: { errors },
+    formState: { isSubmitting, errors },
   } = useFormContext<ProductFormData>();
 
   return (
-    <div className="w-full md:w-[50%] p-4 md:p-6 bg-white shadow rounded-lg space-y-6">
+    <div className="w-full md:w-[50%] md:p-6 bg-white md:shadow rounded-lg space-y-6">
       <div>
         <div className="flex items-center justify-between mb-8">
           <h3 className="text-[1.25rem] text-gray-900 font-semibold">
             New Product
           </h3>
-
-          {/* <button
-            onClick={handleNewProduct}
-            className="flex items-center gap-2 text-[1rem] border-[1px] border-gray-600 p-2 rounded-[8px] "
-          >
-            <Plus size={24} />
-            Add New Product
-          </button> */}
         </div>
 
         <div className="space-y-2 text-gray-800 mb-6">
           <label>Product Name</label>
-          <input {...register("productName")} className="input" type="text" />
+          <input
+            {...register("productName")}
+            className="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-[#009688]"
+            type="text"
+          />
           <p className="text-red-500 text-sm">{errors.productName?.message}</p>
         </div>
 
         <div className="space-y-2 text-gray-800 mb-6">
           <label>Product Category</label>
-          <input {...register("category")} className="input" type="text" />
+          <input
+            {...register("category")}
+            className="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-[#009688]"
+            type="text"
+          />
           <p className="text-red-500 text-sm">{errors.category?.message}</p>
         </div>
 
@@ -56,7 +56,11 @@ export default function AddProductForm() {
 
         <div className="space-y-2 text-gray-800">
           <label htmlFor="unit">{`Units (No of item available)`}</label>
-          <input {...register("units")} className="input" type="text" />
+          <input
+            {...register("units")}
+            className="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-[#009688]"
+            type="text"
+          />
           <p className="text-red-500 text-sm">{errors.units?.message}</p>
         </div>
 
@@ -112,6 +116,14 @@ export default function AddProductForm() {
             <p className="text-red-500 text-sm mt-1">{errors.price.message}</p>
           )}
         </div>
+        <button
+          type="submit"
+          disabled={isSubmitting}
+          className="w-full flex-1 flex items-center gap-2 justify-center bg-[#009688] text-white px-2 py-3 rounded-lg hover:bg-[#00897B] mt-8"
+        >
+          <Plus size={20} />
+          Add New Product
+        </button>
       </div>
     </div>
   );
