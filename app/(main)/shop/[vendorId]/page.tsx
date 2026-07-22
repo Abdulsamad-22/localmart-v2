@@ -1,7 +1,7 @@
 import { getSupabaseServerClient } from "@/lib/supabase/server";
-import PublicShopHeader from "../PublicShopHeader";
 import { notFound } from "next/navigation";
 import ShopDisplay from "@/src/components/shop/ShopDisplay";
+import { StorefrontHero } from "@/src/components/storeFront";
 
 type Props = {
   params: Promise<{ vendorId: string }>;
@@ -29,7 +29,8 @@ export default async function VendorStorePage({ params }: Props) {
 
   return (
     <div>
-      <PublicShopHeader vendor={vendor} />
+      <StorefrontHero vendor={vendor} products={products ?? []} />
+
       <ShopDisplay products={products ?? []} isOwner={false} />
     </div>
   );
