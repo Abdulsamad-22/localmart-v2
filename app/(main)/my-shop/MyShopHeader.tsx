@@ -62,7 +62,7 @@ export default function MyShopHeader({ vendor }: { vendor: VendorRow }) {
       </div>
 
       <Link
-        href={`/vendor/${vendor?.id}`}
+        href={`/shop/${vendor?.id}`}
         className="text-cyan-600 underline"
         target="_blank"
         rel="noopener noreferrer"
