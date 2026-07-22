@@ -1,6 +1,6 @@
 import { LocationProvider } from "@/src/components/LocationProvider";
 import SearchBar from "@/src/components/search/SearchBar";
-import StoreFront from "@/src/components/storeFront/StoreFront";
+import StoreGrid from "@/src/components/storeGrid/StoreGrid";
 import { getProducts } from "@/lib/products/getProducts";
 
 export default async function Home() {
@@ -13,7 +13,7 @@ export default async function Home() {
     <main>
       <SearchBar />
       {/* <LocationProvider /> */}
-      <StoreFront limit={12} products={products} />
+      <StoreGrid limit={12} products={products} />
     </main>
   );
 }
