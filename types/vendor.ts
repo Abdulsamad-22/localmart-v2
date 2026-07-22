@@ -45,3 +45,24 @@ export type VendorInsert = {
   subaccount_pending: boolean;
   updated_at: string;
 };
+
+export interface Vendor {
+  business_name?: string;
+  full_name: string;
+  product_category?: string;
+  business_address?: string;
+  phone_number?: string;
+  email?: string;
+  socials?: string;
+  logo_url?: string;
+  cover_url?: string;
+  verified?: boolean;
+  joined_at?: string;
+  total_products?: number;
+  average_rating?: number;
+  instagram?: string;
+  facebook?: string;
+  x?: string;
+  tiktok?: string;
+  website?: string;
+}
