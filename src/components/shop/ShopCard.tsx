@@ -1,5 +1,6 @@
 "use client";
 
+import WishlistButton from "@/lib/wishlist/WishlistButton";
 import useCartStore from "@/state-store/cartStore";
 import useProductStore from "@/state-store/productStore";
 import { ProductsWithVendor } from "@/types/product";
@@ -41,6 +42,7 @@ export default function ShopCard({ product, isOwner = false }: Props) {
             />
           </Link>
         )}
+        {!isOwner && <WishlistButton product={product} />}
       </div>
 
       <div className="p-2 md:p-4">
