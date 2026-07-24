@@ -70,7 +70,7 @@ export default function ProductColorOption() {
         ))}
       </div>
 
-      <div className="bg-gray-50 p-4 rounded-lg border">
+      <div className="bg-gray-50 p-4 rounded-lg border-[1px] border-[#e1e1e1]">
         <label className="block text-sm font-medium text-gray-700 mb-3">
           Add Custom Color
         </label>

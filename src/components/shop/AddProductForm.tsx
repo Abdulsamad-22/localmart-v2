@@ -48,7 +48,7 @@ export default function AddProductForm() {
 
           <textarea
             {...register("description")}
-            className="w-full h-[120px] p-2 border rounded focus:outline-none focus:ring-2 focus:ring-[#009688]"
+            className="w-full h-[120px] p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-[#009688]"
             placeholder="Briefly describe this product..."
           />
           <p className="text-red-500 text-sm">{errors.description?.message}</p>
@@ -64,7 +64,7 @@ export default function AddProductForm() {
           <p className="text-red-500 text-sm">{errors.units?.message}</p>
         </div>
 
-        <div className="w-[40%] space-y-2 text-gray-800">
+        <div className="w-full space-y-2 text-gray-800">
           <label
             htmlFor="price"
             className="block text-sm font-medium text-gray-700"
