@@ -12,7 +12,7 @@ export function StoreCover({ image }: Props) {
   }
 
   return (
-    <div className="relative h-56 w-full overflow-hidden rounded-3xl bg-gradient-to-r from-[#009688]  to-[#00695C] ">
+    <div className="relative h-56 w-full overflow-hidden rounded-3xl bg-gradient-to-r from-[#009688]  to-[#00695C]">
       <div className="absolute inset-0  bg-[radial-gradient(circle_at_top_right,rgba(255,255,255,.22),transparent_40%)]" />
 
       <div className="absolute -bottom-24 -left-20 h-72 w-72 rounded-full bg-white/10 blur-3xl" />
