@@ -1,8 +1,7 @@
 import ShopDisplay from "@/src/components/shop/ShopDisplay";
-import MyShopHeader from "./MyShopHeader";
 import { getSupabaseServerClient } from "@/lib/supabase/server";
 import { redirect } from "next/navigation";
-
+import { StorefrontHero } from "@/src/components/dashboard/StoreFrontHero";
 export default async function Myshop() {
   const supabase = await getSupabaseServerClient();
 
@@ -29,7 +28,7 @@ export default async function Myshop() {
     .eq("vendor_id", vendor.id);
   return (
     <div>
-      <MyShopHeader vendor={vendor} />
+      <StorefrontHero products={products ?? []} vendor={vendor} />
       <ShopDisplay products={products ?? []} isOwner={true} />
     </div>
   );
