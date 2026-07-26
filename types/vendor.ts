@@ -47,6 +47,7 @@ export type VendorInsert = {
 };
 
 export interface Vendor {
+  id: string;
   business_name?: string;
   full_name: string;
   product_category?: string;
@@ -65,4 +66,5 @@ export interface Vendor {
   x?: string;
   tiktok?: string;
   website?: string;
+  active?: boolean;
 }
