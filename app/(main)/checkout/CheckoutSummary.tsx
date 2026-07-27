@@ -1,30 +1,17 @@
 "use client";
 
-import useAuthStore from "@/state-store/authStore";
 import useCartStore from "@/state-store/cartStore";
 import { calculateCheckout } from "@/utils/calculateCheckout";
-import { useRouter } from "next/navigation";
 import { CurrencyNgn, Shield } from "@phosphor-icons/react";
 
-export default function CheckoutSummary() {
-  const router = useRouter();
+type Pops = {
+  loading: boolean;
+};
+
+export default function CheckoutSummary({ loading }: Pops) {
   const { cartItems } = useCartStore();
-  const { session } = useAuthStore();
   const { deliveryCost, subtotal, savings, tax, total } =
     calculateCheckout(cartItems);
-
-  const handleCheckout = () => {
-    if (!session) {
-      router.push("/login?redirectTo=/checkout");
-      return;
-    }
-
-    if (!session.user) {
-      router.push("/signup?redirectTo=/checkout");
-      return;
-    }
-    router.push("/checkout");
-  };
 
   return (
     <div className="lg:col-span-1">
@@ -111,10 +98,15 @@ export default function CheckoutSummary() {
           </div>
 
           <button
-            onClick={() => handleCheckout}
+            type="submit"
+            disabled={loading}
             className="w-full bg-gradient-to-r from-[#009688] to-[#00695C] text-white text-[1.125rem] font-semibold py-3 px-6 rounded-lg disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200 hover:from-[#00897B] hover:to-[#005B4F] mt-4"
           >
-            Pay ₦{total.toLocaleString("en-NG")}
+            {loading
+              ? "Processing..."
+              : total
+                ? `Pay ₦${total.toLocaleString("en-NG")}`
+                : "Loading..."}
           </button>
         </div>
       </div>
