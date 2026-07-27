@@ -22,6 +22,7 @@ type CartStore = {
     selectedSize?: string | null,
   ) => void;
   addMultipleToCart: (products: ProductRow[]) => void;
+  clearCart: () => void;
 };
 
 const useCartStore = create<CartStore>()(
