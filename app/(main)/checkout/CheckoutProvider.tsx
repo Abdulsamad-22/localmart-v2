@@ -8,41 +8,13 @@ import { usePaystackPayment } from "@/lib/paystack/usePayment";
 import calculatePaymentSplits from "@/lib/paystack/calculatePaymentSplits";
 import { useRouter } from "next/navigation";
 import useCartStore from "@/state-store/cartStore";
-import useAuthStore from "@/state-store/authStore";
 import { getSupabaseClient } from "@/lib/supabase/client";
 import { CheckoutVendor } from "@/types/checkout";
 import { useState, useEffect, useMemo } from "react";
 import DeliveryForm from "./DeliveryForm";
 import { checkoutSchema, type CheckoutFormData } from "@/types/checkout";
 import CheckoutSummary from "./CheckoutSummary";
-
-const structureCheckoutData = (formData: CheckoutFormData) => {
-  return {
-    contact: {
-      firstname: formData.firstName,
-      surname: formData.lastName,
-      email: formData.email,
-      phone: formData.phone,
-      address: formData.address,
-    },
-    delivery: formData.deliveryOption
-      ? {
-          firstname: formData.receiversFirstName,
-          surname: formData.receiversLastName,
-          email: formData.receiversEmail,
-          phone: formData.receiversPhone,
-          address: formData.receiversAddress,
-        }
-      : {
-          firstname: formData.firstName,
-          surname: formData.lastName,
-          email: formData.email,
-          phone: formData.phone,
-          address: formData.address,
-        },
-    isDifferentDelivery: formData.deliveryOption || false,
-  };
-};
+import { createOrder } from "@/lib/orders/createOrder";
 
 type PaystackTransaction = {
   reference: string;
@@ -58,8 +30,8 @@ export default function CheckoutProvider() {
   const [loading, setLoading] = useState(false);
   const [vendorInfo, setVendorInfo] = useState<CheckoutVendor[]>([]);
 
-  const { cartItems, checkoutItem, setCheckoutItem } = useCartStore();
-  const { user } = useAuthStore();
+  const { cartItems, checkoutItem, setCheckoutItem, clearCart } =
+    useCartStore();
   const initializePayment = usePaystackPayment();
 
   const methods = useForm<CheckoutFormData>({
@@ -115,49 +87,40 @@ export default function CheckoutProvider() {
     checkoutData: CheckoutFormData,
   ) => {
     try {
-      const orderItems = itemsToCheckout.map((item) => ({
-        product_id: item.product.id,
-        vendor_id: item.product.vendor_id,
-        quantity: item.quantity,
-        price: item.product.item_price,
-        selected_color: item.selectedColor?.code ?? null,
-        selected_size: item.selectedSize ?? null,
-      }));
+      const supabase = getSupabaseClient();
+      const {
+        data: { session },
+      } = await supabase.auth.getSession();
 
-      const { error: orderError } = await supabase.from("orders").insert([
-        {
-          buyer_id: user!.id,
-          reference: transaction.reference,
-          status: "pending_verification",
-          total: paymentData.totalAmount / 100,
-          delivery_address: checkoutData.receiversAddress,
-          delivery_city: checkoutData.receiversAddress,
-          delivery_state: checkoutData.receiversAddress,
-          items: orderItems,
-          created_at: new Date().toISOString(),
-        },
-      ]);
-
-      if (orderError) {
-        console.error("Order creation error:", orderError);
+      if (!session) {
         toast.error(
-          "Payment successful but order creation failed. Please contact support with reference: " +
+          "Session expired. Please contact support with reference: " +
             transaction.reference,
         );
         return;
       }
 
-      // clean up checkout state only after order is created
-      setCheckoutItem(null);
-      // clearCart();
+      await createOrder({
+        cartItems,
+        vendors: vendorInfo,
+        checkoutData,
+        paymentReference: transaction.reference,
+        paymentData,
+        buyerId: session.user.id,
+      });
 
-      toast.success("Payment successful! Your order has been placed.");
-      router.replace("/orders"); // redirect to orders page
+      // clean up cart after successful order
+      clearCart();
+      setCheckoutItem(null);
+
+      toast.success("Order placed successfully!");
+      router.replace("/my-orders");
     } catch (error) {
-      console.error("Error handling payment success:", error);
+      const message =
+        error instanceof Error ? error.message : "Order creation failed";
+      console.error("Order creation error:", error);
       toast.error(
-        "Payment was successful but something went wrong. Contact support with reference: " +
-          transaction.reference,
+        `${message}. Your payment was received — contact support with reference: ${transaction.reference}`,
       );
     }
   };
@@ -179,9 +142,14 @@ export default function CheckoutProvider() {
         return;
       }
 
-      if (!user?.email) {
+      const {
+        data: { user },
+        error: authError,
+      } = await supabase.auth.getUser();
+
+      if (!user || authError) {
         toast.error("Please log in to continue");
-        router.push(`/login?redirectTo=/checkout`);
+        router.push("/login?redirectTo=/checkout");
         return;
       }
 
@@ -202,10 +170,17 @@ export default function CheckoutProvider() {
         return;
       }
 
-      // build paystack config
+      if (!user.email) {
+        toast.error(
+          "Your account has no email address. Please contact support.",
+        );
+        return;
+      }
+
+      // Paystack config
       const config = {
         publicKey: process.env.NEXT_PUBLIC_PAYSTACK_PUBLIC_KEY!,
-        email: user.email,
+        email: user.email, //
         amount: Math.round(paymentData.totalAmount),
         reference: `localmart_${Date.now()}_${user.id}`,
         metadata: {
@@ -214,7 +189,6 @@ export default function CheckoutProvider() {
           vendor_count: vendorInfo.length,
         },
       };
-
       // single vendor — use subaccount
       if (paymentData.splits.length === 1) {
         const split = paymentData.splits[0];
@@ -239,7 +213,7 @@ export default function CheckoutProvider() {
         });
       }
 
-      const result = initializePayment(
+      const result = await initializePayment(
         config,
         (transaction) =>
           handlePaymentSuccess(transaction, paymentData, checkoutData),
@@ -271,18 +245,7 @@ export default function CheckoutProvider() {
           className="grid grid-cols-1 md:grid-cols-[60%_38%] gap-12 px-4 md:px-12 my-4 md:my-8"
         >
           <DeliveryForm />
-          <CheckoutSummary />
-          <button
-            type="submit"
-            disabled={loading || itemsToCheckout.length === 0}
-            className="w-full bg-gradient-to-r from-[#009688] to-[#00695C] text-white py-3 px-6 rounded-lg disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200 hover:from-[#00897B] hover:to-[#005B4F]"
-          >
-            {loading
-              ? "Processing..."
-              : paymentData
-                ? `Pay ₦${(paymentData.totalAmount / 100).toLocaleString("en-NG")}`
-                : "Loading..."}
-          </button>
+          <CheckoutSummary loading={loading} />
         </form>
       </FormProvider>
     </>
