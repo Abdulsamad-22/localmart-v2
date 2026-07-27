@@ -1,7 +1,7 @@
 "use client";
 
 import { useCallback } from "react";
-import Paystack, { PaystackSDKConfig } from "@paystack/inline-js";
+import type { PaystackSDKConfig } from "@paystack/inline-js";
 
 type SubaccountSplit = {
   subaccount: string;
@@ -36,12 +36,14 @@ type PaymentResult = { success: true } | { success: false; error: string };
 
 export const usePaystackPayment = () => {
   const initializePayment = useCallback(
-    (
+    async (
       config: PaystackHookConfig,
       onSuccess: (transaction: PaystackTransaction) => void,
       onClose: () => void,
-    ): PaymentResult => {
+    ): Promise<PaymentResult> => {
       try {
+        const { default: Paystack } = await import("@paystack/inline-js");
+
         // validate required fields
         if (!config.publicKey || !config.publicKey.startsWith("pk_")) {
           return { success: false, error: "Invalid Paystack public key" };
