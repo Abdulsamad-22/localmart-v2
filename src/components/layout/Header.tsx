@@ -10,6 +10,7 @@ import {
   List,
   X,
   SignOut,
+  Package,
 } from "@phosphor-icons/react";
 import Link from "next/link";
 import useCartStore from "@/state-store/cartStore";
@@ -85,6 +86,7 @@ export default function Header() {
     },
     { icon: <Heart size={20} />, label: "Wishlists", redirectTo: "/wishlist" },
     { icon: <ShoppingCart size={20} />, label: "Cart", redirectTo: "/carts" },
+    { icon: <Package size={20} />, label: "Orders", redirectTo: "/my-orders" },
     {
       icon: "",
       label: loading
