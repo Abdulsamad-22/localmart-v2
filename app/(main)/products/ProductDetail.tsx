@@ -115,7 +115,7 @@ export default function ({ product }: Props) {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 px-2 md:px-8 md:py-8 md:my-12">
+    <div className="min-h-screen bg-gray-50 md:my-12">
       <div className="px-4 md:px-6 sm:px-6 lg:px-12 py-6">
         <div className="flex items-start gap-4 md:gap-20 mb-12">
           {/* Product Images */}
@@ -378,7 +378,7 @@ export default function ({ product }: Props) {
               </div>
 
               {/* Seller Info */}
-              <div className="bg-white border rounded-lg p-4">
+              <div className="bg-white border border-[#E1E1E1] rounded-lg p-4">
                 <div className="flex items-center justify-between mb-3">
                   <h3 className="font-semibold text-gray-900">Sold by</h3>
                   <div className="flex items-center gap-1">
@@ -393,7 +393,7 @@ export default function ({ product }: Props) {
                     <div className="text-sm text-gray-600">5k + sold</div>
                   </div>
                   <Link
-                    href={`/vendor/${product.vendor.id}`}
+                    href={`/shop/${product.vendor.id}`}
                     className="text-sm bg-gray-100 hover:bg-gray-200 px-4 py-2 rounded-lg transition-colors"
                   >
                     View Store
@@ -406,9 +406,9 @@ export default function ({ product }: Props) {
       </div>
 
       {/* Product Details Tabs */}
-      <div className="bg-white rounded-lg shadow-sm">
-        <div className="border-b">
-          <nav className="flex space-x-8 px-6">
+      <div className="bg-white rounded-lg">
+        <div className="border-b border-b-[#E1E1E1]">
+          <nav className="flex space-x-8 px-6 md:px-8">
             {["description", "specifications", "reviews"].map((tab) => (
               <button
                 key={tab}
@@ -428,7 +428,7 @@ export default function ({ product }: Props) {
           </nav>
         </div>
 
-        <div className="p-6">
+        <div className="py-6 px-6 md:px-8">
           {activeTab === "description" && (
             <div className="space-y-6">
               <div>
