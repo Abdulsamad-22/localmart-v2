@@ -15,6 +15,7 @@ import DeliveryForm from "./DeliveryForm";
 import { checkoutSchema, type CheckoutFormData } from "@/types/checkout";
 import CheckoutSummary from "./CheckoutSummary";
 import { createOrder } from "@/lib/orders/createOrder";
+import { calculateCheckout } from "@/utils/calculateCheckout";
 
 type PaystackTransaction = {
   reference: string;
@@ -33,6 +34,7 @@ export default function CheckoutProvider() {
   const { cartItems, checkoutItem, setCheckoutItem, clearCart } =
     useCartStore();
   const initializePayment = usePaystackPayment();
+  const { total } = calculateCheckout(cartItems);
 
   const methods = useForm<CheckoutFormData>({
     resolver: yupResolver(
@@ -180,8 +182,8 @@ export default function CheckoutProvider() {
       // Paystack config
       const config = {
         publicKey: process.env.NEXT_PUBLIC_PAYSTACK_PUBLIC_KEY!,
-        email: user.email, //
-        amount: Math.round(paymentData.totalAmount),
+        email: user.email,
+        amount: Math.round(total),
         reference: `localmart_${Date.now()}_${user.id}`,
         metadata: {
           customer_id: user.id,
