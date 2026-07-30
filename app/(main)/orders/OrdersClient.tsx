@@ -23,7 +23,7 @@ const tabs = [
   { label: "All", value: undefined },
   { label: "New", value: "paid" as OrderStatus },
   { label: "Processing", value: "processing" as OrderStatus },
-  { label: "In reansit", value: "in transit" as OrderStatus },
+  { label: "In transit", value: "in transit" as OrderStatus },
   { label: "Delivered", value: "delivered" as OrderStatus },
 ];
 
