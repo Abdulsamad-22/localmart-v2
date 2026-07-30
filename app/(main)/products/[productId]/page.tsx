@@ -1,5 +1,5 @@
 import ProductDetail from "../ProductDetail";
-import { getSupabaseClient } from "@/lib/supabase/client";
+import { getSupabaseServerClient } from "@/lib/supabase/server";
 import { notFound } from "next/navigation";
 
 type Props = {
@@ -16,7 +16,7 @@ export default async function ProductPage({ params }: Props) {
     notFound();
   }
 
-  const supabase = getSupabaseClient();
+  const supabase = await getSupabaseServerClient();
   const { data: product, error } = await supabase
     .from("products")
     .select(
