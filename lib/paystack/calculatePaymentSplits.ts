@@ -22,7 +22,7 @@ type PaymentSplits = {
 export default function calculatePaymentSplits(
   cartItems: CartItem[],
   vendors: CheckoutVendor[],
-  platformPercentage = 7,
+  platformPercentage = 10,
 ): PaymentSplits {
   const splits: SplitsValues[] = [];
   let totalAmount = 0;
