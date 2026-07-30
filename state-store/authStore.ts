@@ -3,6 +3,7 @@ import { create } from "zustand";
 import type { User, Session } from "@supabase/supabase-js";
 import { VendorRow } from "@/types/vendor";
 import { toast } from "sonner";
+import { createSubaccount } from "@/lib/vendorsAccount/createSubaccount";
 
 type SignupDetails = {
   email: string;
@@ -53,11 +54,46 @@ const useAuthStore = create<AuthStore>((set, get) => ({
       return;
     }
 
-    const { data: vendorData } = await supabase
+    const { data: vendorData, error: vendorError } = await supabase
       .from("vendors")
       .select("*")
       .eq("vendor_id", session.user.id)
       .single();
+
+    if (vendorError && vendorError.code !== "PGRST116") {
+      console.error("Error fetching vendor:", vendorError.message);
+    }
+
+    // silently retry subaccount creation if pending
+    if (vendorData?.subaccount_pending) {
+      const subaccountResult = await createSubaccount({
+        businessName: vendorData.business_name,
+        settlementBank: vendorData.bank_code,
+        accountNumber: vendorData.account_number,
+        percentageCharge: 15,
+      });
+
+      if (subaccountResult.success) {
+        await supabase
+          .from("vendors")
+          .update({
+            subaccount_code: subaccountResult.subaccountCode,
+            subaccount_pending: false,
+            updated_at: new Date().toISOString(),
+          })
+          .eq("vendor_id", session.user.id);
+
+        // update local vendorData so banner disappears immediately
+        set({
+          vendorData: {
+            ...vendorData,
+            subaccount_code: subaccountResult.subaccountCode,
+            subaccount_pending: false,
+          },
+        });
+        return;
+      }
+    }
 
     set({ user: session.user, session, vendorData: vendorData ?? null });
   },
