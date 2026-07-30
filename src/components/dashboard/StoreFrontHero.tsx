@@ -9,6 +9,7 @@ import { ProductsWithVendor } from "@/types/product";
 import { StoreAction } from "./DashboardActions";
 import { StoreStatusBadge } from "./StoreStatusBadge";
 import { StoreStats } from "./StoreStats";
+import { ShareButton } from "../shop/ShareStoreUrl";
 
 interface Props {
   vendor: Vendor;
@@ -17,7 +18,6 @@ interface Props {
 
 export function StorefrontHero({ vendor, products }: Props) {
   const name = vendor.business_name || vendor.full_name;
-  const shareUrl = `${window.location.origin}/vendor/${vendor?.id}`;
 
   return (
     <section className="mb-16">
@@ -74,6 +74,11 @@ export function StorefrontHero({ vendor, products }: Props) {
               </div>
             </div>
           </div>
+
+          <ShareButton
+            vendorId={vendor.id}
+            shopName={vendor.business_name ?? ""}
+          />
         </div>
 
         <StoreStats
