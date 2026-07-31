@@ -24,8 +24,8 @@ export const verifyAccountNumber = async (
     return {
       success: true,
       data: {
-        accountName: data.account_name,
-        accountNumber: data.account_number,
+        accountName: data.accountName,
+        accountNumber: data.accountNumber,
       },
     };
   } catch (error) {
