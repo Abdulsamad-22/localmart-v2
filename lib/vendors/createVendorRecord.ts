@@ -1,35 +1,15 @@
-import { object, string, InferType } from "yup";
 import { getSupabaseClient } from "../supabase/client";
 import { createSubaccount } from "../vendorsAccount/createSubaccount";
 import { geocodeAddress } from "../mapbox/geoCodeAddress";
 import { getBankCode } from "../vendorsAccount/getBankCode";
 import { verifyAccountNumber } from "../vendorsAccount/verifyAccountNumber";
-import type { VendorInsert } from "@/types/vendor";
-
-export const vendorSchema = object({
-  fullName: string().required("Full name is required"),
-  email: string().email("Invalid email").required("Email is required"),
-  phoneNumber: string().required("Phone number is required"),
-  businessName: string().required("Business name is required"),
-  storeType: string().required("Store type is required"),
-  businessAddress: string().required("Business address is required"),
-  businessType: string().required("Select your type of business"),
-  productCategory: string().required("Product category is required"),
-  socials: string().required("A link to any business socials is required"),
-  bankName: string().required("Bank name is required"),
-  accountNumber: string()
-    .matches(/^[0-9]{10}$/, "Account number must be 10 digits")
-    .required("Account number is required"),
-  returnPolicy: string().required("A return policy deadline is required"),
-  deliveryDuration: string().required("Delivery duration is required"),
-});
-
-export type VendorFormData = InferType<typeof vendorSchema>;
+import type { VendorInsert, VendorFormData } from "@/types/vendor";
 
 type CreateVendorResult = { success: true } | { success: false; error: string };
 
 export async function createVendorRecord(
   formData: VendorFormData,
+  logoUrl: string | null = null,
 ): Promise<CreateVendorResult> {
   try {
     const supabase = getSupabaseClient();
@@ -72,7 +52,15 @@ export async function createVendorRecord(
       latitude: geoCodeVendorAddress?.lat ?? null,
       longitude: geoCodeVendorAddress?.lng ?? null,
       product_category: formData.productCategory,
-      socials: formData.socials ?? null,
+      logo_url: logoUrl,
+      socials: {
+        instagram: formData.socials?.instagram || null,
+        twitter: formData.socials?.twitter || null,
+        tiktok: formData.socials?.tiktok || null,
+        facebook: formData.socials?.facebook || null,
+        website: formData.socials?.website || null,
+      },
+      agreed_to_platform_fee: true,
       bank_name: formData.bankName,
       bank_code: bankCodeResult.bankCode,
       account_number: verificationResult.data.accountNumber,
