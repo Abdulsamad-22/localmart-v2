@@ -1,5 +1,4 @@
-import VendorRegistrationForm from "./VendorRegistrationForm";
-
+import { VendorRegisterForm } from "@/src/components/vendor/VendorRegistrationForm";
 export default function VendorRegistration() {
-  return <VendorRegistrationForm />;
+  return <VendorRegisterForm />;
 }
