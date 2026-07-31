@@ -4,7 +4,7 @@ import Link from "next/link";
 import { ShoppingCart } from "@phosphor-icons/react";
 import { CurrencyNgn } from "@phosphor-icons/react";
 import useCartStore from "@/state-store/cartStore";
-import { VendorDistance } from "./vendors/VendorDistance";
+import { VendorDistance } from "./vendor/VendorDistance";
 import type { ProductsWithVendor } from "@/types/product";
 import WishlistButton from "@/lib/wishlist/WishlistButton";
 
