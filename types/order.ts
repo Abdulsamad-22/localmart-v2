@@ -95,7 +95,7 @@ export type OrderItemWithOrder = OrderItemBase & {
     contact_surname: string;
     contact_email: string;
     created_at: string;
-  }[];
+  } | null;
 };
 
 // detail page — full order fields
@@ -109,14 +109,14 @@ export type OrderItemDetail = OrderItemBase & {
     contact_email: string;
     contact_phone: string;
     contact_address: string;
-    delivery_firstname: string;
-    delivery_surname: string;
-    delivery_email: string;
-    delivery_phone: string;
-    delivery_address: string;
+    delivery_firstname?: string;
+    delivery_surname?: string;
+    delivery_email?: string;
+    delivery_phone?: string;
+    delivery_address?: string;
     is_different_delivery: boolean;
     created_at: string;
-  }[];
+  } | null;
 };
 
 export type OrderWithItems = Order & {
