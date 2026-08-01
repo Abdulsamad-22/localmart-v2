@@ -35,7 +35,7 @@ export default function CheckoutProvider() {
     useCartStore();
   const initializePayment = usePaystackPayment();
   const { total } = calculateCheckout(cartItems);
-
+  const checkoutTotal = total * 100;
   const methods = useForm<CheckoutFormData>({
     resolver: yupResolver(
       checkoutSchema,
@@ -183,7 +183,7 @@ export default function CheckoutProvider() {
       const config = {
         publicKey: process.env.NEXT_PUBLIC_PAYSTACK_PUBLIC_KEY!,
         email: user.email,
-        amount: Math.round(total),
+        amount: Math.round(checkoutTotal),
         reference: `localmart_${Date.now()}_${user.id}`,
         metadata: {
           customer_id: user.id,
