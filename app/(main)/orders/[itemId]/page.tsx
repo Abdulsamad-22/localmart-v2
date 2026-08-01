@@ -78,6 +78,7 @@ export default async function OrderDetailPage({ params }: Props) {
       .eq("id", itemId);
   }
 
+  if (!item) return <div>Order not found.</div>;
   return (
     <div className="max-w-3xl mx-auto px-4 md:px-8 py-8">
       <OrderDetailClient
