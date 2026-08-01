@@ -26,9 +26,21 @@ export default async function Myshop() {
       `*, vendor:vendors(id, business_name, business_address, latitude, longitude)`,
     )
     .eq("vendor_id", vendor.id);
+
+  const { count: pendingCount } = await supabase
+    .from("order_items")
+    .select("id", { count: "exact" })
+    .eq("vendor_id", vendor.id)
+    .in("status", ["paid", "processing"]);
+
+  const pendingOrders = pendingCount ?? 0;
   return (
     <div>
-      <StorefrontHero products={products ?? []} vendor={vendor} />
+      <StorefrontHero
+        products={products ?? []}
+        vendor={vendor}
+        pendingOrders={pendingOrders}
+      />
       <ShopDisplay products={products ?? []} isOwner={true} />
     </div>
   );
