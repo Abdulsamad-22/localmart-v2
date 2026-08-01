@@ -38,7 +38,11 @@ const primaryActions: StoreActionProps[] = [
   },
 ];
 
-export function StoreAction() {
+type Props = {
+  pendingOrders: number;
+};
+
+export function StoreAction({ pendingOrders }: Props) {
   return (
     <div className="flex flex-wrap gap-4">
       {primaryActions.map((action, index) => (
@@ -57,9 +61,9 @@ export function StoreAction() {
 
           {action.title}
 
-          {action.showBadge && (
+          {action.showBadge && pendingOrders > 0 && (
             <span className="absolute -right-px -top-px flex h-4 min-w-[16px] items-center justify-center rounded-full bg-red-500 px-1 text-[10px] font-medium leading-none text-white">
-              2
+              {pendingOrders}
             </span>
           )}
         </Link>
