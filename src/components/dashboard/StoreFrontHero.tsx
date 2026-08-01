@@ -14,9 +14,10 @@ import { ShareButton } from "../shop/ShareStoreUrl";
 interface Props {
   vendor: Vendor;
   products: ProductsWithVendor[];
+  pendingOrders: number;
 }
 
-export function StorefrontHero({ vendor, products }: Props) {
+export function StorefrontHero({ vendor, products, pendingOrders }: Props) {
   const name = vendor.business_name || vendor.full_name;
 
   return (
@@ -70,7 +71,7 @@ export function StorefrontHero({ vendor, products }: Props) {
               {/* Contact */}
 
               <div className="mt-8 flex flex-wrap gap-3">
-                <StoreAction />
+                <StoreAction pendingOrders={pendingOrders} />
               </div>
             </div>
           </div>
