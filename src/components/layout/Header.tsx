@@ -40,14 +40,6 @@ export default function Header() {
     router.push(`/signup?redirectTo=${pathname}`);
   };
 
-  // const handleUserButton = () => {
-  //   if (user) {
-  //     router.push("/profile");
-  //   } else {
-  //     router.push(`/login?redirectTo=${pathname}`);
-  //   }
-  // };
-
   const handleVendorRedirection = () => {
     if (!session) {
       router.push(`/signup?redirectTo=${pathname}`);
@@ -72,10 +64,16 @@ export default function Header() {
 
   const handleLogout = async () => {
     const result = await logout();
-    if (result.success) {
-      router.replace("/");
-      toast.success("Signed out successfully.");
+
+    if (!result.success) {
+      toast.error(result.error ?? "Logout failed. Please try again.");
+      return;
     }
+    toast.success("Signed out successfully.");
+
+    setTimeout(() => {
+      router.replace("/");
+    }, 500);
   };
 
   const navLinks: NavLinks[] = [
@@ -153,7 +151,7 @@ export default function Header() {
               <button
                 key={link.label}
                 onClick={link.onClick}
-                className={`flex items-center gap-1 text-sm transition-colors
+                className={`flex items-center gap-1 text-sm transition-colors cursor-pointer
                   ${
                     link.isButton
                       ? "bg-[#009688] text-white px-4 py-2 rounded-lg hover:bg-[#00796B]"
@@ -167,8 +165,8 @@ export default function Header() {
           )}
 
           <button
-            className="flex items-center gap-2 text-[#D41E1E]"
-            onClick={() => handleLogout}
+            className="flex items-center gap-2 text-[#D41E1E] cursor-pointer"
+            onClick={handleLogout}
           >
             <SignOut className="" size={20} />
             Logout
@@ -225,16 +223,6 @@ export default function Header() {
         </div>
 
         <div className="flex flex-col p-4 gap-1">
-          <Link
-            href="/wishlist"
-            onClick={() => setIsMenuOpen(false)}
-            className={`flex items-center gap-3 py-3 border-b border-gray-100
-              ${pathname === "/wishlist" ? "text-[#009688] font-medium" : "text-[#636363]"}`}
-          >
-            <Heart size={20} />
-            Wishlists
-          </Link>
-
           <button
             className="flex items-center gap-3 py-3 border-b border-gray-100 text-[#636363] text-left w-full hover:text-[#009688] transition-colors"
             onClick={() => {
@@ -246,8 +234,28 @@ export default function Header() {
             Login / Sign up
           </button>
 
+          <Link
+            href="/wishlist"
+            onClick={() => setIsMenuOpen(false)}
+            className={`flex items-center gap-2 py-3 border-b border-gray-100
+              ${pathname === "/wishlist" ? "text-[#009688] font-medium" : "text-[#636363]"}`}
+          >
+            <Heart size={20} />
+            Wishlists
+          </Link>
+
+          <Link
+            href="/my-orders"
+            onClick={() => setIsMenuOpen(false)}
+            className={`flex items-center gap-2 py-3 border-b border-gray-100
+              ${pathname === "/wishlist" ? "text-[#009688] font-medium" : "text-[#636363]"}`}
+          >
+            <Package size={20} />
+            Orders
+          </Link>
+
           <button
-            className="flex items-center gap-3 py-3 text-[#636363] text-left w-full hover:text-[#009688] transition-colors"
+            className="bg-[#009688] text-white px-4 py-2 rounded-lg hover:bg-[#00796B] flex items-center gap-3 py-2 text-[#636363] text-left w-full hover:text-[#009688] transition-colors"
             onClick={() => {
               setIsMenuOpen(false);
               handleVendorRedirection();
