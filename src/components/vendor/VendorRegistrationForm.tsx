@@ -109,14 +109,14 @@ export function VendorRegisterForm() {
   const currentStepData = VENDOR_STEPS[currentStep - 1];
 
   return (
-    <div className=" bg-gray-50 dark:bg-gray-950 py-8 px-6">
+    <div className=" bg-gray-50 py-8 px-6">
       <div className="max-w-2xl mx-auto">
         {/* header */}
         <div className="text-center mb-8">
-          <h1 className="text-2xl font-medium text-gray-900 dark:text-white mb-1">
+          <h1 className="text-2xl font-medium text-gray-900 mb-1">
             Become a vendor
           </h1>
-          <p className="text-sm text-[#AAB0BD]">
+          <p className="text-sm text-gray-500">
             Set up your store and start selling on LocalMart
           </p>
         </div>
@@ -124,26 +124,26 @@ export function VendorRegisterForm() {
         {/* progress bar */}
         <div className="mb-10">
           <div className="flex items-center justify-between mb-3">
-            <span className="text-sm font-medium text-gray-900 dark:text-white">
+            <span className="text-sm font-medium text-gray-900">
               {currentStepData.title}
             </span>
-            <span className="text-sm text-[#AAB0BD]">
+            <span className="text-sm text-gray-500">
               Step {currentStep} of {VENDOR_STEPS.length}
             </span>
           </div>
-          <div className="h-1.5 bg-gray-200 dark:bg-gray-800 rounded-full overflow-hidden">
+          <div className="h-1.5 bg-gray-200 rounded-full overflow-hidden">
             <div
               className="h-full bg-[#009688] rounded-full transition-all duration-500 ease-out"
               style={{ width: `${progressPercent}%` }}
             />
           </div>
-          <p className="text-xs text-[#AAB0BD] mt-2">
+          <p className="text-sm text-gray-500 mt-2">
             {currentStepData.description}
           </p>
         </div>
 
         {/* step indicators */}
-        <div className="flex items-center justify-between mb-8">
+        <div className="flex items-center justify-between mb-8 px-6">
           {VENDOR_STEPS.map((step) => {
             const isComplete = step.id < currentStep;
             const isCurrent = step.id === currentStep;
@@ -157,7 +157,7 @@ export function VendorRegisterForm() {
                         ? "bg-[#009688] text-[#fff]"
                         : isCurrent
                           ? "bg-[#009688]/10 text-[#009688] ring-2 ring-[#009688]"
-                          : "bg-gray-100 dark:bg-gray-800 text-gray-400"
+                          : "bg-gray-300 text-gray-700"
                     }`}
                 >
                   {isComplete ? (
@@ -177,7 +177,7 @@ export function VendorRegisterForm() {
                     isCurrent
                       ? "text-[#009688] font-medium"
                       : isComplete
-                        ? "text-gray-400 dark:text-gray-300"
+                        ? "text-gray-400"
                         : "text-gray-200"
                   }`}
                 >
@@ -191,7 +191,7 @@ export function VendorRegisterForm() {
         {/* form */}
         <FormProvider {...methods}>
           <form onSubmit={handleSubmit(onSubmit)} noValidate>
-            <div className="bg-white dark:bg-gray-900 rounded-2xl border border-gray-200 dark:border-gray-800 p-6 mb-6">
+            <div className="bg-white rounded-2xl border border-gray-200 p-6 mb-6">
               {currentStep === 1 && (
                 <StepPersonalInfo logo={logo} setLogo={setLogo} />
               )}
@@ -206,7 +206,7 @@ export function VendorRegisterForm() {
                 <button
                   type="button"
                   onClick={handleBack}
-                  className="flex-1 py-3 px-6 rounded-xl border border-gray-300 dark:border-gray-700 text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800 transition-all"
+                  className="flex-1 py-3 px-6 rounded-xl border border-gray-300 text-sm font-medium text-gray-700 hover:bg-gray-50 transition-all"
                 >
                   Back
                 </button>
