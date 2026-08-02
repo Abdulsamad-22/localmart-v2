@@ -4,18 +4,18 @@ import OrdersClient from "./OrdersClient";
 import type { OrderStatus, OrderItemWithOrder } from "@/types/order";
 
 type Props = {
-  searchParams: { status?: string };
+  searchParams: Promise<{ status?: string }>;
 };
 
 export default async function OrdersPage({ searchParams }: Props) {
   const supabase = await getSupabaseServerClient();
 
   const {
-    data: { user },
-  } = await supabase.auth.getUser();
-  if (!user) redirect("/login?redirectTo=/orders");
+    data: { session },
+  } = await supabase.auth.getSession();
+  if (!session) redirect("/login?redirectTo=/orders");
 
-  const userId = user.id;
+  const userId = session.user.id;
 
   // get vendor using auth user id
   const { data: vendor } = await supabase
@@ -27,6 +27,8 @@ export default async function OrdersPage({ searchParams }: Props) {
   if (!vendor) redirect("/vendor/register");
 
   // build query — filter by status if provided
+  const { status } = await searchParams;
+
   const validStatuses: OrderStatus[] = [
     "paid",
     "processing",
@@ -35,7 +37,7 @@ export default async function OrdersPage({ searchParams }: Props) {
     "cancelled",
   ];
 
-  const statusFilter = searchParams.status as OrderStatus | undefined;
+  const statusFilter = status as OrderStatus | undefined;
   const isValidStatus = statusFilter && validStatuses.includes(statusFilter);
 
   let query = supabase
@@ -99,16 +101,14 @@ export default async function OrdersPage({ searchParams }: Props) {
   return (
     <div className="max-w-6xl mx-auto px-4 md:px-8 py-8">
       <div className="mb-6">
-        <h1 className="text-2xl font-medium text-gray-900 dark:text-white">
-          Orders
-        </h1>
+        <h1 className="text-2xl font-medium text-gray-900">Orders</h1>
         <p className="text-sm text-gray-500 mt-1">{vendor.business_name}</p>
       </div>
 
       <OrdersClient
         orderItems={(orderItems as unknown as OrderItemWithOrder[]) ?? []}
         statusCounts={statusCounts}
-        activeStatus={isValidStatus ? statusFilter : undefined}
+        activeStatus={isValidStatus ? (statusFilter as OrderStatus) : undefined}
       />
     </div>
   );
