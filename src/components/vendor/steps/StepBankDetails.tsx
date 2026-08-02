@@ -110,7 +110,7 @@ export function StepBankDetails() {
   return (
     <div className="space-y-5">
       <div>
-        <h2 className="text-[1.125rem] font-medium text-gray-900 dark:text-white mb-0.5">
+        <h2 className="text-[1.125rem] font-medium text-gray-900 mb-0.5">
           Bank Details
         </h2>
         <p className="text-sm text-gray-400">
@@ -120,12 +120,12 @@ export function StepBankDetails() {
 
       {/* bank name — searchable */}
       <div>
-        <label className="block text-[0.9375rem] font-medium text-gray-700 dark:text-gray-300 mb-1.5">
+        <label className="block text-[0.9375rem] font-medium text-gray-700 mb-1.5">
           Bank name
         </label>
         <div className="relative">
           <div
-            className="w-full flex items-center gap-2 px-3 py-2.5 border border-gray-300 dark:border-gray-700 rounded-lg text-sm cursor-pointer focus-within:ring-2 focus-within:ring-[#009688] focus-within:border-transparent dark:bg-gray-800"
+            className="w-full flex items-center gap-2 px-3 py-2.5 border border-gray-300 rounded-lg text-sm cursor-pointer focus-within:ring-2 focus-within:ring-[#009688] focus-within:border-transparent"
             onClick={() => setShowBankList(true)}
           >
             <Bank size={16} className="text-gray-400 flex-shrink-0" />
@@ -139,12 +139,12 @@ export function StepBankDetails() {
               }}
               onFocus={() => setShowBankList(true)}
               placeholder="Search for your bank"
-              className="flex-1 focus:outline-none dark:bg-gray-800 dark:text-white placeholder:text-gray-400"
+              className="flex-1 focus:outline-none placeholder:text-gray-400"
             />
           </div>
 
           {showBankList && filteredBanks.length > 0 && (
-            <div className="absolute top-full left-0 right-0 mt-1 bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-lg shadow-lg z-10 max-h-48 overflow-y-auto">
+            <div className="absolute top-full left-0 right-0 mt-1 bg-white border border-gray-200 rounded-lg shadow-lg z-10 max-h-48 overflow-y-auto">
               {filteredBanks.map((bank) => (
                 <button
                   key={bank}
@@ -154,8 +154,8 @@ export function StepBankDetails() {
                     setBankSearch(bank);
                     setShowBankList(false);
                   }}
-                  className={`w-full text-left px-4 py-2.5 text-sm hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors
-                    ${bankName === bank ? "text-[#009688] font-medium" : "text-gray-700 dark:text-gray-300"}`}
+                  className={`w-full text-left px-4 py-2.5 text-sm hover:bg-gray-50 transition-colors
+                    ${bankName === bank ? "text-[#009688] font-medium" : "text-gray-700"}`}
                 >
                   {bank}
                 </button>
@@ -170,7 +170,7 @@ export function StepBankDetails() {
 
       {/* account number */}
       <div>
-        <label className="block text-[0.9375rem] font-medium text-gray-700 dark:text-gray-300 mb-1.5">
+        <label className="block text-[0.9375rem] font-medium text-gray-700 mb-1.5">
           Account number
         </label>
         <input
@@ -179,7 +179,7 @@ export function StepBankDetails() {
           inputMode="numeric"
           maxLength={10}
           placeholder="10-digit account number"
-          className="w-full px-4 py-2.5 border border-gray-300 dark:border-gray-700 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#009688] focus:border-transparent dark:bg-gray-800 dark:text-white placeholder:text-gray-400"
+          className="w-full px-4 py-2.5 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#009688] focus:border-transparent placeholder:text-gray-400"
         />
         {errors.accountNumber && (
           <p className="text-red-500 text-xs mt-1">
@@ -190,7 +190,7 @@ export function StepBankDetails() {
 
       {/* account name — auto-verified, read only */}
       <div>
-        <label className="block text-[0.9375rem] font-medium text-gray-700 dark:text-gray-300 mb-1.5">
+        <label className="block text-[0.9375rem] font-medium text-gray-700 mb-1.5">
           Account name
         </label>
         <div className="relative">
@@ -207,11 +207,11 @@ export function StepBankDetails() {
                 ? "Verifying account..."
                 : "Automatically filled after verification"
             }
-            className={`w-full pl-9 pr-4 py-2.5 border rounded-lg text-sm focus:outline-none dark:bg-gray-800 placeholder:text-gray-400
+            className={`w-full pl-9 pr-4 py-2.5 border rounded-lg text-sm focus:outline-none placeholder:text-gray-400
               ${
                 accountName
-                  ? "border-[#009688] bg-[#009688]/5 text-gray-900 dark:text-white font-medium"
-                  : "border-gray-300 dark:border-gray-700 text-gray-400"
+                  ? "border-[#009688] bg-[#009688]/5 text-gray-900 font-medium"
+                  : "border-gray-300 text-gray-400"
               } ${verifying ? "animate-pulse" : ""}`}
           />
         </div>
@@ -229,9 +229,9 @@ export function StepBankDetails() {
       </div>
 
       {/* security note */}
-      <div className="bg-gray-50 dark:bg-gray-800 rounded-lg p-3 flex items-start gap-2">
-        <Lock size={14} className="text-gray-400 mt-0.5 flex-shrink-0" />
-        <p className="text-xs text-gray-400">
+      <div className="bg-gray-100 rounded-lg p-3 flex items-start gap-2">
+        <Lock size={14} className="text-gray-600 mt-0.5 flex-shrink-0" />
+        <p className="text-xs text-gray-600">
           Your bank details are securely processed by Paystack. LocalMart does
           not store your full account details.
         </p>

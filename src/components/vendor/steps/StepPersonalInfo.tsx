@@ -19,10 +19,10 @@ export function StepPersonalInfo({ logo, setLogo }: Props) {
   return (
     <div className="space-y-5">
       <div>
-        <h2 className="text-[1.125rem] font-medium text-gray-900 dark:text-white mb-0.5">
+        <h2 className="text-[1.125rem] font-medium text-gray-900 mb-0.5">
           Personal Information
         </h2>
-        <p className="text-[0.75rem] text-gray-400">
+        <p className="text-[0.75rem] text-gray-700">
           This information is used to identify your account
         </p>
       </div>
@@ -32,7 +32,7 @@ export function StepPersonalInfo({ logo, setLogo }: Props) {
 
       {/* full name */}
       <div>
-        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">
+        <label className="block text-sm font-medium text-gray-700 mb-1.5">
           Full name
         </label>
         <div className="relative">
@@ -43,8 +43,8 @@ export function StepPersonalInfo({ logo, setLogo }: Props) {
           <input
             {...register("fullName")}
             type="text"
-            placeholder="Abdulsamad Hussaini"
-            className="w-full pl-9 pr-4 py-2.5 border border-gray-300 dark:border-gray-700 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#009688] focus:border-transparent dark:bg-gray-800 dark:text-white placeholder:text-gray-400"
+            placeholder="John Doe"
+            className="w-full pl-9 pr-4 py-2.5 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#009688] focus:border-transparent placeholder:text-gray-400"
           />
         </div>
         {errors.fullName && (
@@ -54,7 +54,7 @@ export function StepPersonalInfo({ logo, setLogo }: Props) {
 
       {/* email */}
       <div>
-        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">
+        <label className="block text-sm font-medium text-gray-700 mb-1.5">
           Email address
         </label>
         <div className="relative">
@@ -65,8 +65,8 @@ export function StepPersonalInfo({ logo, setLogo }: Props) {
           <input
             {...register("email")}
             type="email"
-            placeholder="you@example.com"
-            className="w-full pl-9 pr-4 py-2.5 border border-gray-300 dark:border-gray-700 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#009688] focus:border-transparent dark:bg-gray-800 dark:text-white placeholder:text-gray-400"
+            placeholder="jondoe@example.com"
+            className="w-full pl-9 pr-4 py-2.5 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#009688] focus:border-transparent placeholder:text-gray-400"
           />
         </div>
         {errors.email && (
@@ -76,7 +76,7 @@ export function StepPersonalInfo({ logo, setLogo }: Props) {
 
       {/* phone */}
       <div>
-        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">
+        <label className="block text-sm font-medium text-gray-700 mb-1.5">
           Phone number
         </label>
         <div className="relative">
@@ -88,7 +88,7 @@ export function StepPersonalInfo({ logo, setLogo }: Props) {
             {...register("phoneNumber")}
             type="tel"
             placeholder="+234 801 234 5678"
-            className="w-full pl-9 pr-4 py-2.5 border border-gray-300 dark:border-gray-700 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#009688] focus:border-transparent dark:bg-gray-800 dark:text-white placeholder:text-gray-400"
+            className="w-full pl-9 pr-4 py-2.5 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#009688] focus:border-transparent placeholder:text-gray-400"
           />
         </div>
         {errors.phoneNumber && (

@@ -75,17 +75,17 @@ export function StepBusinessInfo() {
   return (
     <div className="space-y-5">
       <div>
-        <h2 className="text-[1.125rem] font-medium text-gray-900 dark:text-white mb-0.5">
+        <h2 className="text-[1.125rem] font-medium text-gray-900 mb-0.5">
           Business Information
         </h2>
-        <p className="text-sm text-gray-400">
+        <p className="text-sm text-gray-700">
           Help buyers understand what your store is about
         </p>
       </div>
 
       {/* business name */}
       <div>
-        <label className="block text-[0.9375rem] font-medium text-gray-700 dark:text-gray-300 mb-1.5">
+        <label className="block text-[0.9375rem] font-medium text-gray-700 mb-1.5">
           Business name
         </label>
         <div className="relative">
@@ -97,7 +97,7 @@ export function StepBusinessInfo() {
             {...register("businessName")}
             type="text"
             placeholder="e.g. Amaka's Boutique"
-            className="w-full pl-9 pr-4 py-2.5 border border-gray-300 dark:border-gray-700 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#009688] focus:border-transparent dark:bg-gray-800 dark:text-white placeholder:text-gray-400"
+            className="w-full pl-9 pr-4 py-2.5 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#009688] focus:border-transparent placeholder:text-gray-400"
           />
         </div>
         {errors.businessName && (
@@ -109,7 +109,7 @@ export function StepBusinessInfo() {
 
       {/* store type */}
       <div>
-        <label className="block text-[0.9375rem] font-medium text-gray-700 dark:text-gray-300 mb-2">
+        <label className="block text-[0.9375rem] font-medium text-gray-700 mb-2">
           Store type
         </label>
         <div className="grid grid-cols-3 gap-2">
@@ -122,7 +122,7 @@ export function StepBusinessInfo() {
                   ${
                     isSelected
                       ? "border-[#009688] bg-[#009688]/5"
-                      : "border-gray-200 dark:border-gray-700 hover:border-gray-300"
+                      : "border-gray-200 hover:border-gray-300"
                   }`}
               >
                 <input
@@ -132,11 +132,11 @@ export function StepBusinessInfo() {
                   className="sr-only"
                 />
                 <span
-                  className={`text-sm font-medium ${isSelected ? "text-[#009688]" : "text-gray-800 dark:text-gray-200"}`}
+                  className={`text-sm font-medium ${isSelected ? "text-[#009688]" : "text-gray-800"}`}
                 >
                   {type.label}
                 </span>
-                <span className="text-[0.75rem] text-gray-400 mt-0.5">
+                <span className="text-[0.75rem] text-gray-600 mt-0.5">
                   {type.desc}
                 </span>
               </label>
@@ -152,12 +152,12 @@ export function StepBusinessInfo() {
 
       {/* product category */}
       <div>
-        <label className="block text-[0.9375rem] font-medium text-gray-700 dark:text-gray-300 mb-1.5">
+        <label className="block text-[0.9375rem] font-medium text-gray-700 mb-1.5">
           Product category
         </label>
         <select
           {...register("productCategory")}
-          className="w-full py-2.5 px-3 border border-gray-300 dark:border-gray-700 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#009688] focus:border-transparent dark:bg-gray-800 dark:text-white text-gray-700"
+          className="w-full py-2.5 px-3 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#009688] focus:border-transparent text-gray-700"
         >
           <option value="">What will you sell?</option>
           {PRODUCT_CATEGORIES.map((cat) => (
@@ -175,10 +175,10 @@ export function StepBusinessInfo() {
 
       {/* business address */}
       <div>
-        <label className="block text-[0.9375rem] font-medium text-gray-700 dark:text-gray-300 mb-1.5">
+        <label className="block text-[0.9375rem] font-medium text-gray-700 mb-1.5">
           Business address
         </label>
-        <p className="text-[0.75rem] text-gray-400 mb-1.5">
+        <p className="text-[0.75rem] text-gray-5600 mb-1.5">
           Use a neighbourhood-level address for better location matching e.g.
           Wuse 2, Abuja
         </p>
@@ -191,7 +191,7 @@ export function StepBusinessInfo() {
             {...register("businessAddress")}
             type="text"
             placeholder="e.g. Ikeja, Lagos or Wuse 2, Abuja"
-            className="w-full pl-9 pr-4 py-2.5 border border-gray-300 dark:border-gray-700 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#009688] focus:border-transparent dark:bg-gray-800 dark:text-white placeholder:text-gray-400"
+            className="w-full pl-9 pr-4 py-2.5 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#009688] focus:border-transparent placeholder:text-gray-400"
           />
         </div>
         {errors.businessAddress && (
@@ -203,21 +203,21 @@ export function StepBusinessInfo() {
 
       {/* social handles */}
       <div>
-        <label className="block text-[0.9375rem] font-medium text-gray-700 dark:text-gray-300 mb-1">
+        <label className="block text-[0.9375rem] font-medium text-gray-700 mb-1">
           Social media & website
-          <span className="text-gray-400 font-normal ml-1">(optional)</span>
+          <span className="text-gray-500 font-normal ml-1">(optional)</span>
         </label>
-        <p className="text-[0.75rem] text-gray-400 mb-3">
+        <p className="text-[0.75rem] text-gray-600 mb-3">
           Add your handles so buyers can find you online
         </p>
         <div className="space-y-2.5">
           {SOCIAL_PLATFORMS.map(({ key, label, icon: Icon, prefix }) => (
             <div key={key} className="flex items-center gap-2">
-              <div className="w-8 h-8 rounded-lg bg-gray-100 dark:bg-gray-800 flex items-center justify-center flex-shrink-0">
-                <Icon size={16} className="text-gray-400" />
+              <div className="w-8 h-8 rounded-lg bg-gray-200 flex items-center justify-center flex-shrink-0">
+                <Icon size={16} className="text-gray-600" />
               </div>
-              <div className="flex-1 flex items-center border border-gray-300 dark:border-gray-700 rounded-lg overflow-hidden focus-within:ring-2 focus-within:ring-[#009688] focus-within:border-transparent">
-                <span className="px-2.5 py-2.5 text-xs text-gray-400 bg-gray-50 dark:bg-gray-800 border-r border-gray-300 dark:border-gray-700 whitespace-nowrap">
+              <div className="flex-1 flex items-center border border-gray-300 rounded-lg overflow-hidden focus-within:ring-2 focus-within:ring-[#009688] focus-within:border-transparent">
+                <span className="px-2.5 py-3 text-xs text-gray-600 bg-gray-200 border-r border-gray-300 whitespace-nowrap">
                   {prefix}
                 </span>
                 <input
@@ -228,7 +228,7 @@ export function StepBusinessInfo() {
                       ? "yourstore.com"
                       : `your${label.toLowerCase()}handle`
                   }
-                  className="flex-1 px-3 py-2.5 text-sm focus:outline-none dark:bg-gray-900 dark:text-white placeholder:text-gray-400"
+                  className="flex-1 px-3 py-2.5 text-sm focus:outline-none placeholder:text-gray-400"
                 />
               </div>
             </div>
