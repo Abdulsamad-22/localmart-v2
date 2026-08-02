@@ -65,8 +65,7 @@ export function BuyerOrderDetailClient({ order }: Props) {
     : order.contact_address;
 
   return (
-    // review this bg
-    <div className="bg-[#f7f5f9] space-y-6">
+    <div className="space-y-6">
       {/* back + header */}
       <div>
         <Link
@@ -77,7 +76,7 @@ export function BuyerOrderDetailClient({ order }: Props) {
           Back to orders
         </Link>
 
-        <div className="flex items-start justify-between flex-wrap gap-3 border-[1px] border-[#727876] rounded-[8px] py-2 px-4">
+        <div className="flex items-start justify-between flex-wrap gap-3 border-[1px] border-[#C2C8C5] rounded-[8px] py-2 px-4">
           <div>
             <h1 className="text-xl font-medium text-gray-900">Order detail</h1>
 
