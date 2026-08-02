@@ -35,7 +35,7 @@ export type BuyerOrderDetail = {
     vendor_id: string;
     vendors: {
       business_name: string;
-    }[];
+    } | null;
   }[];
 };
 
@@ -48,11 +48,9 @@ export default async function BuyerOrderDetailPage({ params }: Props) {
   const supabase = await getSupabaseServerClient();
 
   const {
-    data: { user },
-  } = await supabase.auth.getUser();
-  if (!user) redirect(`/login?redirectTo=/my-orders/${orderId}`);
-
-  const userId = user.id;
+    data: { session },
+  } = await supabase.auth.getSession();
+  if (!session) redirect(`/login?redirectTo=/my-orders/${orderId}`);
 
   const { data: order, error } = await supabase
     .from("orders")
@@ -94,7 +92,7 @@ export default async function BuyerOrderDetailPage({ params }: Props) {
     `,
     )
     .eq("id", orderId)
-    .eq("customer_id", userId) // security — buyer can only see their own orders
+    .eq("customer_id", session.user.id) // security — buyer can only see their own orders
     .single();
 
   if (error || !order) notFound();
