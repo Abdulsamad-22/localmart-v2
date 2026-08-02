@@ -95,7 +95,7 @@ export default function WishlistLayout() {
             <Link
               href={"/"}
               className="bg-gradient-to-r from-[#009688] to-[#00695C] transition-all duration-200
-    hover:from-[#00897B] hover:to-[#005B4F] text-[#fff] px-6 py-[0.75rem] rounded-lg font-medium transition-colors"
+    hover:from-[#00897B] hover:to-[#005B4F] text-[#fff] px-6 py-[0.75rem] rounded-lg transition-colors"
             >
               Continue Shopping
             </Link>
@@ -108,7 +108,7 @@ export default function WishlistLayout() {
               return (
                 <div
                   key={item.product.id}
-                  className="border-b-[0.5px] border-gray-100"
+                  className="border-b-[1px] border-gray-200"
                 >
                   <div className="p-4 sm:p-6">
                     <div className="mb-4 md:mb-0">
@@ -166,7 +166,7 @@ export default function WishlistLayout() {
                                   }`}
                                 ></span>
                                 <span
-                                  className={`text-sm font-medium ${
+                                  className={`text-sm ${
                                     item.product.item_units > 0
                                       ? "text-green-600"
                                       : "text-red-600"
@@ -179,7 +179,7 @@ export default function WishlistLayout() {
                               </div>
 
                               <div className="block md:hidden text-right">
-                                <div className="flex items-center text-[0.875rem] md:text-[1.25rem] font-medium text-gray-900">
+                                <div className="flex items-center text-[0.875rem] md:text-[1.25rem] text-gray-900">
                                   <CurrencyNgn
                                     className="text-[1rem] md:text-[1.5rem]
                                 "
@@ -195,7 +195,7 @@ export default function WishlistLayout() {
                             <div className="flex flex-col sm:items-end gap-4 sm:min-w-[200px]">
                               {/* Price */}
                               <div className="hidden md:block text-right">
-                                <div className="flex items-center text-[0.875rem] md:text-[1.25rem] font-medium text-gray-900">
+                                <div className="flex items-center text-[0.875rem] md:text-[1.25rem] text-gray-900">
                                   <CurrencyNgn
                                     className="text-[1rem] md:text-[1.5rem]
                                 "
@@ -211,7 +211,7 @@ export default function WishlistLayout() {
                                 <button
                                   onClick={() => addToCart(item.product, 1)}
                                   className="flex items-center justify-center gap-2 bg-gradient-to-r from-[#009688] to-[#00695C] transition-all duration-200
-    hover:from-[#00897B] hover:to-[#005B4F] text-[#fff] px-4 py-[0.75rem] rounded-lg transition-colors"
+    hover:from-[#00897B] hover:to-[#005B4F] text-[#fff] px-2 py-[0.5rem] rounded-lg transition-colors"
                                 >
                                   <ShoppingCart size={18} />
                                   Add to Cart
@@ -220,7 +220,7 @@ export default function WishlistLayout() {
                                   onClick={() =>
                                     removeFromWishlist(item.product.id)
                                   }
-                                  className="flex items-center justify-center gap-2 bg-white border border-gray-300 text-gray-700 px-4 py-[0.625rem] rounded-lg hover:bg-gray-50 transition-colors"
+                                  className="flex items-center justify-center gap-2 bg-white border border-gray-300 text-gray-700 px-2 py-[0.5rem] rounded-lg hover:bg-gray-50 transition-colors"
                                 >
                                   <Trash size={18} />
                                   Remove
@@ -259,7 +259,7 @@ export default function WishlistLayout() {
 
         {/* Bulk Actions Footer */}
         {sortedItems.length > 0 && (
-          <div className="bg-white rounded-lg border mt-6 p-4">
+          <div className="bg-white rounded-lg border border-[#DEE4E1] mt-6 p-4">
             <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
               <div className="text-sm text-gray-600">
                 {sortedItems.length} item
@@ -271,13 +271,13 @@ export default function WishlistLayout() {
                     addMultipleToCart(wishlistItems.map((item) => item.product))
                   }
                   className="flex-1 md:flex-none bg-gradient-to-r from-[#009688] to-[#00695C] transition-all duration-200
-    hover:from-[#00897B] hover:to-[#005B4F] text-[#fff] px-4 py-2 rounded-lg font-medium transition-colors"
+    hover:from-[#00897B] hover:to-[#005B4F] text-[#fff] px-4 py-2 rounded-lg transition-colors"
                 >
                   Add All to Cart
                 </button>
                 <button
                   onClick={() => clearWishlist()}
-                  className="flex-1 md:flex-none bg-white border border-gray-300 text-gray-700 px-4 py-2 rounded-lg font-medium hover:bg-gray-50 transition-colors"
+                  className="flex-1 md:flex-none bg-[#fff] border border-[#607d8b] text-[#607d8b] px-4 py-2 rounded-lg hover:bg-gray-50 transition-colors"
                 >
                   Clear Wishlist
                 </button>
