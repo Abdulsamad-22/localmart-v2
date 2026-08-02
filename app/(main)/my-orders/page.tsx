@@ -2,6 +2,7 @@ import { getSupabaseServerClient } from "@/lib/supabase/server";
 import { redirect } from "next/navigation";
 import { MyOrdersClient } from "./MyOrdersClient";
 import type { OrderStatus } from "@/types/order";
+import { toast } from "sonner";
 
 export type BuyerOrder = {
   id: number;
@@ -48,7 +49,7 @@ function deriveOrderStatus(items: { status: OrderStatus }[]): OrderStatus {
 }
 
 type Props = {
-  searchParams: { status?: string };
+  searchParams: Promise<{ status: string }>;
 };
 
 export default async function MyOrdersPage({ searchParams }: Props) {
@@ -59,6 +60,8 @@ export default async function MyOrdersPage({ searchParams }: Props) {
   } = await supabase.auth.getUser();
   if (!user) redirect("/login?redirectTo=/my-orders");
 
+  const { status } = await searchParams;
+
   const validStatuses: OrderStatus[] = [
     "paid",
     "processing",
@@ -67,7 +70,7 @@ export default async function MyOrdersPage({ searchParams }: Props) {
     "cancelled",
   ];
 
-  const statusFilter = searchParams.status as OrderStatus | undefined;
+  const statusFilter = status as OrderStatus | undefined;
   const isValidStatus = statusFilter && validStatuses.includes(statusFilter);
 
   // fetch orders with their items
@@ -100,16 +103,20 @@ export default async function MyOrdersPage({ searchParams }: Props) {
     .order("created_at", { ascending: false });
 
   if (error) {
-    console.error("Error fetching orders:", error.message);
+    toast.error(error.message);
   }
 
   // derive worst case status and filter if needed
-  const ordersWithStatus = (orders ?? []).map((order) => ({
-    ...order,
-    derivedStatus: deriveOrderStatus(
+  const ordersWithStatus = (orders ?? []).map((order) => {
+    const derivedStatus = deriveOrderStatus(
       order.order_items as { status: OrderStatus }[],
-    ),
-  }));
+    );
+
+    return {
+      ...order,
+      derivedStatus,
+    };
+  });
 
   const filtered = isValidStatus
     ? ordersWithStatus.filter((o) => o.derivedStatus === statusFilter)
@@ -129,12 +136,10 @@ export default async function MyOrdersPage({ searchParams }: Props) {
   };
 
   return (
-    <div className="max-w-3xl mx-auto px-4 md:px-8 py-8">
+    <div className="max-w-3xl mx-auto px-4 md:px-8 py-10">
       <div className="mb-6">
-        <h1 className="text-2xl font-medium text-gray-900 dark:text-white">
-          My orders
-        </h1>
-        <p className="text-sm text-gray-500 mt-1">Track all your purchases</p>
+        <h1 className="text-2xl font-medium text-gray-900">My orders</h1>
+        <p className="text-sm text-gray-700 mt-1">Track all your purchases</p>
       </div>
 
       <MyOrdersClient
