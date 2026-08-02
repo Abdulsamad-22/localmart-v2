@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { CaretLeft } from "@phosphor-icons/react";
+import { CaretLeft, Check } from "@phosphor-icons/react";
 import type { OrderStatus } from "@/types/order";
 import { UpdateStatusButton } from "./UpdateStatusButton";
 
@@ -30,14 +30,14 @@ type OrderItemDetail = {
     contact_email: string;
     contact_phone: string;
     contact_address: string;
-    delivery_firstname: string;
-    delivery_surname: string;
-    delivery_email: string;
-    delivery_phone: string;
-    delivery_address: string;
+    delivery_firstname?: string;
+    delivery_surname?: string;
+    delivery_email?: string;
+    delivery_phone?: string;
+    delivery_address?: string;
     is_different_delivery: boolean;
     created_at: string;
-  }[];
+  } | null;
 };
 
 type Props = {
@@ -101,10 +101,9 @@ const statusOrder: OrderStatus[] = [
 ];
 
 export function OrderDetailClient({ item, vendorId }: Props) {
-  const order = item.orders[0];
+  const order = item?.orders;
   const config = statusConfig[item.status];
   const currentStatusIndex = statusOrder.indexOf(item.status);
-
   const date = new Date(item.created_at).toLocaleDateString("en-NG", {
     day: "numeric",
     month: "long",
@@ -113,17 +112,21 @@ export function OrderDetailClient({ item, vendorId }: Props) {
     minute: "2-digit",
   });
 
+  if (!order) {
+    return <div>Loading order details...</div>;
+  }
+
   const deliveryName = order.is_different_delivery
-    ? `${order.delivery_firstname} ${order.delivery_surname}`
-    : `${order.contact_firstname} ${order.contact_surname}`;
+    ? `${order.delivery_firstname ?? ""} ${order.delivery_surname ?? ""}`.trim()
+    : `${order.contact_firstname ?? ""} ${order.contact_surname ?? ""}`.trim();
 
   const deliveryPhone = order.is_different_delivery
     ? order.delivery_phone
     : order.contact_phone;
 
   const deliveryAddress = order.is_different_delivery
-    ? order.delivery_address
-    : order.contact_address;
+    ? `${order.delivery_address ?? ""}`
+    : `${order.contact_address ?? ""}`.trim();
 
   return (
     <div className="space-y-6">
@@ -131,17 +134,15 @@ export function OrderDetailClient({ item, vendorId }: Props) {
       <div>
         <Link
           href="/orders"
-          className="inline-flex items-center gap-1 text-sm text-gray-500 hover:text-gray-900 dark:hover:text-white mb-4 transition-colors"
+          className="inline-flex items-center gap-1 text-sm text-gray-500 hover:text-gray-900 mb-6 transition-colors"
         >
           <CaretLeft size={16} />
           Back to orders
         </Link>
 
-        <div className="flex items-start justify-between flex-wrap gap-3">
+        <div className="flex items-start justify-between flex-wrap gap-3 rounded-[8px] border-[1px] border-[#C2C8C5] py-2 px-4">
           <div>
-            <h1 className="text-xl font-medium text-gray-900 dark:text-white">
-              Order detail
-            </h1>
+            <h1 className="text-xl font-medium text-gray-900">Order detail</h1>
             <p className="text-sm text-gray-500 mt-1">
               Ref: {order.payment_reference} · {date}
             </p>
@@ -156,8 +157,8 @@ export function OrderDetailClient({ item, vendorId }: Props) {
 
       {/* status timeline */}
       {item.status !== "cancelled" && (
-        <div className="bg-white dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-800 p-5">
-          <h2 className="text-sm font-medium text-gray-900 dark:text-white mb-4">
+        <div className="bg-white rounded-xl border border-gray-200 p-5">
+          <h2 className="text-sm font-medium text-gray-900 mb-4">
             Order progress
           </h2>
           <div className="flex items-center justify-between">
@@ -177,11 +178,16 @@ export function OrderDetailClient({ item, vendorId }: Props) {
                             ? "bg-[#009688] text-white"
                             : isCurrent
                               ? "bg-[#009688]/10 text-[#009688] ring-2 ring-[#009688]"
-                              : "bg-gray-100 dark:bg-gray-800 text-gray-400"
+                              : "bg-gray-100 text-gray-400"
                         }`}
                     >
                       {isComplete ? (
-                        <i className="ti ti-check text-sm" aria-hidden="true" />
+                        <Check
+                          size={14}
+                          weight="bold"
+                          className="text-white"
+                          aria-hidden="true"
+                        />
                       ) : (
                         <span>{index + 1}</span>
                       )}
@@ -192,7 +198,7 @@ export function OrderDetailClient({ item, vendorId }: Props) {
                           isCurrent
                             ? "text-[#009688] font-medium"
                             : isComplete
-                              ? "text-gray-600 dark:text-gray-400"
+                              ? "text-gray-600"
                               : "text-gray-400"
                         }`}
                     >
@@ -205,7 +211,7 @@ export function OrderDetailClient({ item, vendorId }: Props) {
                         ${
                           stepIndex < currentStatusIndex
                             ? "bg-[#009688]"
-                            : "bg-gray-200 dark:bg-gray-700"
+                            : "bg-gray-200"
                         }`}
                     />
                   )}
@@ -217,12 +223,10 @@ export function OrderDetailClient({ item, vendorId }: Props) {
       )}
 
       {/* product card */}
-      <div className="bg-white dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-800 p-5">
-        <h2 className="text-sm font-medium text-gray-900 dark:text-white mb-4">
-          Product
-        </h2>
+      <div className="bg-white rounded-xl border border-gray-200 p-5">
+        <h2 className="text-sm font-medium text-gray-900 mb-4">Product</h2>
         <div className="flex items-center gap-4">
-          <div className="w-16 h-16 rounded-lg overflow-hidden bg-gray-100 dark:bg-gray-800 flex-shrink-0">
+          <div className="w-16 h-16 rounded-lg overflow-hidden bg-gray-100 flex-shrink-0">
             {item.product_image ? (
               <img
                 src={item.product_image}
@@ -239,17 +243,17 @@ export function OrderDetailClient({ item, vendorId }: Props) {
             )}
           </div>
           <div className="flex-1 min-w-0">
-            <p className="font-medium text-gray-900 dark:text-white text-sm">
+            <p className="font-medium text-gray-900 text-sm">
               {item.product_name}
             </p>
             <div className="flex items-center gap-2 mt-1 flex-wrap">
               {item.selected_size && (
-                <span className="text-[11px] px-2 py-0.5 rounded bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400">
+                <span className="text-[11px] px-2 py-0.5 rounded bg-gray-600 text-gray-200">
                   Size: {item.selected_size}
                 </span>
               )}
               {item.selected_color && (
-                <span className="inline-flex items-center gap-1 text-[11px] px-2 py-0.5 rounded bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400">
+                <span className="inline-flex items-center gap-1 text-[11px] px-2 py-0.5 rounded bg-gray-600 text-gray-200">
                   <span
                     className="w-2.5 h-2.5 rounded-full border border-gray-300"
                     style={{ backgroundColor: item.selected_color.code }}
@@ -263,42 +267,36 @@ export function OrderDetailClient({ item, vendorId }: Props) {
             </p>
           </div>
           <div className="text-right flex-shrink-0">
-            <p className="font-medium text-gray-900 dark:text-white">
+            <p className="text-xs text-gray-500 mt-0.5">Subtotal</p>
+            <p className="font-medium text-gray-900">
               ₦{Number(item.total).toLocaleString("en-NG")}
             </p>
-            <p className="text-xs text-gray-500 mt-0.5">subtotal</p>
           </div>
         </div>
       </div>
 
       {/* delivery info */}
-      <div className="bg-white dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-800 p-5">
-        <h2 className="text-sm font-medium text-gray-900 dark:text-white mb-4">
+      <div className="bg-white rounded-xl border border-gray-200 p-5">
+        <h2 className="text-sm font-medium text-gray-900 mb-4">
           Delivery information
         </h2>
         <div className="space-y-2 text-sm">
           <div className="flex justify-between">
             <span className="text-gray-500">Recipient</span>
-            <span className="text-gray-900 dark:text-white font-medium">
-              {deliveryName}
-            </span>
+            <span className="text-gray-900 font-medium">{deliveryName}</span>
           </div>
           <div className="flex justify-between">
             <span className="text-gray-500">Phone</span>
-            <span className="text-gray-900 dark:text-white">
-              {deliveryPhone}
-            </span>
+            <span className="text-gray-900">{deliveryPhone}</span>
           </div>
           <div className="flex justify-between gap-4">
             <span className="text-gray-500 flex-shrink-0">Address</span>
-            <span className="text-gray-900 dark:text-white text-right">
-              {deliveryAddress}
-            </span>
+            <span className="text-gray-900 text-right">{deliveryAddress}</span>
           </div>
           {order.is_different_delivery && (
             <div className="flex justify-between">
               <span className="text-gray-500">Ordered by</span>
-              <span className="text-gray-900 dark:text-white">
+              <span className="text-gray-900">
                 {order.contact_firstname} {order.contact_surname}
               </span>
             </div>
@@ -307,8 +305,8 @@ export function OrderDetailClient({ item, vendorId }: Props) {
       </div>
 
       {/* buyer contact */}
-      <div className="bg-white dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-800 p-5">
-        <h2 className="text-sm font-medium text-gray-900 dark:text-white mb-4">
+      <div className="bg-white rounded-xl border border-gray-200 p-5">
+        <h2 className="text-sm font-medium text-gray-900 mb-4">
           Buyer contact
         </h2>
         <div className="space-y-2 text-sm">
