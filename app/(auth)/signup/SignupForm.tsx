@@ -7,6 +7,7 @@ import { InferType, string, object } from "yup";
 import Link from "next/link";
 import { toast } from "sonner";
 import { useRouter, useSearchParams } from "next/navigation";
+import { Envelope, Lock } from "@phosphor-icons/react";
 
 const schema = object({
   email: string().email("Invalid email").required("Email is required"),
@@ -54,28 +55,45 @@ export default function SignupForm() {
 
       <form onSubmit={handleSubmit(handleSignup)} className="">
         <div className="text-center">
-          <div className="space-y-2 text-left text-gray-800 mb-6">
-            <label className="block">Email</label>
-            <input
-              {...register("email")}
-              className="w-full border border-[#c4c4c4] px-4 py-3 rounded-[8px] outline-[#009688]"
-              placeholder="Enter email or phone number"
-              type="text"
-            />
-
-            <p className="text-[0.875rem] text-red-600">
-              {errors.email?.message}
-            </p>
+          <div className="text-left mb-6">
+            <label className="block text-[0.875rem] md:text-[1rem] font-medium text-gray-700 mb-1.5">
+              Email address
+            </label>
+            <div className="relative">
+              <Envelope
+                size={18}
+                className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"
+              />
+              <input
+                {...register("email")}
+                className="w-full border border-[#c4c4c4] pl-9 pr-4 py-2.5 rounded-[8px] focus:outline-none focus:ring-2 focus:ring-[#009688] focus:border-transparent placeholder:text-gray-400"
+                placeholder="Your email address"
+                type="email"
+              />
+            </div>
+            {errors.email && (
+              <p className="text-[0.875rem] text-red-600 mt-1">
+                {errors.email?.message}
+              </p>
+            )}
           </div>
 
           <div className="space-y-2 text-left text-gray-800 mb-4">
-            <label className="block">Password</label>
-            <input
-              {...register("password")}
-              className="w-full border border-[#c4c4c4] px-4 py-3 rounded-[8px] outline-[#009688]"
-              placeholder="Enter Password"
-              type="password"
-            />
+            <label className="block text-[0.875rem] md:text-[1rem] font-medium text-gray-700 mb-1.5">
+              Password
+            </label>
+            <div className="relative">
+              <Lock
+                size={18}
+                className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"
+              />
+              <input
+                {...register("password")}
+                className="w-full border border-[#c4c4c4] pl-9 pr-4 py-2.5 rounded-[8px] focus:outline-none focus:ring-2 focus:ring-[#009688] focus:border-transparent placeholder:text-gray-400"
+                placeholder="Your Password"
+                type="password"
+              />
+            </div>
             {errors.password?.message ? (
               <p className="text-[0.875rem] text-red-600">
                 {errors.password.message}
