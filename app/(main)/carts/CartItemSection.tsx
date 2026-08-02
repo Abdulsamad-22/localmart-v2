@@ -22,7 +22,7 @@ export default function CartItemSection() {
   return (
     <div className="min-h-screen bg-gray-50 px-6 md:px-12">
       {/* Header */}
-      <div className="bg-white border-b">
+      <div className="border-b border-[#dee4e1]">
         <div className="px-4 sm:px-6 lg:px-8 py-4">
           <div className="flex items-center justify-between">
             <div>
@@ -45,8 +45,8 @@ export default function CartItemSection() {
       <div className="">
         {cartItems.length === 0 ? (
           /* Empty Cart */
-          <div className="bg-white shadow-sm p-12 text-center">
-            \{" "}
+          <div className="p-12 text-center">
+            {" "}
             <img
               className="mx-auto"
               src="/illustration-empty-cart.svg"
@@ -63,14 +63,14 @@ export default function CartItemSection() {
               className="bg-gradient-to-r from-[#009688] to-[#00695C] transition-all duration-200
     hover:from-[#00897B] hover:to-[#005B4F] text-[#fff] px-6 py-[0.75rem] rounded-lg transition-colors"
             >
-              Add to your cart
+              Add to my cart
             </Link>
           </div>
         ) : (
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mt-6">
             {/* Cart Items */}
             <div className="lg:col-span-2">
-              <div className="md:bg-white rmd:ounded-lg md:shadow-sm">
+              <div className="md:bg-white rmd:ounded-lg md:border md:border-[#dee4e1] rounded-[8px_8px_0_0]">
                 {/* Cart Header */}
                 <div className="px-4 md:px-6 py-4 border-b border-gray-200">
                   <h2 className="text-[1rem] md:text-lg font-semibold text-gray-900">
@@ -163,7 +163,7 @@ export default function CartItemSection() {
                                       item.product.item_price * item.quantity,
                                     ).toLocaleString("en-NG")}
                                   </div>
-                                  <div className="flex items-center text-[0.875rem] md:text-sm text-gray-800 mt-1">
+                                  <div className="flex items-center text-[0.875rem] md:text-sm text-gray-500 mt-1">
                                     <CurrencyNgn />
                                     {Number(
                                       item.product.item_price,
@@ -183,7 +183,7 @@ export default function CartItemSection() {
                                         decreaseCart(item.product.id)
                                       }
                                       disabled={item.quantity <= 1}
-                                      className="border border-gray-300 p-[0.5rem] md:p-3 transition-transform duration-300 hover:bg-[#009688] hover:text-white font-semibold rounded-full disabled:cursor-not-allowed transition-colors"
+                                      className="border border-gray-300 p-[0.5rem] md:p-3 transition-transform duration-300 hover:bg-[#009688] hover:text-white font-semibold rounded-full disabled:cursor-not-allowed cursor-pointer transition-colors"
                                     >
                                       <Minus size={16} />
                                     </button>
@@ -197,7 +197,7 @@ export default function CartItemSection() {
                                       disabled={
                                         item.quantity >= item.product.item_units
                                       }
-                                      className="border border-gray-300 p-[0.5rem] md:p-3 transition-transform duration-300 hover:bg-[#009688] hover:text-white font-semibold rounded-full disabled:cursor-not-allowed transition-colors"
+                                      className="border border-gray-300 p-[0.5rem] md:p-3 transition-transform duration-300 hover:bg-[#009688] hover:text-white font-semibold rounded-full disabled:cursor-not-allowed cursor-pointer transition-colors"
                                     >
                                       <Plus size={16} />
                                     </button>

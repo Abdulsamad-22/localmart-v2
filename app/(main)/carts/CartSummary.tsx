@@ -37,8 +37,8 @@ export default function CartSummary() {
 
   return (
     <div className="lg:col-span-1">
-      <div className="bg-white rounded-lg shadow-sm sticky top-6">
-        <div className="px-4 md:px-6 py-4 border-b border-gray-200">
+      <div className="bg-white rounded-lg border border-[#dee4e1] sticky top-6">
+        <div className="px-4 md:px-6 py-4 border-b border-[#dee4e1]">
           <h2 className="text-lg font-semibold text-gray-900">Order Summary</h2>
         </div>
 
@@ -122,7 +122,7 @@ export default function CartSummary() {
           <button
             onClick={handleCheckout}
             className="w-full bg-gradient-to-r from-[#009688] to-[#00695C] transition-all duration-200
-        hover:from-[#00897B] hover:to-[#005B4F] text-[#fff] py-3 rounded-lg transition-colors flex items-center justify-center gap-2 mt-4"
+        hover:from-[#00897B] hover:to-[#005B4F] text-[#fff] py-3 rounded-lg transition-colors flex items-center justify-center gap-2 mt-4 cursor-pointer"
           >
             Proceed to Checkout
             <ArrowRight size={16} />
