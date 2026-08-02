@@ -30,27 +30,23 @@ const statusConfig: Record<OrderStatus, { label: string; className: string }> =
   {
     paid: {
       label: "Order placed",
-      className:
-        "bg-blue-50 text-blue-700 dark:bg-blue-900/30 dark:text-blue-300",
+      className: "bg-blue-50 text-blue-700",
     },
     processing: {
       label: "Processing",
-      className:
-        "bg-amber-50 text-amber-700 dark:bg-amber-900/30 dark:text-amber-300",
+      className: "bg-amber-50 text-amber-700",
     },
     in_transit: {
       label: "In transit",
-      className:
-        "bg-purple-50 text-purple-700 dark:bg-purple-900/30 dark:text-purple-300",
+      className: "bg-purple-50 text-purple-700",
     },
     delivered: {
       label: "Delivered",
-      className:
-        "bg-green-50 text-green-700 dark:bg-green-900/30 dark:text-green-300",
+      className: "bg-green-50 text-green-700",
     },
     cancelled: {
       label: "Cancelled",
-      className: "bg-red-50 text-red-700 dark:bg-red-900/30 dark:text-red-300",
+      className: "bg-red-50 text-red-700",
     },
   };
 
@@ -63,7 +59,7 @@ export function MyOrdersClient({ orders, statusCounts, activeStatus }: Props) {
   return (
     <div>
       {/* filter tabs */}
-      <div className="flex gap-1 border-b border-gray-200 dark:border-gray-800 mb-6 overflow-x-auto">
+      <div className="flex gap-1 border-b border-gray-300 mb-6 overflow-x-auto">
         {tabs.map((tab) => {
           const isActive = activeStatus === tab.value;
           const count = getCount(tab.value);
@@ -79,7 +75,7 @@ export function MyOrdersClient({ orders, statusCounts, activeStatus }: Props) {
                 ${
                   isActive
                     ? "border-[#009688] text-[#009688]"
-                    : "border-transparent text-gray-500 hover:text-gray-900 dark:hover:text-gray-100"
+                    : "border-transparent text-gray-500 hover:text-gray-900"
                 }`}
             >
               {tab.label}
@@ -89,7 +85,7 @@ export function MyOrdersClient({ orders, statusCounts, activeStatus }: Props) {
                   ${
                     isActive
                       ? "bg-[#009688]/10 text-[#009688]"
-                      : "bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400"
+                      : "bg-gray-100 text-gray-600"
                   }`}
                 >
                   {count}
@@ -103,15 +99,13 @@ export function MyOrdersClient({ orders, statusCounts, activeStatus }: Props) {
       {/* orders list */}
       {orders.length === 0 ? (
         <div className="flex flex-col items-center justify-center py-20 text-center">
-          <div className="w-16 h-16 rounded-full bg-gray-100 dark:bg-gray-800 flex items-center justify-center mb-4">
+          <div className="w-16 h-16 rounded-full bg-gray-100 flex items-center justify-center mb-4">
             <i
               className="ti ti-shopping-bag text-gray-400 text-2xl"
               aria-hidden="true"
             />
           </div>
-          <p className="text-gray-900 dark:text-white font-medium mb-1">
-            No orders yet
-          </p>
+          <p className="text-gray-900 font-medium mb-1">No orders yet</p>
           <p className="text-sm text-gray-500 mb-4">
             {activeStatus
               ? `No ${activeStatus.replace("_", " ")} orders`
@@ -138,12 +132,12 @@ export function MyOrdersClient({ orders, statusCounts, activeStatus }: Props) {
               <Link
                 key={order.id}
                 href={`/my-orders/${order.id}`}
-                className="block bg-white dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-800 p-5 hover:border-gray-300 dark:hover:border-gray-700 hover:shadow-sm transition-all duration-150"
+                className="block bg-white rounded-xl border border-gray-200 p-5 hover:border-gray-300 hover:shadow-sm transition-all duration-150"
               >
                 {/* order header */}
                 <div className="flex items-start justify-between gap-3 mb-4">
                   <div>
-                    <p className="text-sm font-medium text-gray-900 dark:text-white">
+                    <p className="text-sm font-medium text-gray-900">
                       Order #{order.payment_reference}
                     </p>
                     <p className="text-xs text-gray-500 mt-0.5">
@@ -162,7 +156,7 @@ export function MyOrdersClient({ orders, statusCounts, activeStatus }: Props) {
                   {order.order_items.slice(0, 3).map((item) => (
                     <div
                       key={item.id}
-                      className="w-12 h-12 rounded-lg overflow-hidden bg-gray-100 dark:bg-gray-800 flex-shrink-0"
+                      className="w-12 h-12 rounded-lg overflow-hidden bg-gray-100 flex-shrink-0"
                     >
                       {item.product_image ? (
                         <img
@@ -188,14 +182,14 @@ export function MyOrdersClient({ orders, statusCounts, activeStatus }: Props) {
                     </div>
                   )}
                   <div className="ml-auto text-right">
-                    <p className="text-sm font-medium text-gray-900 dark:text-white">
+                    <p className="text-xs text-gray-500">Total</p>
+                    <p className="text-sm font-medium text-gray-900">
                       ₦{Number(order.total_amount).toLocaleString("en-NG")}
                     </p>
-                    <p className="text-xs text-gray-500">total</p>
                   </div>
                 </div>
 
-                <div className="flex items-center justify-between text-xs text-gray-400">
+                <div className="flex items-center justify-between text-[0.75rem] text-gray-500">
                   <span>
                     {order.is_different_delivery
                       ? `Delivering to ${order.delivery_address}`
