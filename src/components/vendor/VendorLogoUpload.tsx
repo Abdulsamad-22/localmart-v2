@@ -54,17 +54,17 @@ export function VendorLogoUpload({ logo, setLogo }: Props) {
 
   return (
     <div>
-      <label className="block text-[0.9375rem] font-medium text-gray-700 dark:text-gray-300 mb-2">
+      <label className="block text-[0.9375rem] font-medium text-gray-700 mb-2">
         Store logo
-        <span className="text-gray-400 font-normal ml-1">(optional)</span>
+        <span className="text-gray-500 font-normal ml-1">(optional)</span>
       </label>
-      <p className="text-[0.75rem] text-gray-400 mb-3">
+      <p className="text-[0.875rem] text-gray-600 mb-3">
         Displayed on your public store page. Square image recommended.
       </p>
 
       <div className="flex items-center gap-4">
         {/* preview or placeholder */}
-        <div className="w-16 h-16 rounded-xl border-2 border-dashed border-gray-300 dark:border-gray-700 overflow-hidden flex-shrink-0 relative">
+        <div className="w-16 h-16 rounded-xl border-2 border-dashed border-gray-400 overflow-hidden flex-shrink-0 relative">
           {preview ? (
             <>
               <img
@@ -82,7 +82,7 @@ export function VendorLogoUpload({ logo, setLogo }: Props) {
             </>
           ) : (
             <div className="w-full h-full flex items-center justify-center">
-              <Camera size={20} className="text-gray-400" />
+              <Camera size={20} className="text-gray-600" />
             </div>
           )}
         </div>
@@ -91,7 +91,7 @@ export function VendorLogoUpload({ logo, setLogo }: Props) {
         <div>
           <label
             htmlFor="vendor-logo-upload"
-            className={`inline-flex items-center gap-2 px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-700 text-sm font-medium text-gray-600 dark:text-gray-300 cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-800 transition-all
+            className={`inline-flex items-center gap-2 px-4 py-2 rounded-lg border border-gray-300 text-sm font-medium text-gray-600 cursor-pointer hover:bg-gray-50 transition-all
               ${compressing ? "opacity-50 pointer-events-none" : ""}`}
           >
             <Camera size={15} />
@@ -108,7 +108,7 @@ export function VendorLogoUpload({ logo, setLogo }: Props) {
             onChange={handleChange}
             className="sr-only"
           />
-          <p className="text-xs text-gray-300 mt-1">
+          <p className="text-xs text-gray-600 mt-1">
             JPG, PNG or WEBP · Max 15MB
           </p>
         </div>
