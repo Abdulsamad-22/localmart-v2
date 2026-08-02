@@ -16,7 +16,7 @@ export function ProductCard({ product }: Props) {
   const { addToCart } = useCartStore();
 
   return (
-    <div className="bg-white border border-[#c4c4c4] rounded-[4px] md:rounded-[10px]">
+    <div className="bg-white border border-[#DEE4E1] rounded-[4px] md:rounded-[10px]">
       <div className="w-full h-[8.5rem] md:h-[218px] relative cursor-pointer">
         <Link href={`/products/${product.id}`}>
           <img
