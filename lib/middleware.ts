@@ -14,6 +14,14 @@ export async function middleware(request: NextRequest) {
   const url = request.nextUrl.clone();
   const path = url.pathname;
 
+  if (path.startsWith("/vendor/register")) {
+    if (!session) {
+      url.pathname = "/login";
+      url.searchParams.set("redirectTo", path);
+      return NextResponse.redirect(url);
+    }
+  }
+
   if (path.startsWith("/checkout")) {
     if (!session) {
       url.pathname = "/login";
@@ -22,7 +30,15 @@ export async function middleware(request: NextRequest) {
     }
   }
 
-  if (path.startsWith("/vendor/register")) {
+  if (path.startsWith("/orders")) {
+    if (!session) {
+      url.pathname = "/login";
+      url.searchParams.set("redirectTo", path);
+      return NextResponse.redirect(url);
+    }
+  }
+
+  if (path.startsWith("/my-orders")) {
     if (!session) {
       url.pathname = "/login";
       url.searchParams.set("redirectTo", path);
@@ -53,5 +69,11 @@ export async function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/checkout/:path*", "/vendor/register/:path*", "/my-shop/:path*"],
+  matcher: [
+    "/vendor/register/:path*",
+    "/checkout/:path*",
+    "/orders/:path*",
+    "/my-orders/:path*",
+    "/my-shop/:path*",
+  ],
 };
