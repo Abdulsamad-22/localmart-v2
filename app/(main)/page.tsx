@@ -12,7 +12,7 @@ export default async function Home() {
   return (
     <main>
       <SearchBar />
-      {/* <LocationProvider /> */}
+      <LocationProvider />
       <StoreGrid limit={12} products={products} />
     </main>
   );
