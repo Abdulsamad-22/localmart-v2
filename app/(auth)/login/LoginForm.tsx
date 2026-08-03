@@ -35,7 +35,7 @@ export default function LoginForm() {
         toast.error(loginResult.error ?? "Login failed. Please try again.");
         return;
       }
-
+      console.log("redirecting to:", redirectTo);
       // redirect after successful login
       router.replace(redirectTo || "/");
     } catch (error) {
