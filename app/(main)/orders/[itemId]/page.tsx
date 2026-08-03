@@ -12,15 +12,15 @@ export default async function OrderDetailPage({ params }: Props) {
   const supabase = await getSupabaseServerClient();
 
   const {
-    data: { session },
-  } = await supabase.auth.getSession();
-  if (!session) redirect(`/login?redirectTo=/orders/${itemId}`);
+    data: { user },
+  } = await supabase.auth.getUser();
+  if (!user) return null;
 
   // get vendor
   const { data: vendor } = await supabase
     .from("vendors")
     .select("id, business_name")
-    .eq("vendor_id", session.user.id)
+    .eq("vendor_id", user.id)
     .single();
 
   if (!vendor) redirect("/vendor/register");

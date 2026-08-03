@@ -48,9 +48,9 @@ export default async function BuyerOrderDetailPage({ params }: Props) {
   const supabase = await getSupabaseServerClient();
 
   const {
-    data: { session },
-  } = await supabase.auth.getSession();
-  if (!session) redirect(`/login?redirectTo=/my-orders/${orderId}`);
+    data: { user },
+  } = await supabase.auth.getUser();
+  if (!user) return null;
 
   const { data: order, error } = await supabase
     .from("orders")
@@ -92,7 +92,7 @@ export default async function BuyerOrderDetailPage({ params }: Props) {
     `,
     )
     .eq("id", orderId)
-    .eq("customer_id", session.user.id) // security — buyer can only see their own orders
+    .eq("customer_id", user.id) // security — buyer can only see their own orders
     .single();
 
   if (error || !order) notFound();

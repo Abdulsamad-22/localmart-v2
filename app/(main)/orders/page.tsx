@@ -11,11 +11,11 @@ export default async function OrdersPage({ searchParams }: Props) {
   const supabase = await getSupabaseServerClient();
 
   const {
-    data: { session },
-  } = await supabase.auth.getSession();
-  if (!session) redirect("/login?redirectTo=/orders");
+    data: { user },
+  } = await supabase.auth.getUser();
+  if (!user) return null;
 
-  const userId = session.user.id;
+  const userId = user.id;
 
   // get vendor using auth user id
   const { data: vendor } = await supabase

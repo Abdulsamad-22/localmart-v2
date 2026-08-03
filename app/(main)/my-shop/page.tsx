@@ -6,14 +6,15 @@ export default async function Myshop() {
   const supabase = await getSupabaseServerClient();
 
   const {
-    data: { session },
-  } = await supabase.auth.getSession();
-  if (!session) redirect("/login?redirectTo=/my-shop");
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  if (!user) return null;
 
   const { data: vendor } = await supabase
     .from("vendors")
     .select("*")
-    .eq("vendor_id", session.user.id)
+    .eq("vendor_id", user.id)
     .single();
 
   if (!vendor) {
