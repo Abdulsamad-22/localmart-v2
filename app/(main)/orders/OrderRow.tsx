@@ -53,7 +53,7 @@ export function OrderRow({ item }: Props) {
       </div>
 
       {/* product image */}
-      <div className="w-12 h-12 rounded-lg overflow-hidden bg-gray-100 dark:bg-gray-800 flex-shrink-0">
+      <div className="w-12 h-12 rounded-lg overflow-hidden bg-gray-100 flex-shrink-0">
         {item.product_image ? (
           <img
             src={item.product_image}
@@ -76,11 +76,22 @@ export function OrderRow({ item }: Props) {
           <p className="text-sm font-medium text-gray-900 truncate">
             {item.product_name}
           </p>
-          {item.selected_size && (
-            <span className="text-[11px] px-1.5 py-0.5 rounded bg-gray-600 text-gray-100">
-              {item.selected_size}
-            </span>
-          )}
+          <div className="flex items-center gap-2 mt-1 flex-wrap">
+            {item.selected_size && (
+              <span className="text-[11px] px-1.5 py-0.5 rounded bg-gray-600 text-gray-100">
+                {item.selected_size}
+              </span>
+            )}
+            {item.selected_color && (
+              <span className="inline-flex items-center gap-1 text-[11px] px-2 py-0.5 rounded bg-gray-600 text-gray-200">
+                <span
+                  className="w-2.5 h-2.5 rounded-full border border-gray-300"
+                  style={{ backgroundColor: item.selected_color.code }}
+                />
+                {item.selected_color.name}
+              </span>
+            )}
+          </div>
         </div>
         <p className="text-xs text-gray-900">
           {buyerName} · Qty {item.quantity} · {date}
