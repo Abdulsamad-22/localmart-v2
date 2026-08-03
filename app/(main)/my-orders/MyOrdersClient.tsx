@@ -175,7 +175,7 @@ export function MyOrdersClient({ orders, statusCounts, activeStatus }: Props) {
                     </div>
                   ))}
                   {itemCount > 3 && (
-                    <div className="w-12 h-12 rounded-lg bg-gray-100 dark:bg-gray-800 flex items-center justify-center flex-shrink-0">
+                    <div className="w-12 h-12 rounded-lg bg-gray-100 flex items-center justify-center flex-shrink-0">
                       <span className="text-xs text-gray-500 font-medium">
                         +{itemCount - 3}
                       </span>
