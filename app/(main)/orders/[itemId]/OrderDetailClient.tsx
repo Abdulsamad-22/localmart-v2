@@ -101,7 +101,7 @@ const statusOrder: OrderStatus[] = [
 ];
 
 export function OrderDetailClient({ item, vendorId }: Props) {
-  const order = item?.orders;
+  const order = item?.orders ?? null;
   const config = statusConfig[item.status];
   const currentStatusIndex = statusOrder.indexOf(item.status);
   const date = new Date(item.created_at).toLocaleDateString("en-NG", {
@@ -113,7 +113,11 @@ export function OrderDetailClient({ item, vendorId }: Props) {
   });
 
   if (!order) {
-    return <div>Loading order details...</div>;
+    return (
+      <div className="max-w-3xl mx-auto px-4 py-8">
+        <p className="text-gray-500 text-sm">Order details not found.</p>
+      </div>
+    );
   }
 
   const deliveryName = order.is_different_delivery
