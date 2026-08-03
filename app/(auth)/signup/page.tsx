@@ -1,5 +1,10 @@
 import SignupForm from "./SignupForm";
+import { Suspense } from "react";
 
 export default function SIgnupPage() {
-  return <SignupForm />;
+  return (
+    <Suspense fallback={null}>
+      <SignupForm />;
+    </Suspense>
+  );
 }
