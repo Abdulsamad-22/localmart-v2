@@ -12,16 +12,15 @@ export default function AddProductForm() {
   } = useFormContext<ProductFormData>();
 
   return (
-    <div className="w-full md:w-[50%] md:p-6 bg-white md:shadow rounded-lg space-y-6">
-      <div>
-        <div className="flex items-center justify-between mb-8">
-          <h3 className="text-[1.25rem] text-gray-900 font-semibold">
-            New Product
-          </h3>
-        </div>
-
+    <div className="w-full md:w-[50%] md:p-6 rounded-lg">
+      <h3 className="text-[1rem] md:text-[1.25rem] text-gray-900 font-medium mb-2">
+        New Product
+      </h3>
+      <div className="bg-gray-50 px-4 py-6 rounded-[8px] border border-[#DEE4E1] space-y-6">
         <div className="space-y-2 text-gray-800 mb-6">
-          <label>Product Name</label>
+          <label className="block text-sm md:text-[1rem] font-medium text-gray-700 mb-1.5">
+            Product Name
+          </label>
           <input
             {...register("productName")}
             className="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-[#009688]"
@@ -31,7 +30,9 @@ export default function AddProductForm() {
         </div>
 
         <div className="space-y-2 text-gray-800 mb-6">
-          <label>Product Category</label>
+          <label className="block text-sm md:text-[1rem] font-medium text-gray-700 mb-1.5">
+            Product Category
+          </label>
           <input
             {...register("category")}
             className="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-[#009688]"
@@ -42,8 +43,9 @@ export default function AddProductForm() {
 
         <div className="space-y-2 text-gray-800 mb-6">
           <div className="flex items-center justify-between">
-            <label>Product Description</label>
-            {/* <label>0/1000</label> */}
+            <label className="block text-sm md:text-[1rem] font-medium text-gray-700 mb-1.5">
+              Product Description
+            </label>
           </div>
 
           <textarea
@@ -55,7 +57,13 @@ export default function AddProductForm() {
         </div>
 
         <div className="space-y-2 text-gray-800">
-          <label htmlFor="unit">{`Units (No of item available)`}</label>
+          <label
+            htmlFor="unit"
+            className="block text-sm md:text-[1rem] font-medium text-gray-700 mb-1.5"
+          >
+            Units{" "}
+            <span className="text-gray-400 pl-1">(No of item available)</span>
+          </label>
           <input
             {...register("units")}
             className="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-[#009688]"
@@ -67,7 +75,7 @@ export default function AddProductForm() {
         <div className="w-full space-y-2 text-gray-800">
           <label
             htmlFor="price"
-            className="block text-sm font-medium text-gray-700"
+            className="block text-sm md:text-[1rem] font-medium text-gray-700 mb-1.5"
           >
             Pricing
           </label>
