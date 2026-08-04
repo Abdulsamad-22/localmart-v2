@@ -45,10 +45,10 @@ export default function LoginForm() {
     }
   };
   return (
-    <div className="w-full mx-auto my-12 md:w-[40%] p-6 bg-white shadow rounded-lg text-center">
+    <div className="w-full mx-auto md:w-[40%] p-6 md:bg-white md:border border-[#dee4e1] rounded-lg text-center">
       <div className="mb-8">
         <h3 className="text-[1.75rem]">Welcome back to LocalMart</h3>
-        <p className="text-[#777774] text-[0.875rem]">
+        <p className="text-[#777774] text-[0.75rem]">
           Type your e-mail or phone number to log in your account.
         </p>
       </div>

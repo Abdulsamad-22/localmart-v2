@@ -45,10 +45,10 @@ export default function SignupForm() {
     }
   };
   return (
-    <div className="w-full mx-auto my-12 md:w-[40%] p-6 bg-white shadow rounded-lg text-center">
+    <div className="w-full mx-auto md:w-[40%] p-6 md:bg-white md:border border-[#dee4e1] rounded-lg text-center">
       <div className="mb-8">
         <h3 className="text-[1.75rem] mb-1">Welcome to LocalMart</h3>
-        <p className="text-[#777774] text-[0.875rem]">
+        <p className="text-[#777774] text-[0.75rem]">
           Type your e-mail or phone number to log in or create an account.
         </p>
       </div>
@@ -104,7 +104,7 @@ export default function SignupForm() {
               )
             )}
           </div>
-          <p className=" mb-12">
+          <p className="text-gray-500 mb-12">
             Already have an accout?
             <Link
               href={"/login"}
