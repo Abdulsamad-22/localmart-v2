@@ -17,7 +17,7 @@ export function ProductCard({ product }: Props) {
 
   return (
     <div className="bg-white border border-[#DEE4E1] rounded-[4px] md:rounded-[10px]">
-      <div className="w-full h-[8.5rem] md:h-[218px] relative cursor-pointer">
+      <div className="w-full h-[9rem] md:h-[218px] relative cursor-pointer">
         <Link href={`/products/${product.id}`}>
           <img
             className="w-full h-full rounded-t-[4px] md:rounded-t-[10px]"
@@ -56,8 +56,16 @@ export function ProductCard({ product }: Props) {
               {Number(product.item_price).toLocaleString()}
             </span>
 
-            <div className="flex items-center gap-[2px] text-[0.75rem] md:text-[0.875rem] text-gray-600">
+            <div className="flex items-center justify-between gap-[2px] text-[0.75rem] md:text-[0.875rem] text-gray-600">
               <VendorDistance vendor={product.vendor} />
+              <div className="flex justify-start md:hidden">
+                <button
+                  onClick={() => addToCart(product, 1)}
+                  className="px-3 py-1.5 border border-[#727876] rounded-[16px]"
+                >
+                  <ShoppingCart size={14} color="#2C3230" />
+                </button>
+              </div>
             </div>
           </div>
         </div>
