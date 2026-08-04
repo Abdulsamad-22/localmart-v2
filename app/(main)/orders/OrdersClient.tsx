@@ -54,10 +54,10 @@ export default function OrdersClient({
             <Link
               key={tab.label}
               href={href}
-              className={`flex items-center gap-2 px-4 py-3 text-sm font-medium border-b-2 transition-colors whitespace-nowrap
+              className={`flex items-center gap-2 px-4 py-3 text-sm font-medium border-b-0.5 transition-colors whitespace-nowrap
                 ${
                   isActive
-                    ? "border-[#009688] text-[#009688]"
+                    ? "border-[#009688] border-b-3 rounded-b-[2px] text-[#009688]"
                     : "border-transparent text-gray-500 hover:text-gray-900"
                 }`}
             >
