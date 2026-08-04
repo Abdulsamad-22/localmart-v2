@@ -75,7 +75,8 @@ export function StorefrontHero({ vendor, products, pendingOrders }: Props) {
               </div>
             </div>
           </div>
-
+        </div>
+        <div className="absolute right-4 md:right-6 top-4 md:top-8 ">
           <ShareButton
             vendorId={vendor.id}
             shopName={vendor.business_name ?? ""}
