@@ -1,7 +1,7 @@
 "use client";
 
 import useAuthStore from "@/state-store/authStore";
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import { usePathname, useRouter } from "next/navigation";
 import {
   UserCircle,
@@ -11,6 +11,8 @@ import {
   X,
   SignOut,
   Package,
+  CaretDown,
+  Storefront,
 } from "@phosphor-icons/react";
 import Link from "next/link";
 import useCartStore from "@/state-store/cartStore";
@@ -31,6 +33,22 @@ export default function Header() {
   const pathname = usePathname();
 
   const cartCount = cartItems.reduce((sum, item) => sum + item.quantity, 0);
+
+  const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
+  const userMenuRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const handleClickOutside = (e: MouseEvent) => {
+      if (
+        userMenuRef.current &&
+        !userMenuRef.current.contains(e.target as Node)
+      ) {
+        setIsUserMenuOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
 
   const toggleMenu = () => {
     setIsMenuOpen((prev) => !prev);
@@ -64,16 +82,13 @@ export default function Header() {
 
   const handleLogout = async () => {
     const result = await logout();
-
-    if (!result.success) {
-      toast.error(result.error ?? "Logout failed. Please try again.");
-      return;
+    if (result.success) {
+      toast.success("Signed out successfully.");
+      setTimeout(() => router.replace("/"), 500);
+    } else {
+      toast.error(result.error ?? "Logout failed.");
     }
-    toast.success("Signed out successfully.");
-
-    setTimeout(() => {
-      router.replace("/");
-    }, 500);
+    setIsUserMenuOpen(false);
   };
 
   const navLinks: NavLinks[] = [
@@ -98,105 +113,168 @@ export default function Header() {
   ];
 
   return (
-    <header className="w-full bg-white shadow-md sticky top-0 z-[100]">
-      <div className="max-w-full px-4 md:px-12 py-4 md:py-6 flex items-center justify-between">
+    <header className="w-full bg-white border-b border-gray-100 sticky top-0 z-[100]">
+      <div className="max-w-full px-4 md:px-12 py-3 md:py-4 flex items-center justify-between gap-4">
         {/* logo */}
         <Link
           href="/"
-          className="text-[1.5rem] md:text-3xl text-[#009688] font-semibold"
+          className="text-[1.5rem] md:text-2xl text-[#009688] font-semibold flex-shrink-0"
         >
           LocalMart
         </Link>
 
         {/* desktop nav */}
-        <nav className="hidden md:flex items-center gap-6">
-          {navLinks.map((link) =>
-            link.redirectTo ? (
-              <Link
-                key={link.label}
-                href={link.redirectTo}
-                className={`flex items-center gap-1 text-[1rem] transition-colors
-                  ${
-                    pathname === link.redirectTo
-                      ? "text-[#009688] font-medium border-b-2 border-[#009688] pb-[2px]"
-                      : "text-[#636363] hover:text-[#009688]"
-                  }`}
-                style={{ position: "relative" }}
-              >
-                {link.icon}
-                {link.label === "Cart" && cartCount > 0 && (
-                  <span
-                    style={{
-                      position: "absolute",
-                      top: "-10px",
-                      right: "-10px",
-                      backgroundColor: "#009688",
-                      color: "#fff",
-                      fontSize: "10px",
-                      fontWeight: 500,
-                      borderRadius: "50%",
-                      width: "16px",
-                      height: "16px",
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "center",
-                    }}
-                  >
-                    {cartCount}
-                  </span>
-                )}
-                <span>{link.label}</span>
-              </Link>
-            ) : (
-              <button
-                key={link.label}
-                onClick={link.onClick}
-                className={`flex items-center gap-1 text-sm transition-colors cursor-pointer
-                  ${
-                    link.isButton
-                      ? "bg-[#009688] text-white px-4 py-2 rounded-lg hover:bg-[#00796B]"
-                      : "text-[#636363] hover:text-[#009688]"
-                  }`}
-              >
-                {link.icon}
-                <span>{link.label}</span>
-              </button>
-            ),
-          )}
-
-          <button
-            className="flex items-center gap-2 text-[#D41E1E] cursor-pointer"
-            onClick={handleLogout}
+        <nav className="hidden md:flex items-center gap-1">
+          {/* wishlist */}
+          <Link
+            href="/wishlist"
+            className={`flex items-center gap-1.5 px-3 py-2 rounded-lg text-sm transition-colors
+              ${
+                pathname === "/wishlist"
+                  ? "text-[#009688] font-medium bg-[#009688]/5"
+                  : "text-[#636363] hover:text-[#009688] hover:bg-gray-50"
+              }`}
           >
-            <SignOut className="" size={20} />
-            Logout
-          </button>
-        </nav>
+            <Heart size={18} />
+            <span>Wishlists</span>
+          </Link>
 
-        {/* mobile — cart + menu icon */}
-        <div className="flex md:hidden items-center gap-3">
+          {/* cart */}
           <Link
             href="/carts"
-            style={{ position: "relative", display: "inline-flex" }}
+            className={`flex items-center gap-1.5 px-3 py-2 rounded-lg text-sm transition-colors relative
+              ${
+                pathname === "/carts"
+                  ? "text-[#009688] font-medium bg-[#009688]/5"
+                  : "text-[#636363] hover:text-[#009688] hover:bg-gray-50"
+              }`}
           >
+            <span className="relative">
+              <ShoppingCart size={18} />
+              {cartCount > 0 && (
+                <span className="absolute -top-2 -right-2 bg-[#009688] text-white text-[10px] font-medium rounded-full w-4 h-4 flex items-center justify-center">
+                  {cartCount}
+                </span>
+              )}
+            </span>
+            <span>Cart</span>
+          </Link>
+
+          {/* orders */}
+          <Link
+            href="/my-orders"
+            className={`flex items-center gap-1.5 px-3 py-2 rounded-lg text-sm transition-colors
+              ${
+                pathname === "/my-orders"
+                  ? "text-[#009688] font-medium bg-[#009688]/5"
+                  : "text-[#636363] hover:text-[#009688] hover:bg-gray-50"
+              }`}
+          >
+            <Package size={18} />
+            <span>Orders</span>
+          </Link>
+
+          {/* sell on localmart / view my store */}
+          <button
+            onClick={handleVendorRedirection}
+            className="flex items-center gap-1.5 px-4 py-2 rounded-lg text-sm font-medium bg-[#009688] hover:bg-[#00796B] text-white transition-all ml-2"
+          >
+            <Storefront size={18} />
+            <span>
+              {loading
+                ? "Loading..."
+                : vendorData
+                  ? "View my store"
+                  : "Sell on LocalMart"}
+            </span>
+          </button>
+
+          {/* user dropdown */}
+          <div ref={userMenuRef} className="relative ml-1">
+            <button
+              onClick={() => setIsUserMenuOpen((prev) => !prev)}
+              className="flex items-center gap-1.5 px-3 py-2 rounded-lg text-sm text-[#636363] hover:text-[#009688] hover:bg-gray-50 transition-colors"
+            >
+              {user ? (
+                <div className="w-7 h-7 rounded-full bg-[#009688] flex items-center justify-center text-white text-xs font-medium">
+                  {user.email?.[0]?.toUpperCase()}
+                </div>
+              ) : (
+                <UserCircle size={20} />
+              )}
+              <CaretDown
+                size={14}
+                className={`transition-transform duration-200 ${isUserMenuOpen ? "rotate-180" : ""}`}
+              />
+            </button>
+
+            {/* dropdown menu */}
+            {isUserMenuOpen && (
+              <div className="absolute right-0 top-full mt-1.5 w-52 bg-white rounded-xl border border-gray-200 shadow-lg overflow-hidden z-50">
+                {user ? (
+                  <>
+                    <div className="px-4 py-3 border-b border-gray-100">
+                      <p className="text-xs text-gray-500">Signed in as</p>
+                      <p className="text-sm font-medium text-gray-900 truncate">
+                        {user.email}
+                      </p>
+                    </div>
+                    <div className="py-1">
+                      <Link
+                        href="/my-orders"
+                        onClick={() => setIsUserMenuOpen(false)}
+                        className="flex items-center gap-2.5 px-4 py-2.5 text-sm text-gray-700 hover:bg-gray-50 transition-colors"
+                      >
+                        <Package size={16} className="text-gray-400" />
+                        My orders
+                      </Link>
+                      <Link
+                        href="/wishlist"
+                        onClick={() => setIsUserMenuOpen(false)}
+                        className="flex items-center gap-2.5 px-4 py-2.5 text-sm text-gray-700 hover:bg-gray-50 transition-colors"
+                      >
+                        <Heart size={16} className="text-gray-400" />
+                        Wishlists
+                      </Link>
+                    </div>
+                    <div className="border-t border-gray-100 py-1">
+                      <button
+                        onClick={handleLogout}
+                        className="flex items-center gap-2.5 px-4 py-2.5 text-sm text-red-600 hover:bg-red-50 transition-colors w-full text-left"
+                      >
+                        <SignOut size={16} />
+                        Log out
+                      </button>
+                    </div>
+                  </>
+                ) : (
+                  <div className="py-1">
+                    <Link
+                      href={`/login?redirectTo=${pathname}`}
+                      onClick={() => setIsUserMenuOpen(false)}
+                      className="flex items-center gap-2.5 px-4 py-2.5 text-sm text-gray-700 hover:bg-gray-50 transition-colors"
+                    >
+                      Log in
+                    </Link>
+                    <Link
+                      href={`/signup?redirectTo=${pathname}`}
+                      onClick={() => setIsUserMenuOpen(false)}
+                      className="flex items-center gap-2.5 px-4 py-2.5 text-sm text-[#009688] font-medium hover:bg-[#009688]/5 transition-colors"
+                    >
+                      Create account
+                    </Link>
+                  </div>
+                )}
+              </div>
+            )}
+          </div>
+        </nav>
+
+        {/* mobile right side — cart + menu */}
+        <div className="flex md:hidden items-center gap-3">
+          <Link href="/carts" className="relative inline-flex">
             {cartCount > 0 && (
-              <span
-                style={{
-                  position: "absolute",
-                  top: "-6px",
-                  right: "-6px",
-                  backgroundColor: "#009688",
-                  color: "#fff",
-                  fontSize: "10px",
-                  fontWeight: 500,
-                  borderRadius: "50%",
-                  width: "16px",
-                  height: "16px",
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                }}
-              >
+              <span className="absolute -top-1.5 -right-1.5 bg-[#009688] text-white text-[10px] font-medium rounded-full w-4 h-4 flex items-center justify-center">
                 {cartCount}
               </span>
             )}
@@ -204,72 +282,120 @@ export default function Header() {
           </Link>
 
           <button onClick={toggleMenu} className="text-[#636363]">
-            {isMenuOpen ? <X size={28} /> : <List size={28} />}
+            {isMenuOpen ? <X size={26} /> : <List size={26} />}
           </button>
         </div>
       </div>
 
       {/* mobile slide-in menu */}
       <div
-        className={`fixed top-0 right-0 h-screen w-1/2 bg-white shadow-2xl z-50
+        className={`fixed top-0 right-0 h-screen w-[70%] max-w-[280px] bg-white shadow-2xl z-50
           transform transition-transform duration-300 ease-in-out md:hidden
           ${isMenuOpen ? "translate-x-0" : "translate-x-full"}`}
         onClick={(e) => e.stopPropagation()}
       >
-        <div className="flex justify-end p-4 border-b border-gray-100">
+        {/* menu header */}
+        <div className="flex items-center justify-between p-4 border-b border-gray-100">
+          {user ? (
+            <div className="flex items-center gap-2">
+              <div className="w-8 h-8 rounded-full bg-[#009688] flex items-center justify-center text-white text-sm font-medium">
+                {user.email?.[0]?.toUpperCase()}
+              </div>
+              <div>
+                <p className="text-xs text-gray-500">Signed in as</p>
+                <p className="text-sm font-medium text-gray-900 truncate max-w-[160px]">
+                  {user.email}
+                </p>
+              </div>
+            </div>
+          ) : (
+            <span className="text-sm font-medium text-gray-900">Menu</span>
+          )}
           <button onClick={() => setIsMenuOpen(false)}>
-            <X size={24} />
+            <X size={22} className="text-gray-500" />
           </button>
         </div>
 
-        <div className="flex flex-col p-4 gap-1">
+        <div className="flex flex-col p-3 gap-0.5">
+          {/* sell / view store */}
           <button
-            className="flex items-center gap-3 py-3 border-b border-gray-100 text-[#636363] text-left w-full hover:text-[#009688] transition-colors"
-            onClick={() => {
-              setIsMenuOpen(false);
-              handleUserButton();
-            }}
-          >
-            <UserCircle size={20} />
-            Login / Sign up
-          </button>
-
-          <Link
-            href="/wishlist"
-            onClick={() => setIsMenuOpen(false)}
-            className={`flex items-center gap-2 py-3 border-b border-gray-100
-              ${pathname === "/wishlist" ? "text-[#009688] font-medium" : "text-[#636363]"}`}
-          >
-            <Heart size={20} />
-            Wishlists
-          </Link>
-
-          <Link
-            href="/my-orders"
-            onClick={() => setIsMenuOpen(false)}
-            className={`flex items-center gap-2 py-3 border-b border-gray-100
-              ${pathname === "/wishlist" ? "text-[#009688] font-medium" : "text-[#636363]"}`}
-          >
-            <Package size={20} />
-            Orders
-          </Link>
-
-          <button
-            className="bg-[#009688] text-white px-4 py-2 rounded-lg hover:bg-[#00796B] flex items-center gap-3 py-2 text-[#636363] text-left w-full hover:text-[#009688] transition-colors"
+            className="flex items-center gap-2 px-3 py-3 rounded-lg bg-[#009688] text-white text-sm font-medium mb-2"
             onClick={() => {
               setIsMenuOpen(false);
               handleVendorRedirection();
             }}
           >
+            <Storefront size={18} />
             {loading
               ? "Loading..."
               : vendorData
                 ? "View my store"
                 : "Sell on LocalMart"}
           </button>
+
+          <Link
+            href="/wishlist"
+            onClick={() => setIsMenuOpen(false)}
+            className={`flex items-center gap-2 px-3 py-3 rounded-lg text-sm transition-colors
+              ${
+                pathname === "/wishlist"
+                  ? "text-[#009688] font-medium bg-[#009688]/5"
+                  : "text-[#636363] hover:bg-gray-50"
+              }`}
+          >
+            <Heart size={18} />
+            Wishlists
+          </Link>
+
+          <Link
+            href="/my-orders"
+            onClick={() => setIsMenuOpen(false)}
+            className={`flex items-center gap-2 px-3 py-3 rounded-lg text-sm transition-colors
+              ${
+                pathname === "/my-orders"
+                  ? "text-[#009688] font-medium bg-[#009688]/5"
+                  : "text-[#636363] hover:bg-gray-50"
+              }`}
+          >
+            <Package size={18} />
+            Orders
+          </Link>
+
+          {!user ? (
+            <>
+              <Link
+                href={`/login?redirectTo=${pathname}`}
+                onClick={() => setIsMenuOpen(false)}
+                className="flex items-center gap-2 px-3 py-3 rounded-lg text-sm text-[#636363] hover:bg-gray-50 transition-colors"
+              >
+                <UserCircle size={18} />
+                Log in
+              </Link>
+              <Link
+                href={`/signup?redirectTo=${pathname}`}
+                onClick={() => setIsMenuOpen(false)}
+                className="flex items-center gap-2 px-3 py-3 rounded-lg text-sm text-[#009688] font-medium hover:bg-[#009688]/5 transition-colors"
+              >
+                <UserCircle size={18} />
+                Create account
+              </Link>
+            </>
+          ) : (
+            <button
+              onClick={() => {
+                setIsMenuOpen(false);
+                handleLogout();
+              }}
+              className="flex items-center gap-2 px-3 py-3 rounded-lg text-sm text-red-600 hover:bg-red-50 transition-colors text-left w-full mt-2 border-t border-gray-100 pt-3"
+            >
+              <SignOut size={18} />
+              Log out
+            </button>
+          )}
         </div>
       </div>
 
+      {/* backdrop */}
       {isMenuOpen && (
         <div
           className="fixed inset-0 bg-black/30 z-40 md:hidden"
