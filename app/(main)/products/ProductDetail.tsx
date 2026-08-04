@@ -119,7 +119,7 @@ export default function ({ product }: Props) {
       <div className="px-4 md:px-6 sm:px-6 lg:px-12 py-6">
         <div className="flex items-start gap-4 md:gap-20 mb-12">
           {/* Product Images */}
-          <div className="flex flex-col md:flex-row items-start gap-20 space-y-4">
+          <div className="flex flex-col md:flex-row items-start gap-4 md:gap-20 space-y-4">
             {/* Main Image */}
             <div className="w-full md:w-1/2 relative bg-white rounded-lg overflow-hidden shadow-sm">
               <img
@@ -278,7 +278,7 @@ export default function ({ product }: Props) {
                       disabled={quantity <= 1}
                       className="border border-gray-300 p-[0.5rem] md:p-3 transition-transform duration-300 hover:bg-[#009688] hover:text-white font-semibold rounded-full disabled:cursor-not-allowed transition-colors"
                     >
-                      <Minus size={16} />
+                      <Minus size={20} />
                     </button>
                     <span className="px-4 py-2 min-w-[60px] text-center font-medium">
                       {quantity}
@@ -288,7 +288,7 @@ export default function ({ product }: Props) {
                       disabled={quantity >= product.item_units}
                       className="border border-gray-300 p-[0.5rem] md:p-3 transition-transform duration-300 hover:bg-[#009688] hover:text-white font-semibold rounded-full disabled:cursor-not-allowed transition-colors"
                     >
-                      <Plus size={16} />
+                      <Plus size={20} />
                     </button>
                   </div>
 

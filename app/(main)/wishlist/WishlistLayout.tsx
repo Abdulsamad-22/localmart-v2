@@ -127,7 +127,7 @@ export default function WishlistLayout() {
                           <div className="flex flex-col sm:flex-row sm:justify-between gap-4">
                             <div className="flex-1">
                               {/* Product Name & Brand */}
-                              <h3 className="text-[0.875rem] md:text-[1.125rem] font-medium text-gray-900 mb-2 md:mb-2 line-clamp-2">
+                              <h3 className="text-[1rem] md:text-[1.125rem] font-medium text-gray-900 mb-2 md:mb-2 line-clamp-2">
                                 {item.product.item_name}
                               </h3>
                               <p className="hidden md:block text-sm text-gray-600 mb-2">
@@ -179,7 +179,7 @@ export default function WishlistLayout() {
                               </div>
 
                               <div className="block md:hidden text-right">
-                                <div className="flex items-center text-[0.875rem] md:text-[1.25rem] text-gray-900">
+                                <div className="flex items-center text-[1rem] md:text-[1.25rem] text-gray-900">
                                   <CurrencyNgn
                                     className="text-[1rem] md:text-[1.5rem]
                                 "

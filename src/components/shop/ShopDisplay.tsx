@@ -35,7 +35,7 @@ export default function ShopDisplay({ products, isOwner = false }: Props) {
           )}
         </div>
       ) : (
-        <div className="grid grid-cols-[49%_49%] sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-x-3 md:gap-x-4 gap-y-8 md:gap-y-12 px-6 md:px-12">
+        <div className="grid grid-cols-[49%_49%] sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-x-3 md:gap-x-4 gap-y-6 md:gap-y-12 px-6 md:px-12 mb-8 md:mb-12">
           {products.map((product) => (
             <ShopCard key={product.id} product={product} isOwner={isOwner} />
           ))}
