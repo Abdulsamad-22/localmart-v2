@@ -98,7 +98,7 @@ export default function CartItemSection() {
                           <div className="flex-1 min-w-0">
                             <div className="flex flex-col sm:flex-row sm:justify-between gap-1 md:gap-4">
                               <div className="flex-1">
-                                <h3 className="text-[0.875rem] md:text-base md:font-medium text-gray-900 mb-0 md:mb-2 line-clamp-2">
+                                <h3 className="text-[0.875rem] md:text-base md:font-medium text-gray-900 mb-1 md:mb-2 line-clamp-2">
                                   {item.product.item_name}
                                 </h3>
 
@@ -113,7 +113,7 @@ export default function CartItemSection() {
                                       }`}
                                     ></span>
                                     <span
-                                      className={`text-sm font-medium ${
+                                      className={`text-sm ${
                                         item.product.item_units > 0
                                           ? "text-green-600"
                                           : "text-red-600"
@@ -156,8 +156,8 @@ export default function CartItemSection() {
                               {/* Price & Quantity */}
                               <div className="flex flex-col sm:items-end gap-4 sm:min-w-[180px]">
                                 {/* Price */}
-                                <div className="text-right">
-                                  <div className="hidden md:flex items-center text-[1.125rem] font-semibold text-gray-900">
+                                <div className="flex flex-row-reverse justify-between md:flex-col md:items-end space-y-0.5 md:space-y-1 md:mt-2">
+                                  <div className="flex items-center text-[1.125rem] font-semibold text-gray-900">
                                     <CurrencyNgn size={20} />
                                     {Number(
                                       item.product.item_price * item.quantity,
@@ -185,7 +185,7 @@ export default function CartItemSection() {
                                       disabled={item.quantity <= 1}
                                       className="border border-gray-300 p-[0.5rem] md:p-3 transition-transform duration-300 hover:bg-[#009688] hover:text-white font-semibold rounded-full disabled:cursor-not-allowed cursor-pointer transition-colors"
                                     >
-                                      <Minus size={16} />
+                                      <Minus size={20} />
                                     </button>
                                     <span className="px-4 py-2 min-w-[60px] text-center font-medium">
                                       {item.quantity}
@@ -199,7 +199,7 @@ export default function CartItemSection() {
                                       }
                                       className="border border-gray-300 p-[0.5rem] md:p-3 transition-transform duration-300 hover:bg-[#009688] hover:text-white font-semibold rounded-full disabled:cursor-not-allowed cursor-pointer transition-colors"
                                     >
-                                      <Plus size={16} />
+                                      <Plus size={20} />
                                     </button>
                                   </div>
                                 </div>
@@ -246,7 +246,7 @@ export default function CartItemSection() {
                           onClick={() => removeFromCart(item.product.id)}
                           className="flex items-center gap-1 text-[0.975rem] text-gray-600 hover:text-red-600 transition-colors"
                         >
-                          <Trash size={14} />
+                          <Trash size={16} />
                           Remove
                         </button>
                       </div>
