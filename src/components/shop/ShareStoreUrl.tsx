@@ -73,7 +73,7 @@ export function ShareButton({ vendorId, shopName }: Props) {
       {/* trigger button */}
       <button
         onClick={handleShare}
-        className="inline-flex items-center gap-1.5 text-[0.8125rem] font-medium px-3.5 py-[7px] rounded-lg bg-[#009688] hover:bg-[#00796B] text-white transition-all"
+        className="inline-flex items-center gap-1.5 text-[0.8125rem] font-medium px-3.5 py-2 rounded-lg bg-[#607d8b] hover:bg-[#00796B] text-[#fff] transition-all"
       >
         <ShareNetwork size={15} />
         Share
