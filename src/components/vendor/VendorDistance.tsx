@@ -70,7 +70,7 @@ export function VendorDistance({ vendor }: Props) {
   if (route.status === "tooFar") return <p>{route.vendorAddress}</p>;
 
   return (
-    <p>
+    <p className="line-clamp-1">
       {route.distanceKm}km · {route.durationMinutes} min drive
     </p>
   );
