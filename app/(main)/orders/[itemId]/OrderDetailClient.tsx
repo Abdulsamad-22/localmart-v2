@@ -173,7 +173,10 @@ export function OrderDetailClient({ item, vendorId }: Props) {
               const isLast = index === timeline.length - 1;
 
               return (
-                <div key={step.status} className="flex items-center flex-1">
+                <div
+                  key={step.status}
+                  className="flex items-center justify-center flex-1"
+                >
                   <div className="flex flex-col items-center">
                     <div
                       className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-medium transition-all
