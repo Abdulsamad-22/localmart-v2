@@ -1,51 +1,143 @@
 "use client";
 
-import { getProducts } from "@/lib/products/getProducts";
-import useProductStore from "@/state-store/productStore";
-import { useEffect } from "react";
 import { useForm } from "react-hook-form";
+import { MagnifyingGlass, X } from "@phosphor-icons/react";
+import useProductStore from "@/state-store/productStore";
+import { SearchInput } from "./SearchInput";
+import { useState, useEffect } from "react";
+import { ActiveFilters } from "./ActiveFilters";
+import { CategorySheet } from "./CategorySheet";
+import { CategoryButton } from "./CategoryButton";
 
-export default function SearchBar() {
-  const { register } = useForm();
-  const { setProducts } = useProductStore();
+const PRODUCT_CATEGORIES = [
+  "All Categories",
+  "Fashion & Clothing",
+  "Food & Groceries",
+  "Electronics",
+  "Beauty & Personal Care",
+  "Home & Furniture",
+  "Health & Wellness",
+  "Sports & Fitness",
+  "Books & Stationery",
+  "Baby & Kids",
+  "Phones & Accessories",
+  "Agriculture & Farm Produce",
+  "Art & Crafts",
+  "Others",
+];
+
+type SearchForm = {
+  search: string;
+  category: string;
+};
+
+export function SearchBar() {
+  const setSearchQuery = useProductStore((state) => state.setSearchQuery);
+  const setSelectedCategory = useProductStore(
+    (state) => state.setSelectedCategory,
+  );
+  const searchQuery = useProductStore((state) => state.searchQuery);
+  const selectedCategory = useProductStore((state) => state.selectedCategory);
+
+  const { register, handleSubmit, reset, watch, setValue } =
+    useForm<SearchForm>({
+      defaultValues: { search: "", category: "" },
+    });
+
+  const searchValue = watch("search");
+
+  const [categoryOpen, setCategoryOpen] = useState(false);
 
   useEffect(() => {
-    async function fetchAllProducts() {
-      const result = await getProducts();
-
-      if (!result.success) {
-        console.log(result.message);
-        return;
-      }
-
-      setProducts(result.data);
+    if (searchValue.trim() === "" && searchQuery !== "") {
+      setSearchQuery("");
     }
+  }, [searchValue, searchQuery, setSearchQuery]);
 
-    fetchAllProducts();
-  }, []);
+  // search button clicked — update store, grid reacts
+  const onSubmit = (data: SearchForm) => {
+    setSearchQuery(data.search.trim());
+  };
+
+  // category selected — clears search, updates store
+  const handleCategoryChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const category = e.target.value;
+    setValue("search", "");
+
+    if (!category) {
+      setSelectedCategory("");
+      setSearchQuery("");
+    } else {
+      setSelectedCategory(category);
+    }
+  };
+
+  // clear everything
+  const handleClear = () => {
+    reset();
+    setSearchQuery("");
+    setSelectedCategory("");
+  };
+  const submitSearch = handleSubmit(onSubmit);
 
   return (
-    <div className="bg-[#009688] sticky top-[4rem] md:top-20 grid grid-cols-[80%_18%] md:grid-cols-[49.36%_49.36%] gap-4 py-5 md:py-6 px-4 md:px-12 w-full mt-[2rem] z-[1]">
-      <div className="rounded-2xl">
-        <input
-          {...register("search")}
-          className="w-full bg-[#fff] py-2 px-4 md:px-6 border-none outline-none rounded-lg"
-          placeholder="Search for products, vendors and categories..."
-          type="text"
-        />
-      </div>
+    <div className="sticky top-[3.5rem] md:top-[4.5rem] z-10 bg-white border-b border-gray-100 px-4 md:px-12 py-3">
+      <form onSubmit={submitSearch} className="max-w-4xl mx-auto">
+        {/* Desktop */}
 
-      <div className="w-full gap-4 flex">
-        <select className="w-full md:w-[50%] py-2 px-4 outline-none rounded-lg">
-          <option value="categories">Choose category</option>
-          <option value="categories">Groceries</option>
-        </select>
+        <div className="hidden md:flex gap-3">
+          <div className="w-64">
+            <CategoryButton
+              category={selectedCategory || "All Categories"}
+              onClick={() => setCategoryOpen(true)}
+            />
+          </div>
 
-        <select className="hidden md:inline w-[50%] py-2 px-4 outline-none rounded-lg">
-          <option value="categories">Filter</option>
-          <option value="categories">Groceries</option>
-        </select>
-      </div>
+          <SearchInput
+            value={searchValue}
+            onChange={(value) => setValue("search", value)}
+            onSubmit={submitSearch}
+            onClear={() => setValue("search", "")}
+          />
+        </div>
+
+        {/* Mobile */}
+
+        <div className="flex flex-col gap-3 md:hidden">
+          <SearchInput
+            value={searchValue}
+            onChange={(value) => setValue("search", value)}
+            onSubmit={submitSearch}
+            onClear={() => setValue("search", "")}
+          />
+
+          <CategoryButton
+            category={selectedCategory || "All Categories"}
+            onClick={() => setCategoryOpen(true)}
+          />
+        </div>
+      </form>
+
+      {/* <ActiveFilters
+        search={searchValue}
+        category={selectedCategory}
+        onClearSearch={() => setValue("search", "")}
+        onClearCategory={() => setSelectedCategory("")}
+        onClearAll={() => {
+          setValue("search", "");
+          setSelectedCategory("");
+        }}
+      /> */}
+
+      <CategorySheet
+        open={categoryOpen}
+        categories={PRODUCT_CATEGORIES}
+        selectedCategory={selectedCategory}
+        onClose={() => setCategoryOpen(false)}
+        onSelect={(category) =>
+          setSelectedCategory(category === "All Categories" ? "" : category)
+        }
+      />
     </div>
   );
 }
