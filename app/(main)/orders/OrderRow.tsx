@@ -82,15 +82,6 @@ export function OrderRow({ item }: Props) {
                 {item.selected_size}
               </span>
             )}
-            {item.selected_color && (
-              <span className="inline-flex items-center gap-1 text-[11px] px-2 py-0.5 rounded bg-gray-600 text-gray-200">
-                <span
-                  className="w-2.5 h-2.5 rounded-full border border-gray-300"
-                  style={{ backgroundColor: item.selected_color.code }}
-                />
-                {item.selected_color.name}
-              </span>
-            )}
           </div>
         </div>
         <p className="text-xs text-gray-900">
