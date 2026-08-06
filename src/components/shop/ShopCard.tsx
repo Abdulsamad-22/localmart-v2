@@ -16,17 +16,17 @@ import { useRouter } from "next/navigation";
 type Props = {
   product: ProductsWithVendor;
   isOwner?: boolean;
+  onDelete?: (id: string) => void;
 };
-export default function ShopCard({ product, isOwner = false }: Props) {
+export default function ShopCard({
+  product,
+  isOwner = false,
+  onDelete,
+}: Props) {
   const router = useRouter();
   const { addToCart } = useCartStore();
   const { setEditingProduct } = useProductStore();
 
-  const handleEditProduct = (product: ProductsWithVendor) => {
-    // Navigate to edit product page
-    setEditingProduct(product);
-    router.push("/add-product");
-  };
   return (
     <div
       key={product.id}
@@ -91,16 +91,13 @@ export default function ShopCard({ product, isOwner = false }: Props) {
           // Owner view - Edit/Delete buttons
           <div className="flex gap-2">
             <button
-              // onClick={() => handleDeleteProduct(product.id)}
+              onClick={() => onDelete && onDelete(product.id)}
               className="flex items-center justify-center gap-2 flex-1 bg-red-100 text-red-700 py-2 px-3 rounded text-sm hover:bg-red-200"
             >
               <Trash size={18} />
               Delete
             </button>
-            <button
-              onClick={() => handleEditProduct(product)}
-              className="flex items-center justify-center gap-2 flex-1 bg-gray-100 text-gray-700 py-2 px-3 rounded text-sm hover:bg-blue-50"
-            >
+            <button className="flex items-center justify-center gap-2 flex-1 bg-gray-100 text-gray-700 py-2 px-3 rounded text-sm hover:bg-blue-50">
               <PencilSimple size={18} />
               Edit
             </button>
