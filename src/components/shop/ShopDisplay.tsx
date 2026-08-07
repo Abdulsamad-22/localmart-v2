@@ -12,10 +12,22 @@ type Props = {
 export default function ShopDisplay({ products, isOwner = false }: Props) {
   return (
     <div>
-      <div className="flex justify-between items-center px-6 md:px-12 mb-6">
-        <h2 className="text-[1rem] md:text-[1.5rem] font-semibold">
-          {isOwner ? "My Products" : "Products"} ({products.length})
-        </h2>
+      <div className="flex items-center justify-between px-4 md:px-12 mb-6">
+        {isOwner ? (
+          <div className="flex items-center justify-between px-4 md:px-12 mb-6">
+            <h2 className="text-xl font-medium text-gray-900">
+              My Products ({products.length})
+            </h2>
+            <Link
+              href="/manage-products"
+              className="text-sm text-[#009688] hover:underline"
+            >
+              Manage
+            </Link>
+          </div>
+        ) : (
+          `Products (${products.length})`
+        )}
       </div>
 
       {products.length === 0 ? (
