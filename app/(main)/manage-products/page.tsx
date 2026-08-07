@@ -50,7 +50,6 @@ export default async function ManageProductsPage() {
 
       <ManageProductsClient
         products={(products as ProductsWithVendor[]) ?? []}
-        vendorId={vendor.id}
       />
     </div>
   );
