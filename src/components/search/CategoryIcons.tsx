@@ -15,7 +15,7 @@ import {
   Tag,
 } from "@phosphor-icons/react";
 
-import { IconProps } from "@phosphor-icons/react";
+import type { IconProps } from "@phosphor-icons/react";
 
 export const CategoryIcons: Record<string, React.ComponentType<IconProps>> = {
   "All Categories": Tag,
