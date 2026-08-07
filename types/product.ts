@@ -13,6 +13,7 @@ export type ProductRow = {
   item_units: number;
   quantity: number;
   in_stock: number;
+  is_active?: boolean;
 };
 
 export interface DraftProduct {
