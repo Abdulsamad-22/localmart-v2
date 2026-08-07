@@ -20,6 +20,7 @@ export function CategoryItem({
     <button
       type="button"
       onClick={() => onSelect(category)}
+      aria-pressed={selected}
       className={`group flex w-full items-center justify-between rounded-xl px-4 py-3.5 transition-all duration-200 ${selected ? "bg-[#009688]/10" : "hover:bg-gray-50 active:bg-gray-100"}`}
     >
       <div className="flex items-center gap-3 overflow-hidden">
