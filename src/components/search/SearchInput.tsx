@@ -57,7 +57,7 @@ export function SearchInput({
       <button
         type="button"
         onClick={onClear}
-        className={`mr-2 flex h-8 w-8 items-center justify-center rounded-full transition-all duration-200${
+        className={`mr-2 flex h-8 w-8 items-center justify-center rounded-full transition-all duration-200 ${
           value.trim()
             ? "opacity-100 scale-100 hover:bg-gray-100"
             : "pointer-events-none opacity-0 scale-75"
