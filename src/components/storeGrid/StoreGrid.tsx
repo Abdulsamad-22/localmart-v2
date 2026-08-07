@@ -14,11 +14,22 @@ type Props = {
 const SEARCH_ALIASES: Record<string, string[]> = {
   shirt: ["shirt", "shirts", "tee", "tees", "top", "blouse"],
   tee: ["tee", "shirt", "top"],
-  shoe: ["shoe", "shoes", "sneaker", "boot", "footwear", "trainer"],
+  shoe: [
+    "shoe",
+    "shoes",
+    "sneaker",
+    "sneakers",
+    "boot",
+    "boots",
+    "footwears",
+    "footwear",
+    "trainer",
+    "trainers",
+  ],
   dress: ["dress", "gown", "frock"],
-  bag: ["bag", "purse", "handbag", "clutch", "tote"],
+  bag: ["bag", "bags", "purse", "handbag", "clutch", "tote"],
   phone: ["phone", "mobile", "smartphone", "device"],
-  food: ["food", "grocery", "produce", "snack", "drink"],
+  food: ["food", "grocery", "produce", "snack", "drink", "drinks"],
 };
 
 function expandQuery(query: string): string[] {
@@ -78,9 +89,8 @@ export default function StoreGrid({ limit, products }: Props) {
   const displayed = filterProducts(allProducts, searchQuery, selectedCategory);
 
   return (
-    <main>
+    <div>
       <SearchBar />
-
       {isFiltering ? (
         // skeleton while filtering
         <section className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-2 md:gap-x-4 gap-y-6 md:gap-y-12 px-4 md:px-12 my-12">
@@ -120,7 +130,7 @@ export default function StoreGrid({ limit, products }: Props) {
           ))}
         </section>
       )}
-    </main>
+    </div>
   );
 }
 
