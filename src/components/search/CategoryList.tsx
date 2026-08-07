@@ -36,20 +36,28 @@ export function CategoryList({
             className="ml-4 text-gray-400 flex-shrink-0"
           />
 
+          <label htmlFor="category-search" className="sr-only">
+            Search categories
+          </label>
+
           <input
+            id="category-search"
+            type="search"
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             placeholder="Search categories..."
+            autoComplete="off"
             className="flex-1 bg-transparent px-3 text-sm text-gray-900 placeholder:text-gray-400 focus:outline-none"
           />
 
-          {search && (
+          {search.trim() && (
             <button
               type="button"
               onClick={() => setSearch("")}
-              className="mr-3 rounded-full p-1 text-gray-400 transition hover:bg-gray-200 hover:text-gray-600"
+              aria-label="Clear category search"
+              className="mr-3 rounded-full p-1 text-gray-400 transition hover:bg-gray-200 hover:text-gray-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#009688]/40"
             >
-              <X size={16} />
+              <X size={16} aria-hidden="true" />
             </button>
           )}
         </div>
