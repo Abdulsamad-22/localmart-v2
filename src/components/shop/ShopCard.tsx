@@ -17,15 +17,15 @@ type Props = {
   product: ProductsWithVendor;
   isOwner?: boolean;
   onDelete?: (id: string) => void;
+  onEdit?: () => void;
 };
 export default function ShopCard({
   product,
   isOwner = false,
   onDelete,
+  onEdit,
 }: Props) {
-  const router = useRouter();
   const { addToCart } = useCartStore();
-  const { setEditingProduct } = useProductStore();
 
   return (
     <div
