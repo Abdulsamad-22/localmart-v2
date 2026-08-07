@@ -42,7 +42,7 @@ export default async function Myshop() {
         vendor={vendor}
         pendingOrders={pendingOrders}
       />
-      <ShopDisplay products={products ?? []} isOwner={true} />
+      <ShopDisplay products={products ?? []} isOwner={false} />
     </div>
   );
 }
