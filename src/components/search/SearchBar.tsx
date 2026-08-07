@@ -5,7 +5,6 @@ import { MagnifyingGlass, X } from "@phosphor-icons/react";
 import useProductStore from "@/state-store/productStore";
 import { SearchInput } from "./SearchInput";
 import { useState, useEffect } from "react";
-import { ActiveFilters } from "./ActiveFilters";
 import { CategorySheet } from "./CategorySheet";
 import { CategoryButton } from "./CategoryButton";
 
@@ -117,17 +116,6 @@ export function SearchBar() {
           />
         </div>
       </form>
-
-      {/* <ActiveFilters
-        search={searchValue}
-        category={selectedCategory}
-        onClearSearch={() => setValue("search", "")}
-        onClearCategory={() => setSelectedCategory("")}
-        onClearAll={() => {
-          setValue("search", "");
-          setSelectedCategory("");
-        }}
-      /> */}
 
       <CategorySheet
         open={categoryOpen}
