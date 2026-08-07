@@ -55,14 +55,16 @@ export function CategorySheet({
       {/* Overlay */}
       <div
         onClick={onClose}
-        className="fixed inset-0 z-40 ng-black/40 animate-in fade-in"
+        className="fixed inset-0 z-40 bg-black/40 animate-in fade-in"
       />
 
       {/* Sheet */}
       <div
-        className="fixed bottom-0 left-0 right-0 z-50 h-[85vh]
-       rounded-t-3xl bg-white shadow-2xl animate-in slide-in-from-bottom md:left-20
-      md:bottom-auto md:-1/2 md:h-[80vh] md:w-[420px] md:translate-x-12 md:translate-y-1/2 md:rounded-3xl"
+        className="
+          fixed bottom-0 left-0 right-0 z-50 h-[85vh] rounded-t-3xl bg-white shadow-2xl animate-in slide-in-from-bottom
+          md:left-20 md:bottom-auto md:top-1/2 md:h-[80vh] md:w-[420px] md:-translate-x-12 md:-translate-y-1/2
+          md:rounded-3xl
+        "
       >
         {/* Drag Handle */}
 
@@ -81,7 +83,17 @@ export function CategorySheet({
 
           <button
             onClick={onClose}
-            className="flex h-10 w-10 items-center justify-center rounded-full hover:bg-gray-100"
+            className="
+              flex
+              h-10
+              w-10
+              items-center
+              justify-center
+
+              rounded-full
+
+              hover:bg-gray-100
+            "
           >
             <X size={20} />
           </button>
