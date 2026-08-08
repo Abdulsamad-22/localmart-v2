@@ -61,7 +61,7 @@ export function CategorySheet({
       {/* Sheet */}
       <div
         className="
-    fixed bottom-0 left-0 right-0 z-50 flex h-[85vh] flex-col overflow-hidden
+    fixed bottom-0 left-0 right-0 z-50 flex h-[70vh] flex-col overflow-hidden
     rounded-t-3xl bg-white shadow-2xl animate-in slide-in-from-bottom
     md:bottom-auto md:left-20 lg:left-30 md:top-[30rem] lg:top-[30rem] md:h-[80vh] md:w-[420px]
     md:-translate-x-12 md:-translate-y-1/2 md:rounded-3xl
