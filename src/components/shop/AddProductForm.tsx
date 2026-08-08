@@ -56,73 +56,58 @@ export default function AddProductForm() {
           <p className="text-red-500 text-sm">{errors.description?.message}</p>
         </div>
 
-        <div className="space-y-2 text-gray-800">
-          <label
-            htmlFor="unit"
-            className="block text-sm md:text-[1rem] font-medium text-gray-700 mb-1.5"
-          >
-            Units{" "}
-            <span className="text-gray-400 pl-1">(No of item available)</span>
-          </label>
-          <input
-            {...register("units")}
-            className="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-[#009688]"
-            type="text"
-          />
-          <p className="text-red-500 text-sm">{errors.units?.message}</p>
-        </div>
-
-        <div className="w-full space-y-2 text-gray-800">
-          <label
-            htmlFor="price"
-            className="block text-sm md:text-[1rem] font-medium text-gray-700 mb-1.5"
-          >
-            Pricing
-          </label>
-
-          <div
-            className={`
-        relative flex items-center border rounded-md transition-all duration-200
-        ${
-          isFocused
-            ? "border-[#009688] ring-2 ring-[#009688]/20"
-            : "border-gray-300"
-        }
-      `}
-          >
-            {/* Currency Icon Container */}
-            <div
-              className={`
+        <div className="grid grid-cols-2 gap-4">
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1.5">
+              Price
+            </label>
+            <div className="relative">
+              <div
+                className={`absolute left-0 top-1/2 -translate-y-1/2 
             flex items-center justify-center py-3 px-2 w-12 h-full rounded-l-md transition-all duration-200
-            ${isFocused ? "bg-[#009688]" : "bg-[#000]"}
+            ${isFocused ? "bg-[#009688]" : "bg-gray-500"}
           `}
-            >
-              <CurrencyNgn
-                size={20}
-                className={`
+              >
+                <CurrencyNgn
+                  size={16}
+                  className={`
               transition-colors duration-200
               ${isFocused ? "text-white" : "text-[#fff]"}
             `}
+                />
+              </div>
+              <input
+                {...register("price")}
+                type="text"
+                inputMode="numeric"
+                className="w-full pl-8 pr-4 py-2.5 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#009688]"
+                onFocus={() => setIsFocused(true)}
+                onBlur={() => setIsFocused(false)}
               />
             </div>
-
-            {/* Input Field */}
-            <input
-              {...register("price")}
-              type="text"
-              placeholder="0.00"
-              className="
-            flex-1 px-3 py-2 bg-transparent border-none rounded-r-md 
-            focus:outline-none placeholder-gray-400
-          "
-              onFocus={() => setIsFocused(true)}
-              onBlur={() => setIsFocused(false)}
-            />
+            {errors.price && (
+              <p className="text-red-500 text-xs mt-1">
+                {errors.price.message}
+              </p>
+            )}
           </div>
 
-          {errors.price?.message && (
-            <p className="text-red-500 text-sm mt-1">{errors.price.message}</p>
-          )}
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1.5">
+              Stock units
+            </label>
+            <input
+              {...register("units")}
+              type="number"
+              min="0"
+              className="w-full px-4 py-2.5 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#009688]"
+            />
+            {errors.units && (
+              <p className="text-red-500 text-xs mt-1">
+                {errors.units.message}
+              </p>
+            )}
+          </div>
         </div>
         <button
           type="submit"
