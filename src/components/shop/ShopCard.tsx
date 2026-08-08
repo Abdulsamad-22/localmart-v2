@@ -15,11 +15,13 @@ type Props = {
   product: ProductsWithVendor;
   isOwner?: boolean;
   onDelete?: (id: string) => void;
+  onEdit?: () => void;
 };
 export default function ShopCard({
   product,
   isOwner = false,
   onDelete,
+  onEdit,
 }: Props) {
   const { addToCart } = useCartStore();
 
@@ -107,13 +109,13 @@ export default function ShopCard({
               <Trash size={18} />
               Delete
             </button>
-            <Link
-              href={`/manage-products/${product.id}/edit`}
+            <button
+              onClick={onEdit}
               className="flex items-center justify-center gap-2 flex-1 bg-gray-100 text-gray-700 py-2 px-3 rounded text-sm hover:bg-blue-50"
             >
               <PencilSimple size={18} />
               Edit
-            </Link>
+            </button>
           </div>
         )}
       </div>
