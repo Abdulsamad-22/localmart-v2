@@ -12,7 +12,7 @@ import { useRouter } from "next/navigation";
 import { createProduct } from "@/lib/products/createProduct";
 import AddProductForm from "./AddProductForm";
 
-const productSchema = object({
+export const productSchema = object({
   productName: string().required("Product name is required"),
   category: string().required("Product category is required"),
   description: string().max(1000).required("Please describe product"),
