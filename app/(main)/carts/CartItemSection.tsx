@@ -42,7 +42,7 @@ export default function CartItemSection() {
         </div>
       </div>
 
-      <div className="">
+      <div className="mb-12">
         {cartItems.length === 0 ? (
           /* Empty Cart */
           <div className="p-12 text-center">

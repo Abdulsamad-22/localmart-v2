@@ -37,7 +37,7 @@ export default function CartSummary() {
 
   return (
     <div className="lg:col-span-1">
-      <div className="bg-white rounded-lg border border-[#dee4e1] sticky top-6">
+      <div className="bg-white rounded-lg border border-[#dee4e1] sticky self-start z-10 top-20">
         <div className="px-4 md:px-6 py-4 border-b border-[#dee4e1]">
           <h2 className="text-lg font-semibold text-gray-900">Order Summary</h2>
         </div>
