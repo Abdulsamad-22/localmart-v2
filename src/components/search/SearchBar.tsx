@@ -58,25 +58,6 @@ export function SearchBar() {
     setSearchQuery(data.search.trim());
   };
 
-  // category selected — clears search, updates store
-  const handleCategoryChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    const category = e.target.value;
-    setValue("search", "");
-
-    if (!category) {
-      setSelectedCategory("");
-      setSearchQuery("");
-    } else {
-      setSelectedCategory(category);
-    }
-  };
-
-  // clear everything
-  const handleClear = () => {
-    reset();
-    setSearchQuery("");
-    setSelectedCategory("");
-  };
   const submitSearch = handleSubmit(onSubmit);
 
   return (
