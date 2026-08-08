@@ -17,7 +17,7 @@ export const productSchema = object({
   category: string().required("Product category is required"),
   description: string().max(1000).required("Please describe product"),
   price: string().required("Price is required"),
-  units: string().required("Available Product unit is required"),
+  units: string().required("Product unit is required"),
 
   item_colors: array()
     .of(
@@ -102,7 +102,7 @@ export default function AddProductProvider() {
       <FormProvider {...methods}>
         <form
           onSubmit={methods.handleSubmit(handleSubmit)}
-          className="w-full flex flex-col md:flex-row items-start gap-8 my-12 px-4 md:px-12 space-y-6"
+          className="w-full flex flex-col-reverse md:flex-row items-start gap-8 my-12 px-4 md:px-12 space-y-6"
         >
           <AddProductForm />
           <div className="w-full md:w-1/2">
