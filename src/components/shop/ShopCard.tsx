@@ -2,7 +2,6 @@
 
 import WishlistButton from "@/lib/wishlist/WishlistButton";
 import useCartStore from "@/state-store/cartStore";
-import useProductStore from "@/state-store/productStore";
 import { ProductsWithVendor } from "@/types/product";
 import {
   CurrencyNgn,
@@ -11,37 +10,48 @@ import {
   Trash,
 } from "@phosphor-icons/react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 
 type Props = {
   product: ProductsWithVendor;
   isOwner?: boolean;
   onDelete?: (id: string) => void;
-  onEdit?: () => void;
 };
 export default function ShopCard({
   product,
   isOwner = false,
   onDelete,
-  onEdit,
 }: Props) {
   const { addToCart } = useCartStore();
 
   return (
     <div
       key={product.id}
-      className="border border-[#c4c4c4] rounded-lg overflow-hidden hover:shadow-md transition-shadow"
+      className={`bg-white border border-[#dee4e1] overflow-hidden ${isOwner ? "rounded-t-[10px]" : "rounded-[10px]"} hover:shadow-md transition-shadow`}
     >
-      <div className="w-full md:w-full h-[8.5rem] md:h-[218px] relative cursor-pointer">
-        {product.image_url && (
-          <Link href={`/products/${product.id}`}>
-            <img
-              src={product.image_url}
-              alt={product.item_name}
-              className="w-full h-full rounded-t-[4px] md:rounded-t-[10px]"
-            />
-          </Link>
-        )}
+      <div className="relative h-36 w-full cursor-pointer overflow-hidden md:h-[218px]">
+        <div className="relative h-36 w-full cursor-pointer overflow-hidden md:h-[218px]">
+          {product.image_url &&
+            (isOwner ? (
+              // vendor view — just the image, no link
+              <img
+                src={product.image_url}
+                alt={product.item_name}
+                className="block h-full w-full object-cover"
+              />
+            ) : (
+              // buyer view — clickable link to product detail
+              <Link href={`/products/${product.id}`}>
+                <img
+                  src={product.image_url}
+                  alt={product.item_name}
+                  className="block h-full w-full object-cover"
+                />
+              </Link>
+            ))}
+
+          {!isOwner && <WishlistButton product={product} />}
+        </div>
+
         {!isOwner && <WishlistButton product={product} />}
       </div>
 
@@ -50,7 +60,7 @@ export default function ShopCard({
           {product.item_name}
         </h3>
         {product.item_description && (
-          <p className="text-gray-600 text-[0.75rem] md:text-[0.875rem] mb-3 line-clamp-3">
+          <p className="text-gray-600 text-[0.75rem] md:text-[0.875rem] mb-3 min-h-[3.75rem] line-clamp-3">
             {product.item_description}
           </p>
         )}
@@ -97,10 +107,13 @@ export default function ShopCard({
               <Trash size={18} />
               Delete
             </button>
-            <button className="flex items-center justify-center gap-2 flex-1 bg-gray-100 text-gray-700 py-2 px-3 rounded text-sm hover:bg-blue-50">
+            <Link
+              href={`/manage-products/${product.id}/edit`}
+              className="flex items-center justify-center gap-2 flex-1 bg-gray-100 text-gray-700 py-2 px-3 rounded text-sm hover:bg-blue-50"
+            >
               <PencilSimple size={18} />
               Edit
-            </button>
+            </Link>
           </div>
         )}
       </div>
