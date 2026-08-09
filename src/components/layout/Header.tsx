@@ -17,6 +17,7 @@ import {
 import Link from "next/link";
 import useCartStore from "@/state-store/cartStore";
 import { toast } from "sonner";
+import { CartBadge } from "../ui/CartBadge";
 
 type NavLinks = {
   icon: React.ReactNode;
@@ -73,7 +74,7 @@ export default function Header() {
     }
 
     if (!vendorData) {
-      router.push(`/vendor/register?redirectTo=${pathname}`);
+      router.push(`/registration?redirectTo=${pathname}`);
       return;
     }
 
@@ -151,11 +152,7 @@ export default function Header() {
           >
             <span className="relative">
               <ShoppingCart size={18} />
-              {cartCount > 0 && (
-                <span className="absolute -top-2 -right-2 bg-[#009688] text-white text-[10px] font-medium rounded-full w-4 h-4 flex items-center justify-center">
-                  {cartCount}
-                </span>
-              )}
+              {cartCount > 0 && <CartBadge count={cartCount} />}
             </span>
             <span>Cart</span>
           </Link>
@@ -273,11 +270,7 @@ export default function Header() {
         {/* mobile right side — cart + menu */}
         <div className="flex md:hidden items-center gap-3">
           <Link href="/carts" className="relative inline-flex">
-            {cartCount > 0 && (
-              <span className="absolute -top-1.5 -right-1.5 bg-[#009688] text-white text-[10px] font-medium rounded-full w-4 h-4 flex items-center justify-center">
-                {cartCount}
-              </span>
-            )}
+            {cartCount > 0 && <CartBadge count={cartCount} />}
             <ShoppingCart size={24} className="text-[#636363]" />
           </Link>
 
