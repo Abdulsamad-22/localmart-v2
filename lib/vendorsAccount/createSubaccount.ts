@@ -1,4 +1,3 @@
-import { VendorInsert } from "@/types/vendor";
 import { getSupabaseClient } from "../supabase/client";
 
 type SubaccountInput = {
@@ -6,6 +5,11 @@ type SubaccountInput = {
   settlementBank: string;
   accountNumber: string;
   percentageCharge: number;
+  email: string;
+  fullName: string;
+  phoneNumber: string;
+  accountName: string;
+  vendorId: string;
 };
 
 type SubaccountResult =
@@ -22,18 +26,24 @@ export const createSubaccount = async (
       "create-subaccount",
       {
         body: {
-          business_name: input.businessName,
-          settlement_bank: input.settlementBank,
-          account_number: input.accountNumber,
-          percentage_charge: input.percentageCharge,
+          vendorData: {
+            business_name: input.businessName,
+            account_number: input.accountNumber,
+            email: input.email,
+            full_name: input.fullName,
+            phone_number: input.phoneNumber,
+            vendor_id: input.vendorId,
+          },
+          bankCode: input.settlementBank,
+          accountName: input.accountName,
         },
       },
     );
 
-    if (!data?.subaccountCode) {
+    if (!data?.subaccount_code) {
       return { success: false, error: "Subaccount code not returned" };
     }
-
+    console.log("edge function response:", data, error);
     return { success: true, subaccountCode: data.subaccountCode };
   } catch (error) {
     console.error("Exception:", error);
