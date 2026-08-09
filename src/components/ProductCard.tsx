@@ -6,8 +6,8 @@ import { CurrencyNgn } from "@phosphor-icons/react";
 import useCartStore from "@/state-store/cartStore";
 import { VendorDistance } from "./vendor/VendorDistance";
 import type { ProductsWithVendor } from "@/types/product";
-import WishlistButton from "@/lib/wishlist/WishlistButton";
-
+import { WishlistButton } from "@/lib/wishlist/WishlistButton";
+import { AddToCartButton } from "@/src/components/products/AddtoCartButton";
 type Props = {
   product: ProductsWithVendor;
 };
@@ -71,13 +71,7 @@ export function ProductCard({ product }: Props) {
         </div>
 
         <div className="hidden md:block">
-          <button
-            onClick={() => addToCart(product, 1)}
-            className="flex items-center justify-center gap-2 w-full text-[0.875rem] md:text-[1rem] px-4 py-2 bg-gradient-to-r from-[#009688] to-[#00695C] hover:from-[#00897B] hover:to-[#005B4F] transition-all duration-200 text-white rounded-[8px] mt-2 md:mt-4"
-          >
-            <ShoppingCart size={24} color="#fff" />
-            Add to cart
-          </button>
+          <AddToCartButton product={product} />
         </div>
       </div>
     </div>
