@@ -34,7 +34,7 @@ export function ImageUpload({
         "
         >
           {!preview && (
-            <div className="flex flex-col items-center px-6 text-center">
+            <div className="flex flex-col items-center justify-center px-6 text-center">
               <div
                 className="mb-5 flex h-20 w-20 items-center justify-center rounded-full bg-[#009688]/10 text-[#009688] transition-transform duration-300 group-hover:scale-110
               "
