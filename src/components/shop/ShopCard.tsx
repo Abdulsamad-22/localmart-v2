@@ -1,6 +1,7 @@
 "use client";
 
-import WishlistButton from "@/lib/wishlist/WishlistButton";
+import { WishlistButton } from "@/lib/wishlist/WishlistButton";
+import { AddToCartButton } from "../products/AddtoCartButton";
 import useCartStore from "@/state-store/cartStore";
 import { ProductsWithVendor } from "@/types/product";
 import {
@@ -87,18 +88,14 @@ export default function ShopCard({
         {/* Action buttons */}
         {!isOwner ? (
           // Customer view - Add to Cart button
-          <button
-            onClick={() => addToCart(product, 1)}
-            disabled={product.item_units === 0}
-            className={`hidden md:flex w-full py-2 rounded transition-colors ${
-              product.item_units === 0
-                ? "bg-gray-300 text-gray-500 cursor-not-allowed"
-                : "flex items-center justify-center gap-2 w-full bg-gradient-to-r from-[#009688] to-[#00695C] transition-all duration-200 hover:from[#00897B] hover:to-[#005B4F] text-[#fff]"
-            }`}
-          >
-            {product.item_units !== 0 ? <ShoppingCart size={20} /> : ""}
-            {product.item_units === 0 ? "Out of Stock" : "Add to Cart"}
-          </button>
+          <>
+            <AddToCartButton product={product} />
+            {product.item_units < 1 && (
+              <div className="bg-gray-300 text-gray-500 cursor-not-allowed py-2">
+                Out of Stock
+              </div>
+            )}
+          </>
         ) : (
           // Owner view - Edit/Delete buttons
           <div className="flex gap-2">
