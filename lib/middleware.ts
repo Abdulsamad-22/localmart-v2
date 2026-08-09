@@ -14,7 +14,7 @@ export async function middleware(request: NextRequest) {
   const url = request.nextUrl.clone();
   const path = url.pathname;
 
-  if (path.startsWith("/vendor/register")) {
+  if (path.startsWith("/registration")) {
     if (!session) {
       url.pathname = "/login";
       url.searchParams.set("redirectTo", path);
@@ -70,7 +70,7 @@ export async function middleware(request: NextRequest) {
 
 export const config = {
   matcher: [
-    "/vendor/register/:path*",
+    "/registration/:path*",
     "/checkout/:path*",
     "/orders/:path*",
     "/my-orders/:path*",
