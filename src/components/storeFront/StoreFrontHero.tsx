@@ -6,6 +6,10 @@ import {
   SealCheck,
   WhatsappLogo,
   InstagramLogo,
+  FacebookLogoIcon,
+  TiktokLogoIcon,
+  XLogoIcon,
+  Globe,
 } from "@phosphor-icons/react";
 
 import { StoreAvatar, StoreBadge, StoreContactPill, StoreCover } from ".";
@@ -149,11 +153,47 @@ export function StorefrontHero({ vendor, products }: Props) {
                   />
                 )}
 
-                {vendor.socials && (
+                {vendor.facebook && (
                   <StoreContactPill
-                    href={vendor.socials}
+                    href={vendor.facebook}
+                    icon={<FacebookLogoIcon size={18} weight="fill" />}
+                    label="Facebook"
+                    external
+                  />
+                )}
+
+                {vendor.instagram && (
+                  <StoreContactPill
+                    href={vendor.instagram}
                     icon={<InstagramLogo size={18} weight="fill" />}
                     label="Instagram"
+                    external
+                  />
+                )}
+
+                {vendor.tiktok && (
+                  <StoreContactPill
+                    href={vendor.tiktok}
+                    icon={<TiktokLogoIcon size={18} weight="fill" />}
+                    label="Tiktok"
+                    external
+                  />
+                )}
+
+                {vendor.x && (
+                  <StoreContactPill
+                    href={vendor.x}
+                    icon={<XLogoIcon size={18} weight="fill" />}
+                    label="X"
+                    external
+                  />
+                )}
+
+                {vendor.website && (
+                  <StoreContactPill
+                    href={vendor.website}
+                    icon={<Globe size={18} weight="fill" />}
+                    label="Website"
                     external
                   />
                 )}
