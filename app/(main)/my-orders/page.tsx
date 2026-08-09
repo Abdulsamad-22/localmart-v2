@@ -3,6 +3,7 @@ import { redirect } from "next/navigation";
 import { MyOrdersClient } from "./MyOrdersClient";
 import type { OrderStatus } from "@/types/order";
 import { toast } from "sonner";
+import { PageTransition } from "@/src/components/ui/PageTranstion";
 
 export type BuyerOrder = {
   id: number;
@@ -136,19 +137,23 @@ export default async function MyOrdersPage({ searchParams }: Props) {
   };
 
   return (
-    <div className="max-w-3xl mx-auto px-4 md:px-8 py-10">
-      <div className="mb-6">
-        <h1 className="text-2xl font-medium text-gray-900">My orders</h1>
-        <p className="text-sm text-gray-700 mt-1">Track all your purchases</p>
-      </div>
+    <PageTransition>
+      <div className="max-w-3xl mx-auto px-4 md:px-8 py-10">
+        <div className="mb-6">
+          <h1 className="text-2xl font-medium text-gray-900">My orders</h1>
+          <p className="text-sm text-gray-700 mt-1">Track all your purchases</p>
+        </div>
 
-      <MyOrdersClient
-        orders={
-          filtered as unknown as (BuyerOrder & { derivedStatus: OrderStatus })[]
-        }
-        statusCounts={statusCounts}
-        activeStatus={isValidStatus ? statusFilter : undefined}
-      />
-    </div>
+        <MyOrdersClient
+          orders={
+            filtered as unknown as (BuyerOrder & {
+              derivedStatus: OrderStatus;
+            })[]
+          }
+          statusCounts={statusCounts}
+          activeStatus={isValidStatus ? statusFilter : undefined}
+        />
+      </div>
+    </PageTransition>
   );
 }

@@ -1,5 +1,6 @@
 import ProductDetail from "../ProductDetail";
 import { getSupabaseServerClient } from "@/lib/supabase/server";
+import { PageTransition } from "@/src/components/ui/PageTranstion";
 import { notFound } from "next/navigation";
 
 type Props = {
@@ -37,7 +38,11 @@ export default async function ProductPage({ params }: Props) {
 
   if (error || !product) notFound();
 
-  return <ProductDetail product={product} />;
+  return (
+    <PageTransition>
+      <ProductDetail product={product} />
+    </PageTransition>
+  );
 }
 
 export const revalidate = 60;
