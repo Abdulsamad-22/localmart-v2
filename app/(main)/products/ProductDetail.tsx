@@ -3,7 +3,8 @@
 import useAuthStore from "@/state-store/authStore";
 import useCartStore from "@/state-store/cartStore";
 import useWishlistStore from "@/state-store/wishlistStore";
-import { ProductsWithVendor } from "@/types/product";
+import type { ProductsWithVendor } from "@/types/product";
+import { AddToCartButton } from "@/src/components/products/AddtoCartButton";
 import { usePathname, useRouter } from "next/navigation";
 import { useState } from "react";
 import {
@@ -299,17 +300,16 @@ export default function ({ product }: Props) {
 
                 {/* Action Buttons */}
                 <div className="flex flex-col sm:flex-row gap-3">
-                  <button
-                    onClick={() =>
-                      addToCart(product, quantity, selectedColor, selectedSize)
-                    }
-                    disabled={product.item_units < 1}
-                    className="flex-1 flex items-center justify-center gap-2 bg-gradient-to-r from-[#009688] to-[#00695C] transition-all duration-200
-                    hover:from-[#00897B] hover:to-[#005B4F] text-[#fff] py-3 px-6 rounded-lg hover:bg-blue-700 disabled:bg-gray-400 disabled:cursor-not-allowed transition-colors"
-                  >
-                    <ShoppingCart size={20} />
-                    Add to Cart
-                  </button>
+                  <div className="w-full md:w-1/2">
+                    <AddToCartButton
+                      product={product}
+                      quantity={quantity}
+                      selectedColor={selectedColor}
+                      selectedSize={selectedSize}
+                      className="text-[0.875rem] md:text-[1rem]"
+                    />
+                  </div>
+
                   <button
                     onClick={handleBuyNow}
                     className="flex-1 border border-gray-400 py-3 px-6 rounded-lg hover:border-[#009688] hover:text-[#009688] transition-colors"
