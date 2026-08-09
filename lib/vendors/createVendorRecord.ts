@@ -86,6 +86,11 @@ export async function createVendorRecord(
       settlementBank: bankCodeResult.bankCode,
       accountNumber: formData.accountNumber,
       percentageCharge: 10,
+      email: formData.email,
+      fullName: formData.fullName,
+      phoneNumber: formData.phoneNumber,
+      accountName: verificationResult.data.accountName,
+      vendorId: user.id,
     });
 
     if (subaccountResult.success) {
