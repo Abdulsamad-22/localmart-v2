@@ -83,7 +83,7 @@ export function StepBankDetails() {
           accountNumber,
           bankCodeResult.bankCode,
         );
-
+        console.log("verified account result:", verifyResult);
         if (!verifyResult.success) {
           setError("accountNumber", {
             message: "Account not found. Check your account number and bank.",
