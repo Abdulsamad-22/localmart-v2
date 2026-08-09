@@ -70,7 +70,12 @@ const useAuthStore = create<AuthStore>((set, get) => ({
         businessName: vendorData.business_name,
         settlementBank: vendorData.bank_code,
         accountNumber: vendorData.account_number,
-        percentageCharge: 15,
+        percentageCharge: 10,
+        email: vendorData.email,
+        fullName: vendorData.full_name,
+        phoneNumber: vendorData.phone_number,
+        accountName: vendorData.account_name,
+        vendorId: vendorData.vendor_id,
       });
 
       if (subaccountResult.success) {
