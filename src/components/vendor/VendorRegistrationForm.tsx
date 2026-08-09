@@ -190,7 +190,7 @@ export function VendorRegisterForm() {
 
         {/* form */}
         <FormProvider {...methods}>
-          <form onSubmit={handleSubmit(onSubmit)} noValidate>
+          <form onSubmit={methods.handleSubmit(onSubmit)} noValidate>
             <div className="bg-white rounded-2xl border border-gray-200 p-6 mb-6">
               {currentStep === 1 && (
                 <StepPersonalInfo logo={logo} setLogo={setLogo} />
