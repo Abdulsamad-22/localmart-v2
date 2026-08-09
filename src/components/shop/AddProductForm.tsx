@@ -79,8 +79,9 @@ export default function AddProductForm() {
               <input
                 {...register("price")}
                 type="text"
-                inputMode="numeric"
-                className="w-full pl-8 pr-4 py-2.5 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#009688]"
+                inputMode="text"
+                placeholder="00.00"
+                className="w-full pl-14 pr-4 py-2.5 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#009688]"
                 onFocus={() => setIsFocused(true)}
                 onBlur={() => setIsFocused(false)}
               />
@@ -98,8 +99,7 @@ export default function AddProductForm() {
             </label>
             <input
               {...register("units")}
-              type="number"
-              min="0"
+              type="text"
               className="w-full px-4 py-2.5 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#009688]"
             />
             {errors.units && (
