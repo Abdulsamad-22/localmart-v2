@@ -5,14 +5,13 @@ import useWishlistStore from "@/state-store/wishlistStore";
 import { useState } from "react";
 import {
   Heart,
-  ShoppingCart,
   Trash,
   Star,
   CurrencyNgn,
-  Funnel,
   CaretDown,
 } from "@phosphor-icons/react";
 import Link from "next/link";
+import { AddToCartButton } from "@/src/components/products/AddtoCartButton";
 
 export default function WishlistLayout() {
   const { removeFromWishlist, clearWishlist, wishlistItems } =
@@ -50,14 +49,6 @@ export default function WishlistLayout() {
 
             {/* Sort and Filter Controls */}
             <div className="flex items-center gap-3">
-              {/* <button
-                onClick={() => setShowFilters(!showFilters)}
-                className="flex items-center gap-2 px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors"
-              >
-                <Funnel size={16} />
-                <span className="text-sm font-medium">Filters</span>
-              </button> */}
-
               <div className="relative">
                 <select
                   value={sortBy}
@@ -208,19 +199,15 @@ export default function WishlistLayout() {
 
                               {/* Action Buttons */}
                               <div className="hidden md:flex flex-col gap-4 w-full sm:w-[9em]">
-                                <button
-                                  onClick={() => addToCart(item.product, 1)}
-                                  className="flex items-center justify-center gap-2 bg-gradient-to-r from-[#009688] to-[#00695C] transition-all duration-200
-    hover:from-[#00897B] hover:to-[#005B4F] text-[#fff] px-2 py-[0.5rem] rounded-lg transition-colors"
-                                >
-                                  <ShoppingCart size={18} />
-                                  Add to Cart
-                                </button>
+                                <AddToCartButton
+                                  product={item.product}
+                                  className="!px-2 !py-[0.75rem] !w-full !text-[0.875rem]"
+                                />
                                 <button
                                   onClick={() =>
                                     removeFromWishlist(item.product.id)
                                   }
-                                  className="flex items-center justify-center gap-2 bg-white border border-gray-300 text-gray-700 px-2 py-[0.5rem] rounded-lg hover:bg-gray-50 transition-colors"
+                                  className="flex items-center justify-center gap-2 bg-white border border-gray-300 text-[0.875rem] text-gray-700 px-2 py-[0.5rem] rounded-lg hover:bg-gray-50 transition-colors"
                                 >
                                   <Trash size={18} />
                                   Remove
@@ -232,22 +219,21 @@ export default function WishlistLayout() {
                       </div>
 
                       {/* Mobile buttons */}
+                      {/* Mobile buttons */}
                       <div className="flex md:hidden gap-4 w-full">
                         <button
                           onClick={() => removeFromWishlist(item.product.id)}
-                          className="flex flex-1 items-center justify-center gap-[4px] bg-white border border-gray-300 text-[0.875rem] md:text-[1rem] text-gray-700 px-2 py-[0.5rem] rounded-lg hover:bg-gray-50 transition-colors"
+                          className="flex flex-1 items-center justify-center gap-[4px] bg-white border border-gray-300 text-[0.875rem] text-gray-700 px-2 py-[0.5rem] rounded-lg hover:bg-gray-50 transition-colors"
                         >
                           <Trash size={16} />
                           Remove
                         </button>
-                        <button
-                          onClick={() => addToCart(item.product, 1)}
-                          className="flex flex-1 items-center justify-center gap-[4px] bg-gradient-to-r from-[#009688] to-[#00695C] transition-all duration-200
-    hover:from-[#00897B] hover:to-[#005B4F] text-[0.875rem] md:text-[1rem] text-[#fff] px-2 py-[0.5rem] rounded-lg transition-colors"
-                        >
-                          <ShoppingCart size={16} />
-                          Add to Cart
-                        </button>
+                        <div className="flex-1">
+                          <AddToCartButton
+                            product={item.product}
+                            className="!px-2 !py-[0.5rem] !text-[0.875rem] [&_svg]:!w-4 [&_svg]:!h-4"
+                          />
+                        </div>
                       </div>
                     </div>
                   </div>
