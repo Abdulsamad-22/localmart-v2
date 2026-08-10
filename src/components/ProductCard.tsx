@@ -8,12 +8,27 @@ import { VendorDistance } from "./vendor/VendorDistance";
 import type { ProductsWithVendor } from "@/types/product";
 import { WishlistButton } from "@/lib/wishlist/WishlistButton";
 import { AddToCartButton } from "@/src/components/products/AddtoCartButton";
+import { useState } from "react";
+
 type Props = {
   product: ProductsWithVendor;
 };
 
 export function ProductCard({ product }: Props) {
   const { addToCart } = useCartStore();
+  const [added, setAdded] = useState(false);
+
+  const handleAdd = () => {
+    if (product.item_units < 1) return;
+
+    // haptic feedback on mobile
+    if (navigator.vibrate) navigator.vibrate([20, 10, 20]);
+
+    addToCart(product, 1);
+
+    setAdded(true);
+    setTimeout(() => setAdded(false), 1500);
+  };
 
   return (
     <div className="bg-white border border-[#DEE4E1] rounded-[4px] md:rounded-[10px]">
@@ -60,7 +75,8 @@ export function ProductCard({ product }: Props) {
               <VendorDistance vendor={product.vendor} />
               <div className="flex justify-start md:hidden">
                 <button
-                  onClick={() => addToCart(product, 1)}
+                  disabled={product.item_units < 1 || added}
+                  onClick={handleAdd}
                   className="px-3 py-1.5 border border-[#727876] rounded-[16px]"
                 >
                   <ShoppingCart size={14} color="#2C3230" />
