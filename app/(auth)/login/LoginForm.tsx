@@ -8,7 +8,8 @@ import useAuthStore from "@/state-store/authStore";
 import Link from "next/link";
 import { toast } from "sonner";
 import { useRouter, useSearchParams } from "next/navigation";
-import { Lock, Envelope } from "@phosphor-icons/react";
+import { useState } from "react";
+import { Lock, Eye, EyeSlash, Envelope } from "@phosphor-icons/react";
 
 const schema = yup.object({
   email: yup.string().email("Invalid email").required("Email is required"),
@@ -22,6 +23,7 @@ export default function LoginForm() {
     formState: { errors },
     handleSubmit,
   } = useForm({ resolver: yupResolver(schema) });
+  const [showPassword, setShowPassword] = useState(false);
   const { loading, login, supabaseError } = useAuthStore();
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -90,20 +92,20 @@ export default function LoginForm() {
               />
               <input
                 {...register("password")}
-                className="w-full border border-[#c4c4c4] pl-9 pr-4 py-2.5 rounded-[8px] focus:outline-none focus:ring-2 focus:ring-[#009688] focus:border-transparent placeholder:text-gray-400"
-                placeholder="Your Password"
-                type="password"
+                type={showPassword ? "text" : "password"}
+                placeholder="Enter your password"
+                className="w-full pr-12 pl-4 py-2.5 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#009688]"
               />
+
+              <button
+                type="button"
+                onClick={() => setShowPassword((current) => !current)}
+                className="absolute inset-y-0 right-0 flex items-center px-4 text-gray-500 hover:text-gray-700"
+                aria-label={showPassword ? "Hide password" : "Show password"}
+              >
+                {showPassword ? <EyeSlash size={18} /> : <Eye size={18} />}
+              </button>
             </div>
-            {errors.password?.message ? (
-              <p className="text-[0.875rem] text-red-600">
-                {errors.password.message}
-              </p>
-            ) : (
-              supabaseError && (
-                <p className="text-[0.875rem]  text-red-600">{supabaseError}</p>
-              )
-            )}
           </div>
 
           {/* Forgot password */}
