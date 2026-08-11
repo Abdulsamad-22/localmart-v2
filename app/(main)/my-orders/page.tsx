@@ -59,7 +59,10 @@ export default async function MyOrdersPage({ searchParams }: Props) {
   const {
     data: { user },
   } = await supabase.auth.getUser();
-  if (!user) return null;
+
+  if (!user) {
+    redirect("/login?redirectTo=/my-orders");
+  }
 
   const { status } = await searchParams;
 

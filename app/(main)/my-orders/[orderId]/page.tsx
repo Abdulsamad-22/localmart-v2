@@ -50,7 +50,9 @@ export default async function BuyerOrderDetailPage({ params }: Props) {
   const {
     data: { user },
   } = await supabase.auth.getUser();
-  if (!user) return null;
+  if (!user) {
+    redirect("/login");
+  }
 
   const { data: order, error } = await supabase
     .from("orders")
