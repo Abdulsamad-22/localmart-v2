@@ -46,10 +46,12 @@ const useAuthStore = create<AuthStore>((set, get) => ({
   initializeAuth: async () => {
     const supabase = getSupabaseClient();
     const {
-      data: { session },
-    } = await supabase.auth.getSession();
+      data: { user },
+    } = await supabase.auth.getUser();
 
-    if (!session?.user) {
+    const userId = user?.id;
+
+    if (!user) {
       set({ user: null, vendorData: null });
       return;
     }
@@ -57,8 +59,8 @@ const useAuthStore = create<AuthStore>((set, get) => ({
     const { data: vendorData, error: vendorError } = await supabase
       .from("vendors")
       .select("*")
-      .eq("vendor_id", session.user.id)
-      .single();
+      .eq("vendor_id", userId)
+      .maybeSingle();
 
     if (vendorError && vendorError.code !== "PGRST116") {
       console.error("Error fetching vendor:", vendorError.message);
@@ -86,7 +88,7 @@ const useAuthStore = create<AuthStore>((set, get) => ({
             subaccount_pending: false,
             updated_at: new Date().toISOString(),
           })
-          .eq("vendor_id", session.user.id);
+          .eq("vendor_id", userId);
 
         // update local vendorData so banner disappears immediately
         set({
@@ -100,7 +102,7 @@ const useAuthStore = create<AuthStore>((set, get) => ({
       }
     }
 
-    set({ user: session.user, session, vendorData: vendorData ?? null });
+    set({ user: user, vendorData: vendorData ?? null });
   },
 
   signUp: async (formData: SignupDetails) => {
