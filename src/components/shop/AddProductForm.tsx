@@ -1,6 +1,6 @@
 "use client";
 import { useState } from "react";
-import { useFormContext } from "react-hook-form";
+import { useFormContext, Controller } from "react-hook-form";
 import { ProductFormData } from "./AddProductProvider";
 import { CurrencyNgn, Plus } from "@phosphor-icons/react";
 
@@ -9,7 +9,22 @@ export default function AddProductForm() {
   const {
     register,
     formState: { isSubmitting, errors },
+    control,
   } = useFormContext<ProductFormData>();
+
+  const formatPrice = (value: string) => {
+    // Keep digits and one decimal point only
+    const clean = value.replace(/,/g, "").replace(/[^\d.]/g, "");
+    const [whole = "", ...decimalParts] = clean.split(".");
+    const decimal = decimalParts.join("");
+
+    const formattedWhole = whole ? Number(whole).toLocaleString("en-NG") : "";
+
+    // Preserve a typed decimal point, e.g. "1,000."
+    return clean.includes(".")
+      ? `${formattedWhole}.${decimal}`
+      : formattedWhole;
+  };
 
   return (
     <div className="w-full md:w-[50%] md:p-6 rounded-lg">
@@ -76,14 +91,30 @@ export default function AddProductForm() {
             `}
                 />
               </div>
-              <input
-                {...register("price")}
-                type="text"
-                inputMode="text"
-                placeholder="00.00"
-                className="w-full pl-14 pr-4 py-2.5 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#009688]"
-                onFocus={() => setIsFocused(true)}
-                onBlur={() => setIsFocused(false)}
+              <Controller
+                name="price"
+                control={control}
+                defaultValue=""
+                render={({ field }) => (
+                  <input
+                    {...field}
+                    type="text"
+                    inputMode="decimal"
+                    placeholder="0.00"
+                    value={formatPrice(field.value ?? "")}
+                    className="w-full pl-14 pr-4 py-2.5 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#009688]"
+                    onFocus={() => setIsFocused(true)}
+                    onBlur={() => setIsFocused(false)}
+                    onChange={(event) => {
+                      // Store only digits and decimal point in form state/database payload
+                      const rawValue = event.target.value
+                        .replace(/,/g, "")
+                        .replace(/[^\d.]/g, "");
+
+                      field.onChange(rawValue);
+                    }}
+                  />
+                )}
               />
             </div>
             {errors.price && (
@@ -114,8 +145,15 @@ export default function AddProductForm() {
           disabled={isSubmitting}
           className="w-full flex-1 flex items-center gap-2 justify-center bg-[#009688] text-white px-2 py-3 rounded-lg hover:bg-[#00897B] mt-8"
         >
+          {isSubmitting ? (
+            <>
+              <i className="ti ti-loader-2 animate-spin" aria-hidden="true" />
+              Adding product...
+            </>
+          ) : (
+            "Add product"
+          )}
           <Plus size={20} />
-          Add New Product
         </button>
       </div>
     </div>
