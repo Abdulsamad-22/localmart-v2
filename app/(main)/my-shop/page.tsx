@@ -9,7 +9,9 @@ export default async function Myshop() {
     data: { user },
   } = await supabase.auth.getUser();
 
-  if (!user) return null;
+  if (!user) {
+    redirect("/login?redirectTo=/my-shop");
+  }
 
   const { data: vendor } = await supabase
     .from("vendors")
@@ -18,7 +20,7 @@ export default async function Myshop() {
     .single();
 
   if (!vendor) {
-    redirect("/vendor-registration");
+    redirect("/vendor-registration?redirectTo=/my-shop");
   }
 
   const { data: products } = await supabase
