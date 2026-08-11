@@ -7,7 +7,8 @@ import { InferType, string, object } from "yup";
 import Link from "next/link";
 import { toast } from "sonner";
 import { useRouter, useSearchParams } from "next/navigation";
-import { Envelope, Lock } from "@phosphor-icons/react";
+import { useState } from "react";
+import { Envelope, Lock, Eye, EyeSlash } from "@phosphor-icons/react";
 
 const schema = object({
   email: string().email("Invalid email").required("Email is required"),
@@ -22,6 +23,7 @@ export default function SignupForm() {
     handleSubmit,
     formState: { errors },
   } = useForm({ resolver: yupResolver(schema) });
+  const [showPassword, setShowPassword] = useState(false);
   const { supabaseError, signUp, loading, login } = useAuthStore();
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -77,11 +79,11 @@ export default function SignupForm() {
               </p>
             )}
           </div>
-
           <div className="space-y-2 text-left text-gray-800 mb-4">
             <label className="block text-[0.875rem] md:text-[1rem] font-medium text-gray-700 mb-1.5">
               Password
             </label>
+
             <div className="relative">
               <Lock
                 size={18}
@@ -89,20 +91,20 @@ export default function SignupForm() {
               />
               <input
                 {...register("password")}
-                className="w-full border border-[#c4c4c4] pl-9 pr-4 py-2.5 rounded-[8px] focus:outline-none focus:ring-2 focus:ring-[#009688] focus:border-transparent placeholder:text-gray-400"
-                placeholder="Your Password"
-                type="password"
+                type={showPassword ? "text" : "password"}
+                placeholder="Enter your password"
+                className="w-full pr-12 pl-4 py-2.5 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#009688]"
               />
+
+              <button
+                type="button"
+                onClick={() => setShowPassword((current) => !current)}
+                className="absolute inset-y-0 right-0 flex items-center px-4 text-gray-500 hover:text-gray-700"
+                aria-label={showPassword ? "Hide password" : "Show password"}
+              >
+                {showPassword ? <EyeSlash size={18} /> : <Eye size={18} />}
+              </button>
             </div>
-            {errors.password?.message ? (
-              <p className="text-[0.875rem] text-red-600">
-                {errors.password.message}
-              </p>
-            ) : (
-              supabaseError && (
-                <p className="text-[0.875rem]  text-red-600">{supabaseError}</p>
-              )
-            )}
           </div>
           <p className="text-gray-500 mb-12">
             Already have an accout?
