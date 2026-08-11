@@ -28,6 +28,7 @@ export async function createProduct(
         item_sizes: product.item_sizes ?? [],
         image_url: url,
         vendor_id: vendorId,
+        updated_at: new Date().toISOString(),
       })
       .select()
       .single();
