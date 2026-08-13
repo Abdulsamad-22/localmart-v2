@@ -110,9 +110,12 @@ export default function LoginForm() {
 
           {/* Forgot password */}
           <div className="flex justify-end mb-6">
-            <span className="text-sm text-[#009688] hover:underline cursor-pointer">
+            <Link
+              href={"/forgot-password"}
+              className="text-sm text-[#009688] hover:underline cursor-pointer"
+            >
               Forgot password?
-            </span>
+            </Link>
           </div>
 
           {/* Login button */}
@@ -122,7 +125,14 @@ export default function LoginForm() {
             className="w-full px-5 py-3 bg-gradient-to-r from-[#009688] to-[#00695C] transition-all duration-200
         hover:from-[#00897B] hover:to-[#005B4F] text-[#fff] flex items-center justify-center mb-2 rounded-lg"
           >
-            {loading ? "Logging in..." : "Login"}
+            {loading ? (
+              <>
+                <i className="ti ti-loader-2 animate-spin" aria-hidden="true" />
+                Logging in...
+              </>
+            ) : (
+              "Login"
+            )}
           </button>
 
           {/* Divider */}
