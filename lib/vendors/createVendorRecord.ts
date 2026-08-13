@@ -18,6 +18,7 @@ export async function createVendorRecord(
       data: { user },
       error: authError,
     } = await supabase.auth.getUser();
+
     if (!user || authError) {
       return { success: false, error: "Session expired. Please log in again." };
     }
@@ -41,6 +42,20 @@ export async function createVendorRecord(
     }
 
     // Insert vendor first, subaccount_code is null for now
+    // create subaccount first
+    const subaccountResult = await createSubaccount({
+      businessName: formData.businessName,
+      settlementBank: bankCodeResult.bankCode,
+      accountNumber: formData.accountNumber,
+      percentageCharge: 10,
+      email: formData.email,
+      fullName: formData.fullName,
+      phoneNumber: formData.phoneNumber,
+      accountName: verificationResult.data.accountName,
+      vendorId: user.id,
+    });
+
+    // add subaccount result to vendorData before insert
     const vendorData: VendorInsert = {
       vendor_id: user.id,
       full_name: formData.fullName,
@@ -54,11 +69,11 @@ export async function createVendorRecord(
       product_category: formData.productCategory,
       logo_url: logoUrl,
       socials: {
-        instagram: formData.socials?.instagram || null,
-        twitter: formData.socials?.twitter || null,
-        tiktok: formData.socials?.tiktok || null,
-        facebook: formData.socials?.facebook || null,
-        website: formData.socials?.website || null,
+        instagram: formData.socials?.instagram || undefined,
+        twitter: formData.socials?.twitter || undefined,
+        tiktok: formData.socials?.tiktok || undefined,
+        facebook: formData.socials?.facebook || undefined,
+        website: formData.socials?.website || undefined,
       },
       agreed_to_platform_fee: true,
       bank_name: formData.bankName,
@@ -67,11 +82,14 @@ export async function createVendorRecord(
       account_name: verificationResult.data.accountName,
       return_policy: formData.returnPolicy,
       delivery_duration: formData.deliveryDuration,
-      subaccount_code: null, // will be updated after
-      subaccount_pending: true, // signals setup is incomplete
+      subaccount_code: subaccountResult.success
+        ? subaccountResult.subaccountCode
+        : null,
+      subaccount_pending: !subaccountResult.success,
       updated_at: new Date().toISOString(),
     };
 
+    // single insert — everything in one operation
     const { error: insertError } = await supabase
       .from("vendors")
       .insert([vendorData]);
@@ -80,39 +98,6 @@ export async function createVendorRecord(
       return { success: false, error: insertError.message };
     }
 
-    // Attempt subaccount creation after vendor exists
-    const subaccountResult = await createSubaccount({
-      businessName: formData.businessName,
-      settlementBank: bankCodeResult.bankCode,
-      accountNumber: formData.accountNumber,
-      percentageCharge: 10,
-      email: formData.email,
-      fullName: formData.fullName,
-      phoneNumber: formData.phoneNumber,
-      accountName: verificationResult.data.accountName,
-      vendorId: user.id,
-    });
-
-    if (subaccountResult.success) {
-      // update vendor with subaccount code
-      const { error: updateError } = await supabase
-        .from("vendors")
-        .update({
-          subaccount_code: subaccountResult.subaccountCode,
-          subaccount_pending: false,
-          updated_at: new Date().toISOString(),
-        })
-        .eq("vendor_id", user.id);
-
-      if (updateError) {
-        // vendor is registered but subaccount update failed
-        // log for manual resolution — vendor can still browse dashboard
-        console.error("Subaccount update failed:", updateError.message);
-      }
-    }
-
-    // registration succeeds regardless of subaccount outcome
-    // subaccount_pending flag handles the incomplete state
     return { success: true };
   } catch (err) {
     const message =
