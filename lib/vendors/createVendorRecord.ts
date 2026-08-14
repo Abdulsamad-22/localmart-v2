@@ -41,7 +41,6 @@ export async function createVendorRecord(
       return { success: false, error: verificationResult.error };
     }
 
-    // Insert vendor first, subaccount_code is null for now
     // create subaccount first
     const subaccountResult = await createSubaccount({
       businessName: formData.businessName,
