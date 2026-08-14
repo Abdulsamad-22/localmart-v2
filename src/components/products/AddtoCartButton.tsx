@@ -4,11 +4,11 @@ import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { ShoppingCart, Check } from "@phosphor-icons/react";
 import useCartStore from "@/state-store/cartStore";
-import type { ProductsWithVendor } from "@/types/product";
+import type { ProductsWithVendor, ProductRow } from "@/types/product";
 import type { Color } from "@/types/product";
 
 type Props = {
-  product: ProductsWithVendor;
+  product: ProductRow;
   quantity?: number;
   selectedColor?: Color | null;
   selectedSize?: string | null;
