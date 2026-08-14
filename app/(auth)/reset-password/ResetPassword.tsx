@@ -95,7 +95,7 @@ export function ResetPasswordForm() {
         <div className="w-14 h-14 rounded-full bg-red-50 flex items-center justify-center mx-auto mb-4">
           <Lock size={24} className="text-red-500" />
         </div>
-        <h1 className="text-xl font-medium text-gray-900 dark:text-white mb-2">
+        <h1 className="text-xl font-medium text-gray-900 mb-2">
           Invalid or expired link
         </h1>
         <p className="text-sm text-gray-500 mb-6">
@@ -116,7 +116,7 @@ export function ResetPasswordForm() {
   return (
     <div className="w-full max-w-sm mx-auto">
       <div className="mb-8">
-        <h1 className="text-2xl font-medium text-gray-900 dark:text-white mb-1">
+        <h1 className="text-2xl font-medium text-gray-900 mb-1">
           Set new password
         </h1>
         <p className="text-sm text-gray-500">Must be at least 8 characters</p>
@@ -125,7 +125,7 @@ export function ResetPasswordForm() {
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
         {/* new password */}
         <div>
-          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">
+          <label className="block text-sm font-medium text-gray-700 mb-1.5">
             New password
           </label>
           <div className="relative">
@@ -137,7 +137,7 @@ export function ResetPasswordForm() {
               {...register("password")}
               type={showPassword ? "text" : "password"}
               placeholder="••••••••"
-              className="w-full pl-9 pr-10 py-2.5 border border-gray-300 dark:border-gray-700 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#009688] focus:border-transparent dark:bg-gray-800 dark:text-white placeholder:text-gray-400"
+              className="w-full pl-9 pr-10 py-2.5 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#009688] focus:border-transparent placeholder:text-gray-400"
             />
             <button
               type="button"
@@ -156,7 +156,7 @@ export function ResetPasswordForm() {
 
         {/* confirm password */}
         <div>
-          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">
+          <label className="block text-sm font-medium text-gray-700 mb-1.5">
             Confirm password
           </label>
           <div className="relative">
@@ -168,7 +168,7 @@ export function ResetPasswordForm() {
               {...register("confirmPassword")}
               type={showConfirm ? "text" : "password"}
               placeholder="••••••••"
-              className="w-full pl-9 pr-10 py-2.5 border border-gray-300 dark:border-gray-700 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#009688] focus:border-transparent dark:bg-gray-800 dark:text-white placeholder:text-gray-400"
+              className="w-full pl-9 pr-10 py-2.5 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#009688] focus:border-transparent placeholder:text-gray-400"
             />
             <button
               type="button"
