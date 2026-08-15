@@ -244,7 +244,7 @@ export default function CheckoutProvider() {
       <FormProvider {...methods}>
         <form
           onSubmit={methods.handleSubmit(onSubmit)}
-          className="grid grid-cols-1 md:grid-cols-[60%_38%] gap-12 px-4 md:px-12 my-4 md:my-8"
+          className="grid grid-cols-1 md:grid-cols-[60%_38%] gap-12 px-4 md:px-6 sm:px-6 lg:px-12 my-4 md:my-8"
         >
           <DeliveryForm />
           <CheckoutSummary loading={loading} />

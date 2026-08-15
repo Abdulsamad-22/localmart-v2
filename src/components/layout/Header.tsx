@@ -115,7 +115,7 @@ export default function Header() {
 
   return (
     <header className="w-full bg-white border-b border-gray-100 sticky top-0 z-[100]">
-      <div className="max-w-full px-4 md:px-12 py-3 md:py-4 flex items-center justify-between gap-4">
+      <div className="max-w-full px-4 md:px-6 sm:px-6 lg:px-12 py-3 md:py-4 flex items-center justify-between gap-4">
         {/* logo */}
         <Link
           href="/"

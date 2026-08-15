@@ -93,7 +93,7 @@ export default function StoreGrid({ limit, products }: Props) {
       <SearchBar />
       {isFiltering ? (
         // skeleton while filtering
-        <section className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-2 md:gap-x-4 gap-y-6 md:gap-y-12 px-4 md:px-12 my-12">
+        <section className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-2 md:gap-x-4 gap-y-6 md:gap-y-12 px-4 md:px-6 sm:px-6 lg:px-12 my-12">
           {Array.from({ length: 8 }).map((_, i) => (
             <ProductCardSkeleton key={i} />
           ))}
