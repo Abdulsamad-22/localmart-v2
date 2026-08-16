@@ -3,10 +3,8 @@ import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 
 export async function middleware(request: NextRequest) {
-  let response = NextResponse.next({
-    request: {
-      headers: request.headers,
-    },
+  let supabaseResponse = NextResponse.next({
+    request,
   });
 
   // create client that can refresh the session
@@ -23,18 +21,18 @@ export async function middleware(request: NextRequest) {
           cookiesToSet.forEach(({ name, value }) =>
             request.cookies.set(name, value),
           );
-          response = NextResponse.next({
+          supabaseResponse = NextResponse.next({
             request,
           });
           cookiesToSet.forEach(({ name, value, options }) =>
-            response.cookies.set(name, value, options),
+            supabaseResponse.cookies.set(name, value, options),
           );
         },
       },
     },
   );
 
-  // this refreshes the session if expired — critical
+  // this refreshes the session if expired
   const {
     data: { user },
   } = await supabase.auth.getUser();
@@ -42,26 +40,30 @@ export async function middleware(request: NextRequest) {
   const url = request.nextUrl.clone();
   const path = url.pathname;
 
-  if (
-    path.startsWith("/checkout") ||
-    path.startsWith("/vendor/register") ||
-    path.startsWith("/my-shop") ||
-    path.startsWith("/orders") ||
-    path.startsWith("/my-orders")
-  ) {
-    if (!user) {
-      url.pathname = "/login";
-      url.searchParams.set("redirectTo", path);
-      return NextResponse.redirect(url);
-    }
+  const protectedRoutes = [
+    "/checkout",
+    "/vendor/registration",
+    "/my-shop",
+    "/orders",
+    "/my-orders",
+    "/manage-products",
+    "/add-product",
+  ];
+
+  const isProtected = protectedRoutes.some((route) => path.startsWith(route));
+
+  if (isProtected && !user) {
+    url.pathname = "/login";
+    url.searchParams.set("redirectTo", path);
+    return NextResponse.redirect(url);
   }
 
-  if (path.startsWith("/my-shop")) {
+  if (path.startsWith("/my-shop") && user) {
     const { data: vendorData } = await supabase
       .from("vendors")
       .select("id")
-      .eq("vendor_id", user!.id)
-      .single();
+      .eq("vendor_id", user.id)
+      .maybeSingle();
 
     if (!vendorData) {
       url.pathname = "/";
@@ -69,17 +71,11 @@ export async function middleware(request: NextRequest) {
     }
   }
 
-  return response;
+  return supabaseResponse;
 }
 
 export const config = {
   matcher: [
-    "/checkout/:path*",
-    "/vendor/registration/:path*",
-    "/my-shop/:path*",
-    "/orders/:path*",
-    "/my-orders/:path*",
-    "/manage-products/:path*",
-    "/add-product/:path*",
+    "/((?!_next/static|_next/image|favicon.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)",
   ],
 };
