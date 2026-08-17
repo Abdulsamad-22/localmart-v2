@@ -23,21 +23,19 @@ export default function CartItemSection() {
     <div className="min-h-screen bg-gray-50 px-4 md:px-6 sm:px-6 lg:px-12">
       {/* Header */}
       <div className="border-b border-[#dee4e1]">
-        <div className="px-4 sm:px-6 lg:px-8 py-4">
-          <div className="flex items-center justify-between">
-            <div>
-              <h1 className="text-[1.125rem] md:text-2xl font-semibold text-gray-900">
-                Shopping Cart
-              </h1>
-              <p className="text-[0.75rem] md:text-[1rem] text-gray-600 mt-[2px] md:mt-1">
-                {cartItems.length} item{cartItems.length !== 1 ? "s" : ""} in
-                your cart
-              </p>
-            </div>
-            <div className="flex items-center gap-2 text-sm text-[#009688]">
-              <Shield size={16} />
-              <span>Secure Checkout</span>
-            </div>
+        <div className="flex items-center justify-between">
+          <div>
+            <h1 className="text-[1.125rem] md:text-2xl font-semibold text-gray-900">
+              Shopping Cart
+            </h1>
+            <p className="text-[0.75rem] md:text-[1rem] text-gray-600 mt-[2px] md:mt-1">
+              {cartItems.length} item{cartItems.length !== 1 ? "s" : ""} in your
+              cart
+            </p>
+          </div>
+          <div className="flex items-center gap-2 text-sm text-[#009688]">
+            <Shield size={16} />
+            <span>Secure Checkout</span>
           </div>
         </div>
       </div>
