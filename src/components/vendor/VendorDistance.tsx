@@ -2,8 +2,9 @@
 
 import { useEffect, useState } from "react";
 import { getRouteInfo } from "@/lib/mapbox/getRouteInfo";
-import type { VendorRow } from "@/types/vendor";
 import useBuyerStore from "@/state-store/buyerStore";
+import formatDuration from "@/utils/formatDeliveryTime";
+import { Truck } from "@phosphor-icons/react";
 
 type VendorLocation = {
   id: string;
@@ -71,7 +72,8 @@ export function VendorDistance({ vendor }: Props) {
 
   return (
     <p className="line-clamp-1">
-      {route.distanceKm}km · {route.durationMinutes} min drive
+      <Truck size={16} className="inline-block mr-1" />
+      {formatDuration(route.durationMinutes)} drive
     </p>
   );
 }
