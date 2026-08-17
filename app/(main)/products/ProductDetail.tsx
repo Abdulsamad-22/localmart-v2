@@ -17,12 +17,12 @@ import {
   Check,
   ChatCircleDots,
   Shield,
-  ShoppingCart,
   Heart,
   Truck,
   ArrowCounterClockwise,
 } from "@phosphor-icons/react";
 import Link from "next/link";
+import { getSupabaseClient } from "@/lib/supabase/client";
 
 type Color = {
   name: string;
@@ -51,7 +51,6 @@ const renderStars = (rating: number) => {
 
 export default function ({ product }: Props) {
   const addToCart = useCartStore((state) => state.addToCart);
-  const session = useAuthStore((state) => state.session);
   const { isInWishlist, toggleWishlist } = useWishlistStore();
   const [selectedColor, setSelectedColor] = useState<Color | null>(null);
   const [selectedSize, setSelectedSize] = useState<string | null>(null);
@@ -101,18 +100,17 @@ export default function ({ product }: Props) {
   };
 
   const handleBuyNow = async () => {
-    if (!session) {
-      router.push(`/signup?redirectTo=${pathname}`);
-      return;
-    }
+    const supabase = getSupabaseClient();
 
-    const isSessionExpired =
-      session.expires_at && session.expires_at * 1000 < Date.now();
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
 
-    if (isSessionExpired) {
+    if (!user) {
       router.push(`/login?redirectTo=${pathname}`);
       return;
     }
+    router.push("/checkout");
   };
 
   return (
