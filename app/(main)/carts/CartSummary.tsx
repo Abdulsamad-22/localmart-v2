@@ -1,13 +1,12 @@
 "use client";
 
-import useAuthStore from "@/state-store/authStore";
+import { getSupabaseClient } from "@/lib/supabase/client";
 import useCartStore from "@/state-store/cartStore";
 import { calculateCheckout } from "@/utils/calculateCheckout";
 import { CurrencyNgn, ArrowRight, Shield } from "@phosphor-icons/react";
 import { usePathname, useRouter } from "next/navigation";
 
 export default function CartSummary() {
-  const { session } = useAuthStore();
   const router = useRouter();
   const pathname = usePathname();
   const cartItems = useCartStore((state) => state.cartItems);
@@ -16,15 +15,13 @@ export default function CartSummary() {
 
   const handleCheckout = async () => {
     try {
-      if (!session) {
-        router.push(`/signup?redirectTo${pathname}`);
-        return;
-      }
+      const supabase = getSupabaseClient();
 
-      const isSessionExpired =
-        session.expires_at && session.expires_at * 1000 < Date.now();
+      const {
+        data: { user },
+      } = await supabase.auth.getUser();
 
-      if (isSessionExpired) {
+      if (!user) {
         router.push(`/login?redirectTo=${pathname}`);
         return;
       }
