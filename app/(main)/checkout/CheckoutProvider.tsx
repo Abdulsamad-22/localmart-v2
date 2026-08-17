@@ -237,7 +237,7 @@ export default function CheckoutProvider() {
 
   return (
     <>
-      <div className="bg-[#009688] text-[1.75rem] text-[#fff] text-center font-semibold p-8 mt-[5rem]">
+      <div className="bg-[#009688] text-[1.75rem] text-[#fff] text-center font-semibold p-8 mt-[2rem]">
         <h2 className="">Checkout</h2>
       </div>
 

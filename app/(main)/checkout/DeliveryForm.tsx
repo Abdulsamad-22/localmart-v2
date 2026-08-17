@@ -16,8 +16,8 @@ export default function DeliveryForm() {
   return (
     <div className="flex-1">
       <div className=" space-y-6">
-        <div className="bg-[#fff] p-6 rounded-[8px]">
-          <div className="mb-3">
+        <div className="bg-[#fff] px-4 py-6 rounded-[8px]">
+          <div className="mb-6">
             <h3 className="text-[1.25rem] text-gray-700 font-semibold">
               Contact Information
             </h3>
@@ -25,10 +25,10 @@ export default function DeliveryForm() {
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-3 mb-5">
             {/* Full Name */}
-            <div className="flex flex-col">
+            <div className="flex flex-col mb-6">
               <label
                 htmlFor="firstName"
-                className="text-sm font-medium text-gray-700 mb-1"
+                className="text-sm font-medium text-gray-700 mb-1.5"
               >
                 First Name
               </label>
@@ -47,10 +47,10 @@ export default function DeliveryForm() {
             </div>
 
             {/* Last name */}
-            <div className="flex flex-col">
+            <div className="flex flex-col mb-6">
               <label
                 htmlFor="lastName"
-                className="text-sm font-medium text-gray-700 mb-1"
+                className="text-sm font-medium text-gray-700 mb-1.5"
               >
                 Last Name
               </label>
@@ -67,8 +67,8 @@ export default function DeliveryForm() {
             </div>
           </div>
 
-          <div className="mb-5">
-            <div className="flex flex-col">
+          <div className="mb-6">
+            <div className="flex flex-col mb-6">
               <label
                 htmlFor="address"
                 className="text-sm font-medium text-gray-700 mb-1"
@@ -79,7 +79,7 @@ export default function DeliveryForm() {
                 {...register("address", {
                   required: "Address is required",
                 })}
-                className="w-full h-[90px]  rounded-[8px] p-2 border rounded focus:outline-none focus:ring-2 focus:ring-[#009688]"
+                className="w-full h-[90px] p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-[#009688]"
                 placeholder="Briefly enter your contact address..."
               />
 
@@ -89,7 +89,7 @@ export default function DeliveryForm() {
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-3 mb-4">
             {/* Email */}
-            <div className="flex flex-col">
+            <div className="flex flex-col mb-6">
               <label
                 htmlFor="email"
                 className="text-sm font-medium text-gray-700 mb-1"
@@ -109,7 +109,7 @@ export default function DeliveryForm() {
             </div>
 
             {/* Phone */}
-            <div className="flex flex-col">
+            <div className="flex flex-col mb-6">
               <label
                 htmlFor="phone"
                 className="text-sm font-medium text-gray-700 mb-1"
@@ -151,7 +151,7 @@ export default function DeliveryForm() {
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-3 mb-5">
               {/* First Name */}
-              <div className="flex flex-col">
+              <div className="flex flex-col mb-6">
                 <label
                   htmlFor="receiversFirstName"
                   className="text-sm font-medium text-gray-700 mb-1"
@@ -173,7 +173,7 @@ export default function DeliveryForm() {
               </div>
 
               {/* Last name */}
-              <div className="flex flex-col">
+              <div className="flex flex-col mb-6">
                 <label
                   htmlFor="recieversLastName"
                   className="text-sm font-medium text-gray-700 mb-1"
@@ -195,7 +195,7 @@ export default function DeliveryForm() {
               </div>
             </div>
 
-            <div className="mb-5">
+            <div className="mb-6">
               <div className="flex flex-col">
                 <label
                   htmlFor="receiversAddress"
@@ -207,7 +207,7 @@ export default function DeliveryForm() {
                   {...register("receiversAddress", {
                     required: deliveryOption ? "Address is required" : false,
                   })}
-                  className="w-full h-[90px]  rounded-[8px] p-2 border focus:outline-none focus:ring-2 focus:ring-[#009688]"
+                  className="w-full h-[90px] p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-[#009688]"
                   placeholder="Briefly enter your contact address..."
                 />
 
@@ -219,7 +219,7 @@ export default function DeliveryForm() {
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-3 mb-4">
               {/* Email */}
-              <div className="flex flex-col">
+              <div className="flex flex-col mb-6">
                 <label
                   htmlFor="receiversEmail"
                   className="text-sm font-medium text-gray-700 mb-1"
@@ -241,7 +241,7 @@ export default function DeliveryForm() {
               </div>
 
               {/* Phone */}
-              <div className="flex flex-col">
+              <div className="flex flex-col mb-6">
                 <label
                   htmlFor="receiversPhone"
                   className="text-sm font-medium text-gray-700 mb-1"
