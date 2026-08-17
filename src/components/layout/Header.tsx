@@ -18,17 +18,16 @@ import Link from "next/link";
 import useCartStore from "@/state-store/cartStore";
 import { toast } from "sonner";
 import { CartBadge } from "../ui/CartBadge";
+import type { User } from "@supabase/supabase-js";
 
-type NavLinks = {
-  icon: React.ReactNode;
-  label: string;
-  onClick?: () => void;
-  redirectTo?: string;
-  isButton?: boolean;
+type HeaderProps = {
+  user: User | null;
+  vendorData: { id: string; business_name: string } | null;
 };
-export default function Header() {
+
+export default function Header({ user, vendorData }: HeaderProps) {
   const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
-  const { loading, vendorData, session, user, logout } = useAuthStore();
+  const { logout } = useAuthStore();
   const { cartItems } = useCartStore();
   const router = useRouter();
   const pathname = usePathname();
@@ -55,20 +54,8 @@ export default function Header() {
     setIsMenuOpen((prev) => !prev);
   };
 
-  const handleUserButton = () => {
-    router.push(`/signup?redirectTo=${pathname}`);
-  };
-
   const handleVendorRedirection = () => {
-    if (!session) {
-      router.push(`/signup?redirectTo=${pathname}`);
-      return;
-    }
-
-    const isSessionExpired =
-      session.expires_at && session.expires_at * 1000 < Date.now();
-
-    if (isSessionExpired) {
+    if (!user) {
       router.push(`/login?redirectTo=${pathname}`);
       return;
     }
@@ -91,27 +78,6 @@ export default function Header() {
     }
     setIsUserMenuOpen(false);
   };
-
-  const navLinks: NavLinks[] = [
-    {
-      icon: <UserCircle size={20} />,
-      label: "Login/Sign up",
-      onClick: () => handleUserButton(),
-    },
-    { icon: <Heart size={20} />, label: "Wishlists", redirectTo: "/wishlist" },
-    { icon: <ShoppingCart size={20} />, label: "Cart", redirectTo: "/carts" },
-    { icon: <Package size={20} />, label: "Orders", redirectTo: "/my-orders" },
-    {
-      icon: "",
-      label: loading
-        ? "Loading..."
-        : vendorData
-          ? "View my store"
-          : "Sell on LocalMart",
-      onClick: () => handleVendorRedirection(),
-      isButton: true,
-    },
-  ];
 
   return (
     <header className="w-full bg-white border-b border-gray-100 sticky top-0 z-[100]">
@@ -177,13 +143,7 @@ export default function Header() {
             className="flex items-center gap-1.5 px-4 py-2 rounded-lg text-sm font-medium bg-[#009688] hover:bg-[#00796B] text-white transition-all ml-2"
           >
             <Storefront size={18} />
-            <span>
-              {loading
-                ? "Loading..."
-                : vendorData
-                  ? "View my store"
-                  : "Sell on LocalMart"}
-            </span>
+            <span>{vendorData ? "View my store" : "Sell on LocalMart"}</span>
           </button>
 
           {/* user dropdown */}
@@ -319,11 +279,7 @@ export default function Header() {
             }}
           >
             <Storefront size={18} />
-            {loading
-              ? "Loading..."
-              : vendorData
-                ? "View my store"
-                : "Sell on LocalMart"}
+            {vendorData ? "View my store" : "Sell on LocalMart"}
           </button>
 
           <Link
