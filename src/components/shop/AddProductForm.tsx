@@ -145,6 +145,8 @@ export default function AddProductForm() {
           disabled={isSubmitting}
           className="w-full flex-1 flex items-center gap-2 justify-center bg-[#009688] text-white px-2 py-3 rounded-lg hover:bg-[#00897B] mt-8"
         >
+          <Plus size={20} />
+
           {isSubmitting ? (
             <>
               <i className="ti ti-loader-2 animate-spin" aria-hidden="true" />
@@ -153,7 +155,6 @@ export default function AddProductForm() {
           ) : (
             "Add product"
           )}
-          <Plus size={20} />
         </button>
       </div>
     </div>
