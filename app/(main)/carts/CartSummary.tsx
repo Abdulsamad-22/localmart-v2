@@ -78,10 +78,11 @@ export default function CartSummary() {
             </span>
           </div>
 
-          {subtotal < 100 && (
+          {subtotal < 50000 && (
             <div className="flex items-center text-sm text-blue-600">
               Add <CurrencyNgn size={18} />
-              {(100 - subtotal).toLocaleString("en-NG")} more for FREE delivery
+              {(50000 - subtotal).toLocaleString("en-NG")} more for FREE
+              delivery
             </div>
           )}
 
