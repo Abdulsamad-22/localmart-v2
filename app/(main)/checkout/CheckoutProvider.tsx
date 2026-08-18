@@ -34,8 +34,8 @@ export default function CheckoutProvider() {
   const { cartItems, checkoutItem, setCheckoutItem, clearCart } =
     useCartStore();
   const initializePayment = usePaystackPayment();
-  const { total } = calculateCheckout(cartItems);
-  const checkoutTotal = total * 100;
+  const { checkoutTotal } = calculateCheckout(cartItems);
+
   const methods = useForm<CheckoutFormData>({
     resolver: yupResolver(
       checkoutSchema,
@@ -133,8 +133,13 @@ export default function CheckoutProvider() {
 
   const paymentData = useMemo(() => {
     if (itemsToCheckout.length === 0 || vendorInfo.length === 0) return null;
-    return calculatePaymentSplits(itemsToCheckout, vendorInfo, 7);
-  }, [itemsToCheckout, vendorInfo]);
+    return calculatePaymentSplits(
+      itemsToCheckout,
+      vendorInfo,
+      10,
+      checkoutTotal,
+    );
+  }, [itemsToCheckout, vendorInfo, checkoutTotal]);
 
   const onSubmit = async (checkoutData: CheckoutFormData) => {
     try {
@@ -183,7 +188,7 @@ export default function CheckoutProvider() {
       const config = {
         publicKey: process.env.NEXT_PUBLIC_PAYSTACK_PUBLIC_KEY!,
         email: user.email,
-        amount: Math.round(checkoutTotal),
+        amount: checkoutTotal,
         reference: `localmart_${Date.now()}_${user.id}`,
         metadata: {
           customer_id: user.id,
