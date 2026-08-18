@@ -10,8 +10,19 @@ export function calculateCheckout(items: CartItem[]) {
       sum + (item.product.item_price - item.product.item_price) * item.quantity,
     0,
   );
-  const deliveryCost = 15.99; // Free delivery over Ngn 50000
-  const tax = subtotal * 0.08; // 8% tax
-  const total = subtotal + (subtotal < 50000 ? deliveryCost : 0) + tax;
-  return { subtotal, savings, tax, total, deliveryCost };
+  const deliveryCost = subtotal < 50000 ? 3000 : 0; // Free delivery over Ngn 50000
+  const tax = subtotal * 0.075;
+  const total = subtotal + deliveryCost + tax;
+  const checkoutTotal = Math.round(total * 100); // in kobo
+  const splitableAmount = Math.round(subtotal * 100);
+
+  return {
+    subtotal,
+    savings,
+    tax,
+    total,
+    deliveryCost,
+    splitableAmount,
+    checkoutTotal,
+  };
 }
