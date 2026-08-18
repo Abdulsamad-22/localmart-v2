@@ -23,6 +23,7 @@ export default function calculatePaymentSplits(
   cartItems: CartItem[],
   vendors: CheckoutVendor[],
   platformPercentage = 10,
+  checkoutTotal?: number,
 ): PaymentSplits {
   const splits: SplitsValues[] = [];
   let totalAmount = 0;
@@ -60,8 +61,11 @@ export default function calculatePaymentSplits(
     }
   });
 
+  // Convert to kobo
+  const finalTotal = checkoutTotal ?? Math.round(totalAmount * 100);
+
   return {
-    totalAmount: Math.round(totalAmount * 100), // Convert to kobo
+    totalAmount: finalTotal,
     splits,
     vendorTotals,
     summary: {
