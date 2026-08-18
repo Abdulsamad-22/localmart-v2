@@ -34,7 +34,7 @@ export default function CheckoutProvider() {
   const { cartItems, checkoutItem, setCheckoutItem, clearCart } =
     useCartStore();
   const initializePayment = usePaystackPayment();
-  const { checkoutTotal } = calculateCheckout(cartItems);
+  const { checkoutTotal, splitableAmount } = calculateCheckout(cartItems);
 
   const methods = useForm<CheckoutFormData>({
     resolver: yupResolver(
@@ -137,9 +137,9 @@ export default function CheckoutProvider() {
       itemsToCheckout,
       vendorInfo,
       10,
-      checkoutTotal,
+      splitableAmount,
     );
-  }, [itemsToCheckout, vendorInfo, checkoutTotal]);
+  }, [itemsToCheckout, vendorInfo, splitableAmount]);
 
   const onSubmit = async (checkoutData: CheckoutFormData) => {
     try {
