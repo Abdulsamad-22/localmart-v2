@@ -3,15 +3,14 @@ import { create } from "zustand";
 import { persist, createJSONStorage } from "zustand/middleware";
 import { CartItem } from "@/types/cart";
 
-// type CartItem = {
-//   product: ProductRow;
-//   quantity: number;
-// };
-
 type CartStore = {
   cartItems: CartItem[];
   checkoutItem: CartItem | null;
-  removeFromCart: (productId: string) => void;
+  removeFromCart: (
+    productId: string,
+    selectedColor?: Color | null,
+    selectedSize?: string | null,
+  ) => void;
   increaseCart: (productId: string) => void;
   decreaseCart: (productId: string) => void;
   setCheckoutItem: (item: CartItem | null) => void;
@@ -100,9 +99,29 @@ const useCartStore = create<CartStore>()(
         }));
       },
 
-      removeFromCart: (productId: string) =>
+      removeFromCart: (
+        productId: string,
+        selectedColor?: Color | null,
+        selectedSize?: string | null,
+      ) =>
         set({
-          cartItems: get().cartItems.filter((i) => i.product.id !== productId),
+          cartItems: get().cartItems.filter((i) => {
+            if (i.product.id !== productId) return true;
+
+            // same product — check color and size to find exact item
+            const sameColor =
+              selectedColor === undefined
+                ? true
+                : i.selectedColor?.code === selectedColor?.code;
+
+            const sameSize =
+              selectedSize === undefined
+                ? true
+                : i.selectedSize === selectedSize;
+
+            // remove only the item that matches all three
+            return !(sameColor && sameSize);
+          }),
         }),
 
       clearCart: () => set({ cartItems: [] }),
