@@ -22,7 +22,7 @@ export default function CartItemSection() {
   return (
     <div className="min-h-screen bg-gray-50 px-4 md:px-6 sm:px-6 lg:px-12">
       {/* Header */}
-      <div className="border-b border-[#dee4e1]">
+      <div className="border-b border-[#dee4e1] py-2 mt-6">
         <div className="flex items-center justify-between">
           <div>
             <h1 className="text-[1.125rem] md:text-2xl font-semibold text-gray-900">
@@ -68,7 +68,7 @@ export default function CartItemSection() {
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mt-6">
             {/* Cart Items */}
             <div className="lg:col-span-2">
-              <div className="md:bg-white rmd:ounded-lg md:border md:border-[#dee4e1] rounded-[8px_8px_0_0]">
+              <div className="md:bg-white rmd:ounded-lg md:border md:border-[#dee4e1] rounded-[8px]">
                 {/* Cart Header */}
                 <div className="px-4 md:px-6 py-4 border-b border-gray-200">
                   <h2 className="text-[1rem] md:text-lg font-semibold text-gray-900">
@@ -83,14 +83,15 @@ export default function CartItemSection() {
                       <div className="px-0 md:px-6 py-4 md:py-6">
                         <div className="flex gap-4">
                           {/* Product Image */}
-
-                          <div className="flex-shrink-0">
-                            <img
-                              src={item.product.image_url}
-                              alt={item.product.item_name}
-                              className="w-[7rem] sm:w-28 h-[6rem] sm:h-24 object-cover rounded-lg"
-                            />
-                          </div>
+                          <Link href={`/products/${item.product.id}`}>
+                            <div className="flex-shrink-0">
+                              <img
+                                src={item.product.image_url}
+                                alt={item.product.item_name}
+                                className="w-[7rem] sm:w-28 h-[6rem] sm:h-24 object-cover rounded-lg"
+                              />
+                            </div>
+                          </Link>
 
                           {/* Product Details */}
                           <div className="flex-1 min-w-0">
@@ -141,7 +142,11 @@ export default function CartItemSection() {
                                   </button>
                                   <button
                                     onClick={() =>
-                                      removeFromCart(item.product.id)
+                                      removeFromCart(
+                                        item.product.id,
+                                        item.selectedColor,
+                                        item.selectedSize,
+                                      )
                                     }
                                     className="flex items-center gap-1 text-gray-600 hover:text-red-600 text-[0.875rem] md:text-[1rem] transition-colors"
                                   >
@@ -183,7 +188,7 @@ export default function CartItemSection() {
                                       disabled={item.quantity <= 1}
                                       className="border border-gray-300 p-[0.5rem] md:p-3 transition-transform duration-300 hover:bg-[#009688] hover:text-white font-semibold rounded-full disabled:cursor-not-allowed cursor-pointer transition-colors"
                                     >
-                                      <Minus size={20} />
+                                      <Minus size={16} />
                                     </button>
                                     <span className="px-4 py-2 min-w-[60px] text-center font-medium">
                                       {item.quantity}
@@ -197,7 +202,7 @@ export default function CartItemSection() {
                                       }
                                       className="border border-gray-300 p-[0.5rem] md:p-3 transition-transform duration-300 hover:bg-[#009688] hover:text-white font-semibold rounded-full disabled:cursor-not-allowed cursor-pointer transition-colors"
                                     >
-                                      <Plus size={20} />
+                                      <Plus size={16} />
                                     </button>
                                   </div>
                                 </div>
@@ -214,10 +219,10 @@ export default function CartItemSection() {
                       </div>
 
                       <div className="flex md:hidden justify-between mb-2">
-                        <div className="flex md:hidden items-center gap-[2px]">
+                        <div className="flex md:hidden items-center">
                           {/* <span className="text-sm font-medium text-gray-700">
-                                Qty:
-                              </span> */}
+                            Qty:
+                          </span> */}
                           <div className="flex items-center">
                             <button
                               onClick={() => decreaseCart(item.product.id)}
