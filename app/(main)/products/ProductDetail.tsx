@@ -1,12 +1,10 @@
 "use client";
 
-import useAuthStore from "@/state-store/authStore";
-import useCartStore from "@/state-store/cartStore";
 import useWishlistStore from "@/state-store/wishlistStore";
 import type { ProductsWithVendor } from "@/types/product";
 import { AddToCartButton } from "@/src/components/products/AddtoCartButton";
 import { usePathname, useRouter } from "next/navigation";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
   ThumbsUp,
   CurrencyNgn,
@@ -23,6 +21,7 @@ import {
 } from "@phosphor-icons/react";
 import Link from "next/link";
 import { getSupabaseClient } from "@/lib/supabase/client";
+import useCartStore from "@/state-store/cartStore";
 
 type Color = {
   name: string;
@@ -50,8 +49,8 @@ const renderStars = (rating: number) => {
 };
 
 export default function ({ product }: Props) {
-  const addToCart = useCartStore((state) => state.addToCart);
   const { isInWishlist, toggleWishlist } = useWishlistStore();
+  const { cartItems } = useCartStore();
   const [selectedColor, setSelectedColor] = useState<Color | null>(null);
   const [selectedSize, setSelectedSize] = useState<string | null>(null);
   const [activeTab, setActiveTab] = useState("decription");
@@ -112,6 +111,22 @@ export default function ({ product }: Props) {
     }
     router.push("/checkout");
   };
+
+  useEffect(() => {
+    if (!product.item_sizes || product.item_sizes.length === 0) return;
+
+    // if already in cart with a size — show that size
+    const cartItem = cartItems.find(
+      (i) => i.product.id === product.id && i.selectedSize,
+    );
+
+    if (cartItem?.selectedSize) {
+      setSelectedSize(cartItem.selectedSize);
+    } else {
+      // default to first size
+      setSelectedSize(product.item_sizes[0]);
+    }
+  }, [product.id, product.item_sizes]);
 
   return (
     <div className="min-h-screen bg-gray-50 md:my-12">
@@ -175,37 +190,33 @@ export default function ({ product }: Props) {
                     </h3>
                   )}
                 </div>
-                {product.item_sizes && product.item_sizes.length > 0 && (
-                  <select
-                    value={selectedSize ?? ""}
-                    onChange={(e) => setSelectedSize(e.target.value)}
-                    className="w-[20%] px-3 py-2 rounded-lg border 
-          border-[#009688] text-gray-700 text-sm
-          focus:outline-none
-          hover:border-[#00796B] transition-all duration-200 mb-4"
-                  >
-                    <option value="">Choose a size</option>
-                    {product.item_sizes.map((size, index) => (
-                      <option
-                        key={index}
-                        value={size}
-                        className="
-              hover:bg-[#009688]/10 
-              active:bg-[#009688] active:text-white
-              cursor-pointer
-            "
-                      >
-                        {size}
-                      </option>
-                    ))}
-                  </select>
-                )}
 
-                {selectedSize && (
-                  <p className="mt-2 text-sm text-gray-600">
-                    Selected:{" "}
-                    <span className="font-medium">{selectedSize}</span>
-                  </p>
+                {product.item_sizes && product.item_sizes.length > 0 && (
+                  <div className="mb-4">
+                    <h3 className="text-sm font-semibold text-gray-900 mb-2">
+                      Size:{" "}
+                      <span className="font-normal text-gray-600">
+                        {selectedSize}
+                      </span>
+                    </h3>
+                    <div className="flex flex-wrap gap-2">
+                      {product.item_sizes.map((size, index) => (
+                        <button
+                          key={index}
+                          type="button"
+                          onClick={() => setSelectedSize(size)}
+                          className={`px-3 py-1.5 rounded-lg border text-sm font-medium transition-all duration-150 active:scale-95
+            ${
+              selectedSize === size
+                ? "border-[#009688] bg-[#009688] text-white"
+                : "border-gray-200 text-gray-700 hover:border-[#009688] hover:text-[#009688]"
+            }`}
+                        >
+                          {size}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
                 )}
 
                 {/* Color */}
@@ -255,7 +266,7 @@ export default function ({ product }: Props) {
                     }`}
                   ></div>
                   <span
-                    className={`font-medium ${
+                    className={` ${
                       product.item_units > 0 ? "text-green-600" : "text-red-600"
                     }`}
                   >
