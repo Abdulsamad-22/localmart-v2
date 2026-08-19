@@ -1,5 +1,6 @@
 import ProductDetail from "../ProductDetail";
 import { getSupabaseServerClient } from "@/lib/supabase/server";
+import { ProductFetchError } from "@/src/components/storeGrid/ProductFetchError";
 import { PageTransition } from "@/src/components/ui/PageTranstion";
 import { notFound } from "next/navigation";
 
@@ -36,7 +37,7 @@ export default async function ProductPage({ params }: Props) {
 
     .single();
 
-  if (error || !product) notFound();
+  if (error || !product) <ProductFetchError />;
 
   return (
     <PageTransition>
