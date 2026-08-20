@@ -6,10 +6,14 @@ import { ShoppingCart, Check } from "@phosphor-icons/react";
 import { VariantSelector } from "./VariantSelector";
 import type { ProductRow } from "@/types/product";
 import useCartStore from "@/state-store/cartStore";
+import type { Color } from "@/types/product";
 
 type Props = {
   product: ProductRow;
   className?: string;
+  quantity?: number;
+  selectedColor?: Color | null;
+  selectedSize?: string | null;
   variant?: "default" | "mobile-icon";
 };
 
