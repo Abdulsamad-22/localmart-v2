@@ -1,22 +1,25 @@
 "use client";
 
 import Link from "next/link";
-import { ShoppingCart } from "@phosphor-icons/react";
 import { CurrencyNgn } from "@phosphor-icons/react";
 import useCartStore from "@/state-store/cartStore";
 import { VendorDistance } from "./vendor/VendorDistance";
 import type { ProductsWithVendor } from "@/types/product";
 import { WishlistButton } from "@/lib/wishlist/WishlistButton";
-import { AddToCartButton } from "@/src/components/products/AddtoCartButton";
 import { useState } from "react";
+import { AddToCartButton } from "@/src/components/products/AddtoCartButton";
 
 type Props = {
   product: ProductsWithVendor;
 };
 
 export function ProductCard({ product }: Props) {
-  const { addToCart } = useCartStore();
+  const addToCart = useCartStore((sate) => sate.addToCart);
   const [added, setAdded] = useState(false);
+
+  const hasVariants =
+    (product.item_sizes && product.item_sizes.length > 0) ||
+    (Array.isArray(product.item_colors) && product.item_colors.length > 0);
 
   const handleAdd = () => {
     if (product.item_units < 1) return;
@@ -74,13 +77,7 @@ export function ProductCard({ product }: Props) {
             <div className="flex items-center justify-between gap-[2px] text-[0.75rem] md:text-[0.875rem] text-gray-600">
               <VendorDistance vendor={product.vendor} />
               <div className="flex justify-start md:hidden">
-                <button
-                  disabled={product.item_units < 1 || added}
-                  onClick={handleAdd}
-                  className="px-3 py-1.5 border border-[#727876] rounded-[16px]"
-                >
-                  <ShoppingCart size={14} color="#2C3230" />
-                </button>
+                <AddToCartButton product={product} variant="mobile-icon" />
               </div>
             </div>
           </div>
