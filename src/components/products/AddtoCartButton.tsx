@@ -17,7 +17,7 @@ type Props = {
   variant?: "default" | "mobile-icon";
 };
 
-export function AddToCartButton({
+export default function AddToCartButton({
   product,
   className,
   variant = "default",
@@ -43,10 +43,12 @@ export function AddToCartButton({
     }
   };
 
-  const handleSelectorClose = () => {
+  const handleSelectorClose = (wasAdded = false) => {
     setSelectorOpen(false);
-    setAdded(true);
-    setTimeout(() => setAdded(false), 1500);
+    if (wasAdded) {
+      setAdded(true);
+      setTimeout(() => setAdded(false), 1500);
+    }
   };
 
   return (
