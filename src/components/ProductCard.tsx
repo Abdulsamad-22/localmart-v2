@@ -6,8 +6,8 @@ import useCartStore from "@/state-store/cartStore";
 import { VendorDistance } from "./vendor/VendorDistance";
 import type { ProductsWithVendor } from "@/types/product";
 import { WishlistButton } from "@/lib/wishlist/WishlistButton";
+import AddToCartButton from "./products/AddToCartButton";
 import { useState } from "react";
-import { AddToCartButton } from "@/src/components/products/AddtoCartButton";
 
 type Props = {
   product: ProductsWithVendor;

@@ -1,7 +1,6 @@
 "use client";
 
 import { WishlistButton } from "@/lib/wishlist/WishlistButton";
-import { AddToCartButton } from "../products/AddtoCartButton";
 import useCartStore from "@/state-store/cartStore";
 import { ProductsWithVendor } from "@/types/product";
 import {
@@ -11,7 +10,7 @@ import {
   Trash,
 } from "@phosphor-icons/react";
 import Link from "next/link";
-
+import AddToCartButton from "../products/AddToCartButton";
 type Props = {
   product: ProductsWithVendor;
   isOwner?: boolean;

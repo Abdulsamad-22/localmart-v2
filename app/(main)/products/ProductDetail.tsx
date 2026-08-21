@@ -2,7 +2,6 @@
 
 import useWishlistStore from "@/state-store/wishlistStore";
 import type { ProductsWithVendor } from "@/types/product";
-import { AddToCartButton } from "@/src/components/products/AddtoCartButton";
 import { usePathname, useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
 import {
@@ -22,7 +21,7 @@ import {
 import Link from "next/link";
 import { getSupabaseClient } from "@/lib/supabase/client";
 import useCartStore from "@/state-store/cartStore";
-
+import AddToCartButton from "@/src/components/products/AddToCartButton";
 type Color = {
   name: string;
   code: string;

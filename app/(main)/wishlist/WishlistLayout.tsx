@@ -11,12 +11,12 @@ import {
   CaretDown,
 } from "@phosphor-icons/react";
 import Link from "next/link";
-import { AddToCartButton } from "@/src/components/products/AddtoCartButton";
+import AddToCartButton from "@/src/components/products/AddToCartButton";
 
 export default function WishlistLayout() {
   const { removeFromWishlist, clearWishlist, wishlistItems } =
     useWishlistStore();
-  const { addMultipleToCart, addToCart } = useCartStore();
+  const { addMultipleToCart } = useCartStore();
   const [sortBy, setSortBy] = useState<string>("newest");
 
   const sortedItems = [...wishlistItems].sort((a, b) => {
