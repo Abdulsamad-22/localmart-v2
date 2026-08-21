@@ -3,13 +3,13 @@
 import { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { X, ShoppingCart } from "@phosphor-icons/react";
-import type { ProductsWithVendor, Color, ProductRow } from "@/types/product";
+import type { Color, ProductRow } from "@/types/product";
 import useCartStore from "@/state-store/cartStore";
 
 type Props = {
   product: ProductRow;
   isOpen: boolean;
-  onClose: () => void;
+  onClose: (wasAdded?: boolean) => void;
 };
 
 export function VariantSelector({ product, isOpen, onClose }: Props) {
@@ -56,7 +56,7 @@ export function VariantSelector({ product, isOpen, onClose }: Props) {
             exit={{ opacity: 0 }}
             transition={{ duration: 0.2 }}
             className="fixed inset-0 bg-black/40 z-40"
-            onClick={onClose}
+            onClick={() => onClose(false)}
           />
 
           {/* mobile — bottom sheet */}
@@ -95,7 +95,7 @@ export function VariantSelector({ product, isOpen, onClose }: Props) {
               selectedColor={selectedColor}
               setSelectedSize={setSelectedSize}
               setSelectedColor={setSelectedColor}
-              onClose={onClose}
+              onClose={() => onClose(false)}
               onAddToCart={handleAddToCart}
             />
           </motion.div>
